@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" charset="utf-8" />
+<meta name="Robots" content="noindex, nofollow" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Title</title>
+</head>
+<body>
+<div class="row">
+{% with messages = get_flashed_messages(with_categories = true) %}
+	{% if messages %}
+		{% for category, message in messages %}
+			<div data-alert class="alert-box {{ category }}">
+				<strong>{{ category | capitalize }}!</strong> {{ message }}
+			</div>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
+
+{% block container %}
+{% endblock %}
+</div>
+</body>
+</html>

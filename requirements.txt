@@ -1,0 +1,7 @@
+flask
+flask-script
+flask-babel
+flask-sqlalchemy
+flask-assets
+
+git+https://github.com/tobiasandtobias/flask-alembic.git
