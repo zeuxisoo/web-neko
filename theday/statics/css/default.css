@@ -1,0 +1,79 @@
+@import url(http://fonts.googleapis.com/css?family=Patua+One);
+
+body {
+	padding-top: 60px;
+	padding-bottom: 60px;
+	font-family: Helvetica, arial, freesans, clean, sans-serif;
+}
+
+.container-narrow {
+	margin: 0 auto;
+	max-width: 780px;
+}
+.container-narrow > hr {
+	margin: 30px 0;
+}
+
+.navbar-inner {
+	background-color: none;
+	background-image: none;
+	background-repeat: no-repeat;
+	filter: none;
+}
+
+.navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+.navbar .brand, .navbar .brand {
+	font-family: 'Patua One', cursive
+}
+
+.navbar .brand:hover, .navbar .brand:focus {
+	color: #4183c4;
+}
+
+.navbar .nav>li>a:focus, .navbar .nav>li>a:hover {
+	color: #4183c4;
+}
+
+.dropdown-menu {
+	border-radius: 0px;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	--moz-box-shadow: none;
+}
+
+.btn {
+	text-shadow: none;
+	background-image: none;
+	border-color: #e6e6e6 #e6e6e6 #e6e6e6;
+
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+input[type="text"], input[type="password"] {
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+
+	-webkit-transition: none;
+	-moz-transition: none;
+	-o-transition: none;
+	transition: none;
+}
