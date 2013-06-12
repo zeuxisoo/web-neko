@@ -77,3 +77,7 @@ input[type="text"], input[type="password"] {
 	-o-transition: none;
 	transition: none;
 }
+
+#footer > hr {
+	margin-top: 0px;
+}
