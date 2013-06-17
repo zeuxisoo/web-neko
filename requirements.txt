@@ -3,5 +3,6 @@ flask-script
 flask-babel
 flask-sqlalchemy
 flask-assets
+flask-wtf
 
 git+https://github.com/tobiasandtobias/flask-alembic.git
