@@ -4,6 +4,7 @@
 <div id="index" class="row">
 	<div class="span6 offset1">
 		<form class="form-horizontal" method="post">
+			{{ form.csrf_token }}
 			<div class="control-group">
 				{{ form.account.label(class="control-label", for="inputAccount") }}
 				<div class="controls">
