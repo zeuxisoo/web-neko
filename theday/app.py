@@ -4,9 +4,10 @@
 import os
 import sys
 
-from flask import Flask
+from flask import Flask, g
 from flask.ext.assets import Environment
 from flask.ext.babel import Babel
+from .helpers import load_current_user
 from .routes import index
 from .models import db
 
@@ -32,6 +33,10 @@ def create_app(config=None):
 	assets.init_app(app)
 
 	babel = Babel(app)
+
+	@app.before_request
+	def current_user():
+		g.user = load_current_user()
 
 	app.register_blueprint(index.blueprint, url_prefix='')
 
