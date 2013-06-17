@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import hashlib
+import random
 from datetime import datetime
 from .base import db, SessionMixin
 
@@ -24,3 +25,19 @@ class User(db.Model, SessionMixin):
 		password = '%s%s%s' % (self.salt, password, db.app.config['PASSWORD_SECRET_KEY'])
 		hashed   = hashlib.sha256(password).hexdigest()
 		return self.password == hashed
+
+	@staticmethod
+	def create_salt(length = 8):
+		chars  = ('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+		string = ''.join([random.choice(chars) for i in xrange(length)])
+		return string
+
+	@staticmethod
+	def create_password(password):
+		salt     = User.create_salt(8)
+		password = '%s%s%s' % (salt, password, db.app.config['PASSWORD_SECRET_KEY'])
+		hashed   = hashlib.sha256(password).hexdigest()
+		return {
+			"salt": salt,
+			"content": hashed
+		}
