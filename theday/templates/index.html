@@ -3,23 +3,23 @@
 {% block container %}
 <div id="index" class="row">
 	<div class="span6 offset1">
-		<form class="form-horizontal">
+		<form class="form-horizontal" method="post">
 			<div class="control-group">
-				<label class="control-label" for="inputEmail">Email</label>
+				{{ form.account.label(class="control-label", for="inputAccount") }}
 				<div class="controls">
-					<input type="text" id="inputEmail" placeholder="Email">
+					{{ form.account(id="inputAccount", placeholder="Account") }}
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="inputPassword">Password</label>
+				{{ form.password.label(class="control-label", for="inputPassword") }}
 				<div class="controls">
-					<input type="password" id="inputPassword" placeholder="Password">
+					{{ form.account(id="inputPassword", placeholder="Password") }}
 				</div>
 			</div>
 			<div class="control-group">
 				<div class="controls">
 					<label class="checkbox">
-					<input type="checkbox"> Remember me
+						{{ form.permanent() }} {{ form.permanent.label }}
 					</label>
 					<button type="submit" class="btn">Sign in</button>
 				</div>

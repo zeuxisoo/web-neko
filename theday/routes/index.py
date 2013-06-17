@@ -2,10 +2,16 @@
 # coding: utf-8
 
 from flask import Blueprint
-from flask import render_template
+from flask import render_template, flash
+from ..forms import SigninForm
 
 blueprint = Blueprint("index", __name__)
 
-@blueprint.route('/')
+@blueprint.route('/', methods=['GET', 'POST'])
 def index():
-	return render_template("index.html")
+	form = SigninForm()
+
+	if form.validate_on_submit():
+		return redirect(url_for('index.home'))
+
+	return render_template("index.html", form=form)
