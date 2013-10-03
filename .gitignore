@@ -5,5 +5,5 @@
 *.db
 .DS_Store
 venv
-theday/statics/.webassets-cache
-theday/statics/assets
+log
+neko/configs/default.py

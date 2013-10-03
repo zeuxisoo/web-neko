@@ -1,0 +1,25 @@
+{% extends 'layouts/frontend.html' %}
+
+{% block container %}
+
+<div class="list-group">
+	{% for article in paginator.items %}
+		<a href="{{ url_for('article.view', article_id=article.id) }}" class="list-group-item">
+			{{ article.title }}
+			<span class="label label-default">{{ article.user.hashed_username }}</span>
+			<span class="badge">{{ article.update_at | timeago }}</span>
+		</a>
+	{% endfor %}
+</div>
+
+<ul class="pager">
+	{% if paginator.has_prev %}
+		<li class="previous"><a href="{{ url_for('article.index', page=paginator.prev_num) }}">Previous</a></li>
+	{% endif %}
+
+	{% if paginator.has_next %}
+		<li class="next"><a href="{{ url_for('article.index', page=paginator.next_num) }}">Next</a></li>
+	{% endif %}
+</ul>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'layouts/frontends/setting.html' %}
+
+{% block container_setting %}
+<form class="form-horizontal" role="form" method="post">
+	{{ form.csrf_token }}
+	<div class="form-group">
+		{{ form.username.label(class="col-lg-2 control-label", for="inputUsername") }}
+		<div class="col-lg-10">
+			{{ form.username(id="inputUsername", placeholder="Username", class="form-control") }}
+		</div>
+	</div>
+	<div class="form-group">
+		{{ form.email.label(class="col-lg-2 control-label", for="inputEmail") }}
+		<div class="col-lg-10">
+			{{ form.email(id="inputEmail", placeholder="Email", class="form-control") }}
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-lg-offset-2 col-lg-10">
+			<button type="submit" class="btn btn-default">Submit</button>
+		</div>
+	</div>
+</form>
+{% endblock %}

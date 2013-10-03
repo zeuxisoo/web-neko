@@ -1,0 +1,66 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:400,400italic|Patua+One);
+
+body {
+	padding-bottom: 50px;
+}
+
+.markdown {
+	line-height: 2;
+	font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+	font-weight: 300;
+	text-align: justify;
+	text-shadow: 0 0 1px transparent;
+	color: #666;
+}
+
+.markdown h3 {
+	line-height: 2;
+	font-family: "Lato", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+	font-weight: normal;
+	font-size: 1.8em;
+	border-bottom: 1px solid #ddd;
+}
+
+.markdown p {
+	margin-top: 10px;
+}
+
+.markdown ul, ol {
+	padding-left: 25px;
+}
+
+.divider-vertical {
+	float: left;
+	width: 1px;
+	height: 50px;
+	margin: 0 15px;
+	background-color: #e5e5e5;
+	border-left-color: #111111;
+	border-right-color: #222222;
+}
+
+.bold-input {
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.no-border {
+	border: none !important;
+	outline: none !important;
+	box-shadow: none !important;
+	padding: 0px;
+}
+
+.bottom-border-only {
+	border: none !important;
+	outline: none !important;
+	box-shadow: none !important;
+	border-bottom: 1px dashed #ccc !important;
+	font-weight: 700;
+	padding: 0px;
+}
+
+.top-padding-20 {
+	padding-top: 20px;
+}

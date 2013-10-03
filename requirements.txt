@@ -1,8 +1,15 @@
-flask
-flask-script
-flask-babel
-flask-sqlalchemy
-flask-assets
-flask-wtf
+Flask
+Flask-script
+Flask-babel
+Flask-sqlalchemy
+Flask-wtf
 
-git+https://github.com/tobiasandtobias/flask-alembic.git
+alembic
+misaka
+gunicorn
+gevent
+
+tweetpony
+
+# Fallback when python is not 2.7
+# pysqlite

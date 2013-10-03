@@ -1,28 +1,36 @@
 #!/usr/bin/env python
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 import os
 from flask.ext.script import Manager
-from flask.ext.assets import ManageAssets
-from flask.ext.alembic import ManageMigrations
-from theday.app import create_app
+from neko.app import create_app
 
-app = create_app(os.path.abspath("./theday/configs/developement.py"))
+root = os.path.abspath(os.path.dirname(__file__))
+app  = create_app(os.path.join(root, "neko/configs/development.py"))
 
 manager = Manager(app)
-manager.add_command("assets", ManageAssets())
-manager.add_command("migrate", ManageMigrations())
 
 @manager.command
 def password(password):
 	"""Generate hashed password and salt for user"""
 
-	from theday.models import User
+	from neko.models import User
 
 	password = User.create_password(password)
 
 	print("Password: {0}".format(password['content']))
 	print("    Salt: {0}".format(password['salt']))
+
+@manager.command
+def cron_twitter():
+	"""Run the cron for sync twitter to talk"""
+
+	from neko.crons import twitter
+
+	twitter = twitter.Twitter()
+	twitter.connect()
+	twitter.user_info()
+	twitter.fetch()
 
 if __name__ == "__main__":
 	manager.run()

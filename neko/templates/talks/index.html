@@ -1,0 +1,34 @@
+{% extends 'layouts/frontends/talk.html' %}
+
+{% block container_talk %}
+<div>
+	{% for talk in paginator.items %}
+		{% if talk.service != "twitter" %}
+			<div class="panel panel-default">
+				<div class="panel-heading clearfix">
+					<h3 class="panel-title pull-left">{{ talk.user.hashed_username }}</h3>
+					<a href="{{ url_for('talk.edit', talk_id=talk.id) }}" class="btn btn-xs btn-default pull-right">
+						<span class="glyphicon glyphicon-pencil"></span>
+					</a>
+				</div>
+				<div class="panel-body">
+					<span class="lead">{{ talk.content | nl2br }}</span>
+					<p class="text-muted">
+						<small>{{ talk.create_at | timeago }}</small>
+					</p>
+				</div>
+			</div>
+			<hr />
+		{% endif %}
+	{% endfor %}
+</div>
+<ul class="pager">
+	{% if paginator.has_prev %}
+		<li class="previous"><a href="{{ url_for('talk.index', page=paginator.prev_num) }}">Previous</a></li>
+	{% endif %}
+
+	{% if paginator.has_next %}
+		<li class="next"><a href="{{ url_for('talk.index', page=paginator.next_num) }}">Next</a></li>
+	{% endif %}
+</ul>
+{% endblock %}

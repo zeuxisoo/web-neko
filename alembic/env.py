@@ -1,13 +1,15 @@
 from __future__ import with_statement
+import os
+import sys
 from alembic import context
-from alembic.config import Config
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
-from flask.ext.alembic import FlaskAlembicConfig
+from alembic.config import Config
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-config = FlaskAlembicConfig("alembic.ini")
+# config = context.config
+config = Config("alembic.ini")
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -15,15 +17,27 @@ fileConfig(config.config_file_name)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from flask import current_app
-with current_app.app_context():
-    # set the database url
-    config.set_main_option('sqlalchemy.url', current_app.config.get('SQLALCHEMY_DATABASE_URI'))
-    flask_app = __import__('%s' % (current_app.name), fromlist=[current_app.name])
+# from myapp import mymodel
+# target_metadata = mymodel.Base.metadata
+# target_metadata = None
+cwd = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(cwd)
 
-db_obj_name = config.get_main_option("flask_sqlalchemy")
-db_obj = getattr(flask_app, db_obj_name)
-target_metadata = db_obj.metadata
+settings = os.path.join(cwd, 'neko/configs/default.py')
+
+if not os.path.exists(settings):
+    settings = os.path.join(cwd, 'etc/development.py')
+
+from neko.app import create_app
+from neko.models import db
+app = create_app()
+
+# set the database url
+config.set_main_option(
+    'sqlalchemy.url',
+    app.config.get('SQLALCHEMY_DATABASE_URI')
+)
+target_metadata = db.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

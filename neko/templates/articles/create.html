@@ -1,0 +1,14 @@
+{% extends 'layouts/frontend.html' %}
+
+{% block container %}
+<form role="form" method="post">
+	{{ form.csrf_token }}
+	<div class="form-group">
+		{{ form.title(class="form-control bottom-border-only", placeholder="Good title for you Article") }}
+	</div>
+	<div class="form-group">
+		{{ form.content(class="form-control autosize no-border form-storage", placeholder="Let\'s start sharing bala bala bele bele ... :P", rows="10", autofocus="autofocus") }}
+	</div>
+	<button type="submit" class="btn btn-default">Submit</button>
+</form>
+{% endblock %}
