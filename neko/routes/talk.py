@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint, request, g
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, flash
 from ..helpers import require_login, force_integer
 from ..forms import CreateTalkForm
 from ..models import Talk
@@ -44,3 +44,13 @@ def edit(talk_id):
 		return redirect(url_for('talk.index', talk_id=talk_id))
 
 	return render_template('talks/create.html', form=form)
+
+@blueprint.route('/delete/<int:talk_id>')
+@require_login
+def delete(talk_id):
+	talk = Talk.query.get_or_404(talk_id)
+	talk.delete()
+
+	flash('Deleted talk', 'success')
+
+	return redirect(url_for('talk.index'))

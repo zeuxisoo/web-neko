@@ -7,6 +7,9 @@
 			<div class="panel panel-default">
 				<div class="panel-heading clearfix">
 					<h3 class="panel-title pull-left">{{ talk.user.hashed_username }}</h3>
+					<a href="{{ url_for('talk.delete', talk_id=talk.id) }}" class="btn btn-xs btn-default pull-right" data-confirm="true">
+						<span class="glyphicon glyphicon-trash"></span>
+					</a>
 					<a href="{{ url_for('talk.edit', talk_id=talk.id) }}" class="btn btn-xs btn-default pull-right">
 						<span class="glyphicon glyphicon-pencil"></span>
 					</a>
