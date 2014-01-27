@@ -29,19 +29,27 @@ def create_app(config=None):
     elif config:
         app.config.from_pyfile(config)
 
-    db.init_app(app)
-    db.app = app
+    register_database(app)
+    register_babel(app)
 
-    babel = Babel(app)
-
-    @app.before_request
-    def current_user():
-        g.user = load_current_user()
+    register_hook(app)
 
     register_template_filter(app)
     register_blueprint(app)
 
     return app
+
+def register_database(app):
+    db.init_app(app)
+    db.app = app
+
+def register_babel(app):
+    babel = Babel(app)
+
+def register_hook(app):
+    @app.before_request
+    def current_user():
+        g.user = load_current_user()
 
 def register_template_filter(app):
     @app.template_filter('timeago')
