@@ -11,7 +11,7 @@ help:
 	@echo "clean-pyc"
 
 install:
-	virtualenv --no-site-package venv
+	virtualenv-2.7 --no-site-package venv
 	. venv/bin/activate && pip install -r requirements.txt
 
 server:
