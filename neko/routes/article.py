@@ -12,56 +12,56 @@ blueprint = Blueprint("article", __name__)
 @blueprint.route('/index')
 @require_login
 def index():
-	page = force_integer(request.args.get('page', 1), 0)
+    page = force_integer(request.args.get('page', 1), 0)
 
-	if not page:
-		return abort(404)
-	else:
-		paginator = Article.query.order_by(Article.update_at.desc()).paginate(page)
+    if not page:
+        return abort(404)
+    else:
+        paginator = Article.query.order_by(Article.update_at.desc()).paginate(page)
 
-		return render_template("articles/index.html", paginator=paginator)
+        return render_template("articles/index.html", paginator=paginator)
 
 @blueprint.route('/create', methods=['GET', 'POST'])
 @require_login
 def create():
-	form = CreateArticleForm()
+    form = CreateArticleForm()
 
-	if form.validate_on_submit():
-		article = form.save(g.user)
-		return redirect(url_for("article.view", article_id=article.id))
+    if form.validate_on_submit():
+        article = form.save(g.user)
+        return redirect(url_for("article.view", article_id=article.id))
 
-	return render_template("articles/create.html", form=form)
+    return render_template("articles/create.html", form=form)
 
 @blueprint.route('/view/<int:article_id>')
 @require_login
 def view(article_id):
-	article = Article.query.get_or_404(article_id)
+    article = Article.query.get_or_404(article_id)
 
-	markdown = Markdown(HtmlRenderer())
-	article.content = markdown.render(article.content)
+    markdown = Markdown(HtmlRenderer())
+    article.content = markdown.render(article.content)
 
-	return render_template("articles/view.html", article=article)
+    return render_template("articles/view.html", article=article)
 
 @blueprint.route('/delete/<int:article_id>')
 @require_login
 def delete(article_id):
-	article = Article.query.get_or_404(article_id)
-	article.delete()
+    article = Article.query.get_or_404(article_id)
+    article.delete()
 
-	flash(u'Deleted article: {0}'.format(article.title), 'success')
+    flash(u'Deleted article: {0}'.format(article.title), 'success')
 
-	return redirect(url_for('article.index'))
+    return redirect(url_for('article.index'))
 
 @blueprint.route('/edit/<int:article_id>', methods=['GET', 'POST'])
 @require_login
 def edit(article_id):
-	article = Article.query.get_or_404(article_id)
-	form    = CreateArticleForm(obj=article)
+    article = Article.query.get_or_404(article_id)
+    form    = CreateArticleForm(obj=article)
 
-	if form.validate_on_submit():
-		form.populate_obj(article)
-		article.save()
+    if form.validate_on_submit():
+        form.populate_obj(article)
+        article.save()
 
-		return redirect(url_for('article.view', article_id=article_id))
+        return redirect(url_for('article.view', article_id=article_id))
 
-	return render_template('articles/create.html', form=form)
+    return render_template('articles/create.html', form=form)

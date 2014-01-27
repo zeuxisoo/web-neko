@@ -2,10 +2,10 @@
 
 {% block container_talk %}
 <form role="form" method="post">
-	{{ form.csrf_token }}
-	<div class="form-group">
-		{{ form.content(class="form-control autosize no-border form-storage", placeholder="Please Please let me know what do you think ... :-)", rows="3", autofocus=autofocus) }}
-	</div>
-	<button type="submit" class="btn btn-default">Submit</button>
+    {{ form.csrf_token }}
+    <div class="form-group">
+        {{ form.content(class="form-control autosize no-border form-storage", placeholder="Please Please let me know what do you think ... :-)", rows="3", autofocus=autofocus) }}
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
 </form>
 {% endblock %}

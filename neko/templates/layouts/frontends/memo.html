@@ -2,15 +2,15 @@
 
 {% block container %}
 <div class="btn-group btn-group-justified">
-	<a class="btn btn-default" href="{{ url_for('memo.index') }}">
-		<span class="glyphicon glyphicon-th-large"></span>&nbsp;Show all Objects
-	</a>
-  	<a class="btn btn-default" href="{{ url_for('memo.create') }}">
-  		<span class="glyphicon glyphicon-plus"></span>&nbsp;Create a New
-  	</a>
+    <a class="btn btn-default" href="{{ url_for('memo.index') }}">
+        <span class="glyphicon glyphicon-th-large"></span>&nbsp;Show all Objects
+    </a>
+    <a class="btn btn-default" href="{{ url_for('memo.create') }}">
+        <span class="glyphicon glyphicon-plus"></span>&nbsp;Create a New
+    </a>
 </div>
 <div class="top-padding-20">
-	{% block container_memo %}
-	{% endblock %}
+    {% block container_memo %}
+    {% endblock %}
 </div>
 {% endblock %}

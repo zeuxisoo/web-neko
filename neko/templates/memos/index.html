@@ -2,23 +2,23 @@
 
 {% block container_memo %}
 <div class="list-group">
-	{% for memo in paginator.items %}
-		<a href="{{ url_for('memo.view', memo_id=memo.id) }}" class="list-group-item">
-			<h4 class="list-group-item-heading">{{ memo.user.hashed_username }}</h4>
-			<blockquote class="list-group-item-text">
-				<p>{{ memo.content | nl2br }}</p>
-				<small>{{ memo.update_at | timeago }}</small>
-			</blockquote>
-		</a>
-	{% endfor %}
+    {% for memo in paginator.items %}
+        <a href="{{ url_for('memo.view', memo_id=memo.id) }}" class="list-group-item">
+            <h4 class="list-group-item-heading">{{ memo.user.hashed_username }}</h4>
+            <blockquote class="list-group-item-text">
+                <p>{{ memo.content | nl2br }}</p>
+                <small>{{ memo.update_at | timeago }}</small>
+            </blockquote>
+        </a>
+    {% endfor %}
 </div>
 <ul class="pager">
-	{% if paginator.has_prev %}
-		<li class="previous"><a href="{{ url_for('memo.index', page=paginator.prev_num) }}">Previous</a></li>
-	{% endif %}
+    {% if paginator.has_prev %}
+        <li class="previous"><a href="{{ url_for('memo.index', page=paginator.prev_num) }}">Previous</a></li>
+    {% endif %}
 
-	{% if paginator.has_next %}
-		<li class="next"><a href="{{ url_for('memo.index', page=paginator.next_num) }}">Next</a></li>
-	{% endif %}
+    {% if paginator.has_next %}
+        <li class="next"><a href="{{ url_for('memo.index', page=paginator.next_num) }}">Next</a></li>
+    {% endif %}
 </ul>
 {% endblock %}

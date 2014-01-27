@@ -2,12 +2,12 @@
 
 {% block container %}
 <ul class="nav nav-pills nav-justified">
-	<li><a href="{{ url_for('setting.profile') }}">Update Profile</a></li>
-	<li><a href="{{ url_for('setting.password') }}">Change Password</a></li>
+    <li><a href="{{ url_for('setting.profile') }}">Update Profile</a></li>
+    <li><a href="{{ url_for('setting.password') }}">Change Password</a></li>
 </ul>
 <hr />
 <div class="top-padding-20">
-	{% block container_setting %}
-	{% endblock %}
+    {% block container_setting %}
+    {% endblock %}
 </div>
 {% endblock %}

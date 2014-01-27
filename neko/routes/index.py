@@ -9,18 +9,18 @@ blueprint = Blueprint("index", __name__)
 
 @blueprint.route('/', methods=['GET', 'POST'])
 def index():
-	if g.user:
-		return redirect(url_for('article.index'))
+    if g.user:
+        return redirect(url_for('article.index'))
 
-	form = SigninForm()
+    form = SigninForm()
 
-	if form.validate_on_submit():
-		login_user(form.user, form.permanent.data)
-		return redirect(url_for('article.index'))
+    if form.validate_on_submit():
+        login_user(form.user, form.permanent.data)
+        return redirect(url_for('article.index'))
 
-	return render_template("index.html", form=form)
+    return render_template("index.html", form=form)
 
 @blueprint.route('/signout')
 def signout():
-	logout_user()
-	return redirect(url_for('index.index'))
+    logout_user()
+    return redirect(url_for('index.index'))

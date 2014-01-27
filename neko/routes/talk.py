@@ -11,46 +11,46 @@ blueprint = Blueprint("talk", __name__)
 @blueprint.route('/index')
 @require_login
 def index():
-	page = force_integer(request.args.get('page', 1), 0)
+    page = force_integer(request.args.get('page', 1), 0)
 
-	if not page:
-		return abort(404)
-	else:
-		paginator = Talk.query.filter_by(service="system").order_by(Talk.update_at.desc()).paginate(page)
+    if not page:
+        return abort(404)
+    else:
+        paginator = Talk.query.filter_by(service="system").order_by(Talk.update_at.desc()).paginate(page)
 
-		return render_template("talks/index.html", paginator=paginator)
+        return render_template("talks/index.html", paginator=paginator)
 
 @blueprint.route('/create', methods=['GET', 'POST'])
 @require_login
 def create():
-	form = CreateTalkForm()
+    form = CreateTalkForm()
 
-	if form.validate_on_submit():
-		talk = form.save(g.user)
-		return redirect(url_for('talk.index'))
+    if form.validate_on_submit():
+        talk = form.save(g.user)
+        return redirect(url_for('talk.index'))
 
-	return render_template("talks/create.html", form=form)
+    return render_template("talks/create.html", form=form)
 
 @blueprint.route('/edit/<int:talk_id>', methods=['GET', 'POST'])
 @require_login
 def edit(talk_id):
-	talk = Talk.query.get_or_404(talk_id)
-	form = CreateTalkForm(obj=talk)
+    talk = Talk.query.get_or_404(talk_id)
+    form = CreateTalkForm(obj=talk)
 
-	if form.validate_on_submit():
-		form.populate_obj(talk)
-		talk.save()
+    if form.validate_on_submit():
+        form.populate_obj(talk)
+        talk.save()
 
-		return redirect(url_for('talk.index', talk_id=talk_id))
+        return redirect(url_for('talk.index', talk_id=talk_id))
 
-	return render_template('talks/create.html', form=form)
+    return render_template('talks/create.html', form=form)
 
 @blueprint.route('/delete/<int:talk_id>')
 @require_login
 def delete(talk_id):
-	talk = Talk.query.get_or_404(talk_id)
-	talk.delete()
+    talk = Talk.query.get_or_404(talk_id)
+    talk.delete()
 
-	flash('Deleted talk', 'success')
+    flash('Deleted talk', 'success')
 
-	return redirect(url_for('talk.index'))
+    return redirect(url_for('talk.index'))

@@ -2,20 +2,20 @@
 
 {% block container %}
 <form role="form" method="post">
-	{{ form.csrf_token }}
-	<div class="form-group">
-		{{ form.account.label(class="control-label", for="inputAccount") }}
-		{{ form.account(id="inputAccount", placeholder="Account", class="form-control") }}
-	</div>
-	<div class="form-group">
-		{{ form.password.label(class="control-label", for="inputPassword") }}
-		{{ form.password(id="inputPassword", placeholder="Password", class="form-control") }}
-	</div>
-	<div class="checkbox">
-		<label>
-			{{ form.permanent() }} {{ form.permanent.label }}
-		</label>
-	</div>
-	<button type="submit" class="btn btn-default">Sign in</button>
+    {{ form.csrf_token }}
+    <div class="form-group">
+        {{ form.account.label(class="control-label", for="inputAccount") }}
+        {{ form.account(id="inputAccount", placeholder="Account", class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.password.label(class="control-label", for="inputPassword") }}
+        {{ form.password(id="inputPassword", placeholder="Password", class="form-control") }}
+    </div>
+    <div class="checkbox">
+        <label>
+            {{ form.permanent() }} {{ form.permanent.label }}
+        </label>
+    </div>
+    <button type="submit" class="btn btn-default">Sign in</button>
 </form>
 {% endblock %}

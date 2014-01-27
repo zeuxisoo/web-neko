@@ -16,70 +16,70 @@
 </head>
 <body>
 <div class="navbar navbar-default" role="navigation">
-	<div class="container">
-		<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/">Neko</a>
-				<div class="divider-vertical"></div>
-			</div>
-			<div class="collapse navbar-collapse navbar-ex1-collapse">
-				<ul class="nav navbar-nav">
-					<li><a href="{{ url_for('article.index') }}">Articles</a></li>
-					<li><a href="{{ url_for('memo.index') }}">Memos</a></li>
-					<li><a href="{{ url_for('talk.index') }}">Talks</a></li>
-					<li><a href="{{ url_for('setting.profile') }}">Settings</a></li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					{% if g.user %}
-						<li>
-							<a href="{{ url_for('article.create') }}">
-								<span class="glyphicon glyphicon-plus"></span>&nbsp;Create Article
-							</a>
-						</li>
-						<li>
-							<a href="{{ url_for('index.signout') }}">
-								<span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign out
-							</a>
-						</li>
-					{% endif %}
-				</ul>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Neko</a>
+                <div class="divider-vertical"></div>
+            </div>
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('article.index') }}">Articles</a></li>
+                    <li><a href="{{ url_for('memo.index') }}">Memos</a></li>
+                    <li><a href="{{ url_for('talk.index') }}">Talks</a></li>
+                    <li><a href="{{ url_for('setting.profile') }}">Settings</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if g.user %}
+                        <li>
+                            <a href="{{ url_for('article.create') }}">
+                                <span class="glyphicon glyphicon-plus"></span>&nbsp;Create Article
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('index.signout') }}">
+                                <span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign out
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="container">
-	{% if form and form.errors %}
-		{% for field_name, field_errors in form.errors | dictsort if field_errors %}
-			{% if loop.index <= 1 %}
-				{% for error in field_errors %}
-					{% if loop.index <= 1 %}
-						<div class="alert alert-danger">
-							<strong>Error!</strong> {{ error }}
-						</div>
-					{% endif %}
-				{% endfor %}
-			{% endif %}
-		{% endfor %}
-	{% endif %}
+    {% if form and form.errors %}
+        {% for field_name, field_errors in form.errors | dictsort if field_errors %}
+            {% if loop.index <= 1 %}
+                {% for error in field_errors %}
+                    {% if loop.index <= 1 %}
+                        <div class="alert alert-danger">
+                            <strong>Error!</strong> {{ error }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
-	{% with messages = get_flashed_messages(with_categories = true) %}
-		{% if messages %}
-			{% for category, message in messages %}
-				<div class="alert alert-{{ category }}">
-					<strong>{{ category | capitalize }}!</strong> {{ message }}
-				</div>
-			{% endfor %}
-		{% endif %}
-	{% endwith %}
+    {% with messages = get_flashed_messages(with_categories = true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <strong>{{ category | capitalize }}!</strong> {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-	{% block container %}
-	{% endblock %}
+    {% block container %}
+    {% endblock %}
 </div>
 </body>
 </html>

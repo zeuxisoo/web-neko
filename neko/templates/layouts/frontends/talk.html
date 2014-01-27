@@ -2,11 +2,11 @@
 
 {% block container %}
 <ul class="nav nav-tabs">
-	<li><a href="{{ url_for('talk.index') }}">All</a></li>
-	<li><a href="{{ url_for('talk.create') }}">Create</a></li>
+    <li><a href="{{ url_for('talk.index') }}">All</a></li>
+    <li><a href="{{ url_for('talk.create') }}">Create</a></li>
 </ul>
 <div class="top-padding-20">
-	{% block container_talk %}
-	{% endblock %}
+    {% block container_talk %}
+    {% endblock %}
 </div>
 {% endblock %}

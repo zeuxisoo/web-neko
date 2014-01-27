@@ -2,10 +2,10 @@
 
 {% block container_memo %}
 <form role="form" method="post">
-	{{ form.csrf_token }}
-	<div class="form-group">
-		{{ form.content(class="form-control autosize no-border form-storage", placeholder="I would like to know what is your memo :D", rows="5", autofocus=autofocus) }}
-	</div>
-	<button type="submit" class="btn btn-default">Submit</button>
+    {{ form.csrf_token }}
+    <div class="form-group">
+        {{ form.content(class="form-control autosize no-border form-storage", placeholder="I would like to know what is your memo :D", rows="5", autofocus=autofocus) }}
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
 </form>
 {% endblock %}

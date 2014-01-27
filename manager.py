@@ -12,25 +12,25 @@ manager = Manager(app)
 
 @manager.command
 def password(password):
-	"""Generate hashed password and salt for user"""
+    """Generate hashed password and salt for user"""
 
-	from neko.models import User
+    from neko.models import User
 
-	password = User.create_password(password)
+    password = User.create_password(password)
 
-	print("Password: {0}".format(password['content']))
-	print("    Salt: {0}".format(password['salt']))
+    print("Password: {0}".format(password['content']))
+    print("    Salt: {0}".format(password['salt']))
 
 @manager.command
 def cron_twitter():
-	"""Run the cron for sync twitter to talk"""
+    """Run the cron for sync twitter to talk"""
 
-	from neko.crons import twitter
+    from neko.crons import twitter
 
-	twitter = twitter.Twitter()
-	twitter.connect()
-	twitter.user_info()
-	twitter.fetch()
+    twitter = twitter.Twitter()
+    twitter.connect()
+    twitter.user_info()
+    twitter.fetch()
 
 if __name__ == "__main__":
-	manager.run()
+    manager.run()
