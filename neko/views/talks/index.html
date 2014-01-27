@@ -1,27 +1,33 @@
 {% extends 'layouts/frontends/talk.html' %}
 
 {% block container_talk %}
-<div>
+<div class="row">
     {% for talk in paginator.items %}
         {% if talk.service != "twitter" %}
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <h3 class="panel-title pull-left">{{ talk.user.hashed_username }}</h3>
-                    <a href="{{ url_for('talk.delete', talk_id=talk.id) }}" class="btn btn-xs btn-default pull-right" data-confirm="true">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </a>
-                    <a href="{{ url_for('talk.edit', talk_id=talk.id) }}" class="btn btn-xs btn-default pull-right">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </a>
-                </div>
-                <div class="panel-body">
-                    <span class="lead">{{ talk.content | nl2br }}</span>
-                    <p class="text-muted">
-                        <small>{{ talk.create_at | timeago }}</small>
-                    </p>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {{ talk.user.hashed_username }}
+                    </div>
+                    <div class="panel-body">
+                        <span class="lead">{{ talk.content | nl2br }}</span>
+                        <p>
+                            <div class="text-muted pull-left">
+                                <small>{{ talk.create_at | timeago }}</small>
+                            </div>
+
+                            <div class="pull-right">
+                                <a href="{{ url_for('talk.delete', talk_id=talk.id) }}" class="btn btn-xs btn-default pull-right" data-confirm="true">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                                <a href="{{ url_for('talk.edit', talk_id=talk.id) }}" class="btn btn-xs btn-default pull-right">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                            </div>
+                        </p>
+                    </div>
                 </div>
             </div>
-            <hr />
         {% endif %}
     {% endfor %}
 </div>
