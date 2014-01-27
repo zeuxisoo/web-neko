@@ -19,7 +19,7 @@ APP_CONFIG_ROOT = os.path.join(APP_ROOT, 'configs')
 APP_STATIC_ROOT = os.path.join(APP_ROOT, 'statics')
 
 def create_app(config=None):
-    app = Flask(__name__, static_url_path='/static', template_folder='templates')
+    app = Flask(__name__, static_url_path='/static', template_folder='views')
     app.static_folder = os.path.abspath('static')
     app.jinja_env.trim_blocks = True
 
