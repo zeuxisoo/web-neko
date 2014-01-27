@@ -88,6 +88,11 @@ def register_template_filter(app):
             result = Markup(result)
         return result
 
+    @app.template_filter()
+    def talk_card_heading(value, talk_create_at):
+        import hashlib
+        return hashlib.sha256(value + str(talk_create_at)).hexdigest().lower()[:10]
+
 def register_blueprint(app):
     app.register_blueprint(index.blueprint, url_prefix='')
     app.register_blueprint(article.blueprint, url_prefix='/article')
