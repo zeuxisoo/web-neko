@@ -3,7 +3,7 @@
 {% block container_memo %}
 <div class="row">
     <div class="col-lg-10">
-        <h3>{{ memo.user.hashed_username }}</h3>
+        <h3>{{ memo.user.hashed_username | memo_card_heading(memo.create_at) }}</h3>
     </div>
     <div class="col-lg-2">
         <div class="btn-group btn-group-sm pull-right">

@@ -5,6 +5,7 @@ import os
 import sys
 import datetime
 import re
+import hashlib
 
 from flask import Flask, g
 from flask.ext.babel import Babel
@@ -90,8 +91,11 @@ def register_template_filter(app):
 
     @app.template_filter()
     def talk_card_heading(value, talk_create_at):
-        import hashlib
         return hashlib.sha256(value + str(talk_create_at)).hexdigest().lower()[:10]
+
+    @app.template_filter()
+    def memo_card_heading(value, memo_create_at):
+        return hashlib.sha224(value + str(memo_create_at)).hexdigest().lower()[:10]
 
 def register_blueprint(app):
     app.register_blueprint(index.blueprint, url_prefix='')
