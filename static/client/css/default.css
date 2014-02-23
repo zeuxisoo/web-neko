@@ -34,7 +34,7 @@ body {
 	width: 1px;
 	height: 50px;
 	margin: 0 15px;
-	background-color: #e5e5e5;
+	background-color: #5A7CA0;
 	border-left-color: #111111;
 	border-right-color: #222222;
 }
@@ -63,4 +63,52 @@ body {
 
 .top-padding-20 {
 	padding-top: 20px;
+}
+
+/* Color */
+.navbar-blue {
+	background: #2d3e50;
+}
+
+.navbar-blue .navbar-brand {
+	color: #FFF;
+	font-weight: 400;
+	font-size: 120%;
+}
+
+.navbar-blue .navbar-brand:hover {
+	color: #FFF;
+}
+
+.navbar-blue .navbar-nav li a {
+	color: #6FBEF3;
+}
+
+.navbar-blue .navbar-nav li a:hover {
+	color: #AECFE5;
+}
+
+.btn-darkblue {
+	color: #FFF;
+	background-color: #6989AB;
+	border-color: #46B8DA;
+}
+
+.btn-darkblue:hover {
+	color: #FFF;
+	background-color: #4D6A89;
+	border-color: #46B8DA;
+}
+
+.list-group-item-background {
+	background: #F5F5F5;
+}
+
+.list-group-item-background:hover {
+	background: #FFFFFF;
+}
+
+.panel-default > .panel-heading {
+	background: #6989AB;
+	color: #FFF;
 }

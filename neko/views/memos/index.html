@@ -3,7 +3,7 @@
 {% block container_memo %}
 <div class="list-group">
     {% for memo in paginator.items %}
-        <a href="{{ url_for('memo.view', memo_id=memo.id) }}" class="list-group-item">
+        <a href="{{ url_for('memo.view', memo_id=memo.id) }}" class="list-group-item list-group-item-background">
             <h4 class="list-group-item-heading">{{ memo.user.hashed_username | memo_card_heading(memo.create_at) }}</h4>
             <blockquote class="list-group-item-text">
                 <p>{{ memo.content | nl2br }}</p>
