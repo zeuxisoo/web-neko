@@ -2,7 +2,7 @@
 
 from flask import Blueprint, request, g
 from flask import render_template, redirect, url_for, flash
-from misaka import Markdown, HtmlRenderer
+from mistune import Markdown
 from ..helpers import login_user, require_login, force_integer
 from ..forms import CreateArticleForm
 from ..models import Article
@@ -37,7 +37,7 @@ def create():
 def view(article_id):
     article = Article.query.get_or_404(article_id)
 
-    markdown = Markdown(HtmlRenderer())
+    markdown = Markdown(escape=True)
     article.content = markdown.render(article.content)
 
     return render_template("articles/view.html", article=article)

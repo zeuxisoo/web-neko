@@ -5,7 +5,7 @@ Flask-sqlalchemy
 Flask-wtf
 
 alembic
-misaka
+mistune
 gunicorn
 gevent
 
