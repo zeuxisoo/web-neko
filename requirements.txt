@@ -3,6 +3,7 @@ Flask-script
 Flask-babel
 Flask-sqlalchemy
 Flask-wtf
+Flask-bcrypt
 
 alembic
 mistune

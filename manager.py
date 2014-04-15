@@ -12,14 +12,13 @@ manager = Manager(app)
 
 @manager.command
 def password(password):
-    """Generate hashed password and salt for user"""
+    """Generate hashed password for user"""
 
     from neko.models import User
 
     password = User.create_password(password)
 
-    print("Password: {0}".format(password['content']))
-    print("    Salt: {0}".format(password['salt']))
+    print("Password: {0}".format(password))
 
 @manager.command
 def cron_twitter():

@@ -18,7 +18,6 @@ def login_user(user, permanent=False):
         return None
     else:
         session['id'] = user.id
-        session['token'] = user.salt
 
         if permanent:
             session.permanent = True
@@ -29,7 +28,7 @@ def load_current_user():
     if 'id' in session:
         user = User.query.get(int(session['id']))
 
-        if not user or user.salt != session['token']:
+        if not user:
             return None
         else:
             return user
@@ -41,7 +40,6 @@ def logout_user():
         return
 
     session.pop('id')
-    session.pop('token')
 
 def force_integer(value, default=1):
     try:
