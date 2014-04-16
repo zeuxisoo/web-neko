@@ -5,7 +5,7 @@
     {{ form.csrf_token }}
     <div class="form-group">
         {{ form.account.label(class="control-label", for="inputAccount") }}
-        {{ form.account(id="inputAccount", placeholder="Account", class="form-control") }}
+        {{ form.account(id="inputAccount", placeholder="Account", class="form-control", autocorrect="off", autocapitalize="off") }}
     </div>
     <div class="form-group">
         {{ form.password.label(class="control-label", for="inputPassword") }}
