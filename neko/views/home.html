@@ -1,0 +1,19 @@
+{% extends 'layouts/frontend.html' %}
+
+{% block container %}
+<div id="index">
+    <div class="jumbotron">
+        <h1>Welcome Back, {{ g.user | capitalize }}</h1>
+        <p class="text-info">
+            Application status:
+            <strong>{{ counter['user'] }}</strong> users,
+            <strong>{{ counter['article'] }}</strong> articles,
+            <strong>{{ counter['memo'] }}</strong> memos and
+            <strong>{{ counter['talk'] }}</strong> talks.
+        </p>
+        <p>
+            <small class="text-muted">The time is <em>{{ time }}</em></small>
+        </p>
+    </div>
+</div>
+{% endblock %}
