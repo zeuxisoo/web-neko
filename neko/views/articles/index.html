@@ -9,6 +9,8 @@
             <span class="label label-default">{{ article.user.hashed_username }}</span>
             <span class="badge">{{ article.update_at | timeago }}</span>
         </a>
+    {% else %}
+        <div class="alert alert-info">No articles yet. Do you want to create it ?</div>
     {% endfor %}
 </div>
 
