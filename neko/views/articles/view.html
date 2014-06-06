@@ -2,20 +2,23 @@
 
 {% block container %}
 <div class="row">
-    <div class="col-lg-10">
+    <div class="col-lg-9">
         <h1>{{ article.title }}</h1>
     </div>
-    <div class="col-lg-2">
-        <div class="btn-group btn-group-sm pull-right">
-            <a class="btn btn-default" href="{{ url_for('article.delete', article_id=article.id) }}" data-confirm="true">
-                <span class="glyphicon glyphicon-trash"></span>
-            </a>
-            <a class="btn btn-default" href="{{ url_for('article.edit', article_id=article.id) }}">
-                <span class="glyphicon glyphicon-pencil"></span>
-            </a>
-            <a class="btn btn-default" href="{{ url_for('article.index') }}">
-                <span class="glyphicon glyphicon-list"></span>
-            </a>
+    <div class="col-lg-3">
+        <div class="pull-right">
+            <div class="btn btn-sm btn-info">{{ article.create_at | timeago }}</div>
+            <div class="btn-group btn-group-sm">
+                <a class="btn btn-default" href="{{ url_for('article.delete', article_id=article.id) }}" data-confirm="true">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+                <a class="btn btn-default" href="{{ url_for('article.edit', article_id=article.id) }}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <a class="btn btn-default" href="{{ url_for('article.index') }}">
+                    <span class="glyphicon glyphicon-list"></span>
+                </a>
+            </div>
         </div>
     </div>
 </div>
