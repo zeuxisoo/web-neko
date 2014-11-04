@@ -1,9 +1,10 @@
 .DS_Store
 .*~
 *.pyc
-*.sqlite
 *.db
 .DS_Store
+
 venv
 log
 neko/configs/default.py
+data/default.sqlite
