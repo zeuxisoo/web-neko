@@ -12,7 +12,7 @@ from flask.ext.babel import Babel
 from flask.ext.babel import format_datetime
 from jinja2 import evalcontextfilter, Markup, escape
 from .helpers import load_current_user
-from .routes import index, article, memo, talk, setting
+from .routes import index, article, memo, talk, setting, api
 from .models import db
 
 APP_ROOT        = os.path.abspath(os.path.dirname(__file__))
@@ -103,3 +103,5 @@ def register_blueprint(app):
     app.register_blueprint(memo.blueprint, url_prefix='/memo')
     app.register_blueprint(talk.blueprint, url_prefix='/talk')
     app.register_blueprint(setting.blueprint, url_prefix='/setting')
+
+    app.register_blueprint(api.article.blueprint, url_prefix='/api/article')

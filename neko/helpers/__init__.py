@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import functools
-from flask import g, session
+from flask import g, session, jsonify
 from flask import url_for, redirect
 from ..models import User
 
@@ -46,3 +46,19 @@ def force_integer(value, default=1):
         return int(value)
     except:
         return default
+
+def json_error(status, message):
+    message = {
+        'status' : status,
+        'message': message,
+    }
+
+    response = jsonify(error=message)
+    response.status_code = status
+
+    return response
+
+def json_form_errors(form):
+    for field_name, field_errors in sorted(form.errors.iteritems(), reverse=True):
+        for error in field_errors:
+            return json_error(400, error)

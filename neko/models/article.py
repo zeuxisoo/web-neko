@@ -35,3 +35,17 @@ class Article(db.Model, SessionMixin):
         db.session.commit()
 
         return self
+
+    def to_json(self):
+        user = self.user.to_json()
+
+        item = {
+            'username' : user['hashed_username'],
+
+            'user_id'  : self.user_id,
+            'title'    : self.title,
+            'content'  : self.content,
+            'create_at': self.create_at,
+            'update_at': self.update_at,
+        }
+        return item

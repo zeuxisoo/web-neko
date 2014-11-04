@@ -40,3 +40,15 @@ class User(db.Model, SessionMixin):
         self.password = self.create_password(raw)
 
         return self
+
+    def to_json(self):
+        item = {
+            'id'              : self.id,
+            'username'        : self.username,
+            'email'           : self.email,
+            'password'        : self.password,
+            'hashed_username' : self.hashed_username,
+            'create_at'       : self.create_at,
+            'update_at'       : self.update_at,
+        }
+        return item
