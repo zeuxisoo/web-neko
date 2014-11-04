@@ -23,6 +23,7 @@ def index():
     return render_template("index.html", form=form)
 
 @blueprint.route('/home')
+@require_login
 def home():
     counter = {
         'user': User.query.count(),
