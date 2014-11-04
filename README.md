@@ -1,9 +1,9 @@
-## Installation
+## Prepare
 
 	chmod 777 log
 	chmod 666 log/*
 
-### Install App
+## Install
 
 SQLite
 
@@ -18,20 +18,20 @@ Libevent for Gevent
     cd /usr/ports/devel/libevent
     make install clean
     cd -
-    
+
 Virtualenv
 
     easy_install -U virtualenv
     virtualenv --no-site-package --python=/usr/local/bin/python2.7 venv
     source venv/bin/activate.csh
-   
+
 For pysqlite, gevent
 
     setenv CFLAGS "-I /usr/local/include"
     setenv LDFLAGS "-L /usr/local/lib/"
-   
+
 Dependency
-            
+
     pip install -r requirements.txt
 
 Clean up
@@ -39,15 +39,16 @@ Clean up
     unsetenv CFLAGS
     unsetenv LDFLAGS
 
-### Test app
+## Start web server
 
     gunicorn wsgi:app -c neko/configs/gunicorn.py
 
-### Install cron
+## Add cron job
 
-	/home/user/app/venv/bin/python /home/user/app/manager.py cron_twitter >> /home/user/app/log/cron.twitter.txt
+    crontab -e
 
-### Test cron
+	/path/to/app/venv/bin/python /path/to/app/manager.py cron_twitter >> /path/to/app/log/cron.twitter.txt
 
-	cd /
-	/home/user/app/venv/bin/python /home/user/app/manager.py
+## Test cron job
+
+	/path/to/app/venv/bin/python /path/to/app/manager.py cron_twitter
