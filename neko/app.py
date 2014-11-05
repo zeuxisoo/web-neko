@@ -6,8 +6,9 @@ import sys
 import datetime
 import re
 import hashlib
+from urlparse import urlparse
 
-from flask import Flask, g
+from flask import Flask, g, jsonify, request, redirect, url_for
 from flask.ext.babel import Babel
 from flask.ext.babel import format_datetime
 from jinja2 import evalcontextfilter, Markup, escape
@@ -52,6 +53,15 @@ def register_hook(app):
     @app.before_request
     def current_user():
         g.user = load_current_user()
+
+    @app.errorhandler(404)
+    def handle_404(error):
+        if urlparse(request.url).path.startswith('/api/') is True:
+            response = jsonify({'code': 404,'message': 'Not found: {0}'.format(request.url)})
+            response.status_code = 404
+            return response
+        else:
+            return redirect(url_for('index.index'))
 
 def register_template_filter(app):
     @app.template_filter('timeago')
