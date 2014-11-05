@@ -46,7 +46,6 @@ class User(db.Model, SessionMixin):
             'id'              : self.id,
             'username'        : self.username,
             'email'           : self.email,
-            'password'        : self.password,
             'hashed_username' : self.hashed_username,
             'create_at'       : self.create_at,
             'update_at'       : self.update_at,
