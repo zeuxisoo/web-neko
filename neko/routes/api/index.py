@@ -8,10 +8,6 @@ from ...forms import SigninForm
 
 blueprint = Blueprint("api_index", __name__)
 
-@blueprint.errorhandler(404)
-def handle_404(error=None):
-    return json_error(404, 'Not Found: ' + request.url)
-
 @blueprint.route('/signin', methods=['POST'])
 def signin():
     form = SigninForm(csrf_enabled=False)
