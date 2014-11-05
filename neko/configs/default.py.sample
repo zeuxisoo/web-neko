@@ -9,3 +9,6 @@ PASSWORD_SECRET_KEY     = "Your_Password_Secret_Key"
 
 BABEL_DEFAULT_LOCALE    = "en"
 BABEL_DEFAULT_TIMEZONE  = "Asia/Hong_Kong"
+
+JSON_AS_ASCII           = False
+SESSION_COOKIE_NAME     = "neko_session"
