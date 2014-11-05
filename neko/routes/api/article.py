@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, request, jsonify, url_for
-from ...helpers import force_integer, json_error, json_form_errors
+from flask import request, jsonify, url_for, g
+from ...helpers import force_integer
+from ...helpers.json import json_error, json_form_errors, json_require_login
+from ...helpers.blueprint import Blueprint
 from ...models import Article
 from ...forms import CreateArticleForm
 
 blueprint = Blueprint("api_article", __name__)
 
-@blueprint.errorhandler(404)
-def handle_404(error=None):
-    return json_error(404, 'Not Found: ' + request.url)
-
 @blueprint.route('/')
+@json_require_login
 def index():
     page = force_integer(request.args.get('page', 1), 1)
 
@@ -27,27 +26,25 @@ def index():
     )
 
 @blueprint.route('/show/<int:article_id>')
+@json_require_login
 def show(article_id):
     article = Article.query.get_or_404(article_id)
 
     return jsonify(article.to_json())
 
 @blueprint.route('/create', methods=['POST'])
+@json_require_login
 def create():
     form = CreateArticleForm(csrf_enabled=False)
 
     if form.validate_on_submit():
-        #
-        # TODO: change to currnet user session
-        #
-        user = User.query.first_or_404()
-
-        article = form.save(user)
+        article = form.save(g.user)
         return jsonify(article.to_json())
     else:
         return json_form_errors(form)
 
 @blueprint.route('/update/<int:article_id>', methods=['POST'])
+@json_require_login
 def update(article_id):
     article = Article.query.get_or_404(article_id)
     form    = CreateArticleForm(obj=article, csrf_enabled=False)
@@ -62,6 +59,7 @@ def update(article_id):
         return json_form_errors(form)
 
 @blueprint.route('/delete/<int:article_id>')
+@json_require_login
 def delete(article_id):
     article = Article.query.get_or_404(article_id)
     article.delete()
