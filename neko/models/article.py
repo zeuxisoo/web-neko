@@ -42,6 +42,7 @@ class Article(db.Model, SessionMixin):
         item = {
             'username' : user['hashed_username'],
 
+            'id'       : self.id,
             'user_id'  : self.user_id,
             'title'    : self.title,
             'content'  : self.content,
