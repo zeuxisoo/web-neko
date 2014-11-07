@@ -54,7 +54,7 @@ def update(article_id):
 
         article = article.save()
 
-        return jsonify(article)
+        return jsonify(article.to_json())
     else:
         return json_form_errors(form)
 
