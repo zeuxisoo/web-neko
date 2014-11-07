@@ -114,5 +114,5 @@ def register_blueprint(app):
     app.register_blueprint(talk.blueprint, url_prefix='/talk')
     app.register_blueprint(setting.blueprint, url_prefix='/setting')
 
-    app.register_blueprint(api.index.blueprint, url_prefix='/api/index')
+    app.register_blueprint(api.main.blueprint, url_prefix='/api/main')
     app.register_blueprint(api.article.blueprint, url_prefix='/api/article')

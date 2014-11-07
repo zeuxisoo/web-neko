@@ -6,7 +6,7 @@ from ...helpers.json import json_error, json_form_errors
 from ...helpers.blueprint import Blueprint
 from ...forms import SigninForm
 
-blueprint = Blueprint("api_index", __name__)
+blueprint = Blueprint("api_main", __name__)
 
 @blueprint.route('/signin', methods=['POST'])
 def signin():

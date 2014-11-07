@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 
 from .article import *
-from .index import *
+from .main import *
