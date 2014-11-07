@@ -2,6 +2,7 @@
 
 from flask import Blueprint as _Blueprint
 from flask import request
+from .json import json_error
 
 class Blueprint(_Blueprint):
 

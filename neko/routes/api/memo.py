@@ -2,7 +2,7 @@
 
 from flask import request, jsonify, url_for, g
 from ...helpers import force_integer
-from ...helpers.json import json_error, json_form_errors, json_require_login
+from ...helpers.json import json_form_errors, json_require_login
 from ...helpers.blueprint import Blueprint
 from ...models import Memo
 from ...forms import CreateMemoForm

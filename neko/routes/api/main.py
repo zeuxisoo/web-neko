@@ -2,7 +2,7 @@
 
 from flask import request, jsonify, url_for
 from ...helpers import login_user, logout_user
-from ...helpers.json import json_error, json_form_errors
+from ...helpers.json import json_form_errors
 from ...helpers.blueprint import Blueprint
 from ...forms import SigninForm
 
