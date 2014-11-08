@@ -35,3 +35,18 @@ class Talk(db.Model, SessionMixin):
         db.session.commit()
 
         return self
+
+    def to_json(self):
+        user = self.user.to_json()
+
+        item = {
+            'username' : user['hashed_username'],
+
+            'id'       : self.id,
+            'user_id'  : self.user_id,
+            'service'  : self.service,
+            'content'  : self.content,
+            'create_at': self.create_at,
+            'update_at': self.update_at,
+        }
+        return item

@@ -117,3 +117,4 @@ def register_blueprint(app):
     app.register_blueprint(api.main.blueprint, url_prefix='/api/main')
     app.register_blueprint(api.article.blueprint, url_prefix='/api/article')
     app.register_blueprint(api.memo.blueprint, url_prefix='/api/memo')
+    app.register_blueprint(api.talk.blueprint, url_prefix='/api/talk')
