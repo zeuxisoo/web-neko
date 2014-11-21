@@ -13,6 +13,11 @@ class CreateTalkForm(BaseForm):
         ]
     )
 
-    def save(self, user):
-        talk = Talk(**self.data)
+    def save(self, user, service=None):
+        data = self.data
+
+        if service is not None:
+            data['service'] = service
+
+        talk = Talk(**data)
         return talk.save(user=user)

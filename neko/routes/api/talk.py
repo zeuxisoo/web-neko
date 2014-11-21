@@ -14,7 +14,7 @@ blueprint = Blueprint("api_talk", __name__)
 def index():
     page = force_integer(request.args.get('page', 1), 1)
 
-    paginator = Talk.query.order_by(Talk.update_at.desc()).paginate(page, 12)
+    paginator = Talk.query.filter(Talk.service.in_(("system", "app"))).order_by(Talk.create_at.desc()).paginate(page, 12)
     prev_page = url_for('api_talk.index', page=page-1, _external=True) if paginator.has_prev else None
     next_age  = url_for('api_talk.index', page=page+1, _external=True) if paginator.has_next else None
 
@@ -38,7 +38,7 @@ def create():
     form = CreateTalkForm(csrf_enabled=False)
 
     if form.validate_on_submit():
-        talk = form.save(g.user)
+        talk = form.save(g.user, service='api')
         return jsonify(talk.to_json())
     else:
         return json_form_errors(form)
