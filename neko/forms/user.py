@@ -6,7 +6,7 @@ from wtforms import TextField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 from datetime import datetime
 from .base import BaseForm
-from ..models import User, FailedLogin
+from ..models import User, FailedLogin, LoginRecord
 
 class SigninForm(BaseForm):
     account = TextField(
@@ -54,6 +54,9 @@ class SigninForm(BaseForm):
             if failed_login is not None:
                 failed_login.failures = 0;
                 failed_login.save()
+
+            # Save login record
+            LoginRecord(account=account, ip_address=request.remote_addr, user_agent=request.user_agent.string).save()
 
             self.user = user
             return user

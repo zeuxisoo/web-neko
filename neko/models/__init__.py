@@ -7,3 +7,4 @@ from .failed_login import *
 from .memo import *
 from .memo_append import *
 from .talk import *
+from .login_record import *
