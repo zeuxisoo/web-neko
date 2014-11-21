@@ -15,7 +15,7 @@ install:
 	. venv/bin/activate && pip install -r requirements.txt
 
 server:
-	. venv/bin/activate && python manager.py runserver
+	. venv/bin/activate && python manager.py runserver --host=0.0.0.0
 
 migrate-create:
 	. venv/bin/activate && alembic init alembic
