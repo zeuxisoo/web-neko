@@ -16,7 +16,7 @@ def index():
     if not page:
         return abort(404)
     else:
-        paginator = Talk.query.filter(Talk.service.in_(("system", "app"))).order_by(Talk.create_at.desc()).paginate(page)
+        paginator = Talk.query.filter(Talk.service.in_(("system", "api"))).order_by(Talk.create_at.desc()).paginate(page)
 
         return render_template("talks/index.html", paginator=paginator)
 
