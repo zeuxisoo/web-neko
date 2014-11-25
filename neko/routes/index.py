@@ -29,7 +29,7 @@ def home():
         'user': User.query.count(),
         'article': Article.query.count(),
         'memo': Memo.query.count(),
-        'talk': Talk.query.filter_by(service='system').count()
+        'talk': Talk.query.filter(Talk.service.in_(("system", "api"))).count()
     }
 
     return render_template("home.html", counter=counter, time=datetime.now())
