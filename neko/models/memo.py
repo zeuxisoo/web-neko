@@ -4,6 +4,7 @@ import hashlib
 import random
 from datetime import datetime
 from .base import db, SessionMixin
+from ..helpers.encoder import memo_username
 
 class Memo(db.Model, SessionMixin):
     id        = db.Column(db.Integer, primary_key=True)
@@ -41,7 +42,7 @@ class Memo(db.Model, SessionMixin):
         user = self.user.to_json()
 
         item = {
-            'username' : user['hashed_username'],
+            'username' : memo_username(user['hashed_username'], self.create_at),
 
             'id'       : self.id,
             'user_id'  : self.user_id,

@@ -13,6 +13,7 @@ from flask.ext.babel import Babel
 from flask.ext.babel import format_datetime
 from jinja2 import evalcontextfilter, Markup, escape
 from .helpers import load_current_user
+from .helpers.encoder import talk_username, memo_username
 from .routes import index, article, memo, talk, setting, api
 from .models import db
 
@@ -101,11 +102,11 @@ def register_template_filter(app):
 
     @app.template_filter()
     def talk_card_heading(value, talk_create_at):
-        return hashlib.sha256(value + str(talk_create_at)).hexdigest().lower()[:10]
+        return talk_username(value, talk_create_at)
 
     @app.template_filter()
     def memo_card_heading(value, memo_create_at):
-        return hashlib.sha224(value + str(memo_create_at)).hexdigest().lower()[:10]
+        return memo_username(value, memo_create_at)
 
 def register_blueprint(app):
     app.register_blueprint(index.blueprint, url_prefix='')
