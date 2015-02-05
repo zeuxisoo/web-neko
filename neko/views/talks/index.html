@@ -9,7 +9,7 @@
                     {{ talk.user.hashed_username | talk_card_heading(talk.create_at) }}
                 </div>
                 <div class="panel-body">
-                    <span class="lead">{{ talk.content | nl2br }}</span>
+                    <span class="lead">{{ talk.content | nl2br | safe }}</span>
                     <p>
                         <div class="text-muted pull-left">
                             <small>{{ talk.create_at | timeago }}</small>
