@@ -5,54 +5,46 @@
 <meta name="Robots" content="noindex, nofollow" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Neko</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/materialize/css/materialize.min.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='client/css/default.css') }}" />
 <link rel="shortcut icon" href="{{ url_for('static', filename='client/img/favicon.png') }}">
-<script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendor/jquery.autosize/jquery.autosize.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ url_for('static', filename='client/js/form.storage.js') }}"></script>
-<script src="{{ url_for('static', filename='client/js/default.js') }}/"></script>
 </head>
 <body>
-<div class="navbar navbar-default navbar-blue" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Neko</a>
-                <div class="divider-vertical"></div>
-            </div>
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('index.home') }}">Home</a></li>
-                    <li><a href="{{ url_for('article.index') }}">Articles</a></li>
-                    <li><a href="{{ url_for('memo.index') }}">Memos</a></li>
-                    <li><a href="{{ url_for('talk.index') }}">Talks</a></li>
-                    <li><a href="{{ url_for('setting.profile') }}">Settings</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    {% if g.user %}
-                        <li>
-                            <a href="{{ url_for('article.create') }}">
-                                <span class="glyphicon glyphicon-plus"></span>&nbsp;Create Article
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('index.signout') }}">
-                                <span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign out
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
+<nav class="light-blue">
+    <div class="nav-wrapper container">
+        <a href="#" class="brand-logo">Neko</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a href="{{ url_for('index.home') }}">Home</a></li>
+            <li><a href="{{ url_for('article.index') }}">Articles</a></li>
+            <li><a href="{{ url_for('memo.index') }}">Memos</a></li>
+            <li><a href="{{ url_for('talk.index') }}">Talks</a></li>
+            <li><a href="{{ url_for('setting.profile') }}">Settings</a></li>
+            {% if g.user %}
+                <li>
+                    <a href="{{ url_for('index.signout') }}">
+                        <span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign out
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+
+        <ul id="nav-mobile" class="side-nav">
+            <li><a href="{{ url_for('index.home') }}">Home</a></li>
+            <li><a href="{{ url_for('article.index') }}">Articles</a></li>
+            <li><a href="{{ url_for('memo.index') }}">Memos</a></li>
+            <li><a href="{{ url_for('talk.index') }}">Talks</a></li>
+            <li><a href="{{ url_for('setting.profile') }}">Settings</a></li>
+            {% if g.user %}
+                <li>
+                    <a href="{{ url_for('index.signout') }}">
+                        <span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign out
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
     </div>
-</div>
+</nav>
 
 <div class="container">
     {% if form and form.errors %}
@@ -60,8 +52,12 @@
             {% if loop.index <= 1 %}
                 {% for error in field_errors %}
                     {% if loop.index <= 1 %}
-                        <div class="alert alert-danger">
-                            <strong>Error!</strong> {{ error }}
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-content red-text text-lighten-2">
+                                    <strong>Error!</strong> {{ error }}
+                                </div>
+                            </div>
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -82,5 +78,12 @@
     {% block container %}
     {% endblock %}
 </div>
+
+<script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/jquery.autosize/jquery.autosize.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/materialize/js/materialize.min.js') }}"></script>
+<script src="{{ url_for('static', filename='client/js/form.storage.js') }}"></script>
+<script src="{{ url_for('static', filename='client/js/default.js') }}/"></script>
+
 </body>
 </html>
