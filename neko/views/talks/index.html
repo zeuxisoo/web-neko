@@ -1,41 +1,32 @@
 {% extends 'layouts/frontends/talk.html' %}
 
 {% block container_talk %}
-<div>
-    {% for talk in paginator.items %}
-        {% if talk.service != "twitter" %}
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    {{ talk.user.hashed_username | talk_card_heading(talk.create_at) }}
-                </div>
-                <div class="panel-body">
-                    <span class="lead">{{ talk.content | nl2br | safe }}</span>
-                    <p>
-                        <div class="text-muted pull-left">
-                            <small>{{ talk.create_at | timeago }}</small>
-                        </div>
 
-                        <div class="pull-right">
-                            <a href="{{ url_for('talk.delete', talk_id=talk.id) }}" class="btn btn-xs btn-default pull-right" data-confirm="true">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </a>
-                            <a href="{{ url_for('talk.edit', talk_id=talk.id) }}" class="btn btn-xs btn-default pull-right">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </a>
-                        </div>
-                    </p>
-                </div>
+{% for talk in paginator.items %}
+    {% if talk.service != "twitter" %}
+        <div class="card">
+            <div class="card-content light-blue-text">
+                <span class="card-title light-blue-text text-darken-1">{{ talk.user.hashed_username | talk_card_heading(talk.create_at) }}</span>
+                <span class="light-blue-text text-lighten-1">{{ talk.content | nl2br | safe }}</span>
+                <p>
+                    <small class="grey-text text-lighten-1">{{ talk.create_at | timeago }}</small>
+                </p>
             </div>
-        {% endif %}
-    {% endfor %}
-</div>
-<ul class="pager">
-    {% if paginator.has_prev %}
-        <li class="previous"><a href="{{ url_for('talk.index', page=paginator.prev_num) }}">Previous</a></li>
+            <div class="card-action">
+                <a href="{{ url_for('talk.delete', talk_id=talk.id) }}" class="waves-effect waves-light btn light-blue white-text" data-confirm="true">Delete</a>
+                <a href="{{ url_for('talk.edit', talk_id=talk.id) }}" class="waves-effect waves-light btn light-blue white-text">Edit</a>
+            </div>
+        </div>
     {% endif %}
+{% endfor %}
 
-    {% if paginator.has_next %}
-        <li class="next"><a href="{{ url_for('talk.index', page=paginator.next_num) }}">Next</a></li>
+<div class="right-align">
+    {% if paginator.has_prev %}
+        <a href="{{ url_for('talk.index', page=paginator.prev_num) }}" class="waves-effect waves-light btn light-blue lighten-2 white-text">Previous</a>
     {% endif %}
-</ul>
+    {% if paginator.has_next %}
+        <a href="{{ url_for('talk.index', page=paginator.next_num) }}" class="waves-effect waves-light btn light-blue lighten-2 white-text">Next</a>
+    {% endif %}
+</div>
+
 {% endblock %}

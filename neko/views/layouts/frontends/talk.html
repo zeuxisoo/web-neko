@@ -1,11 +1,13 @@
 {% extends 'layouts/frontend.html' %}
 
 {% block container %}
-<ul class="nav nav-tabs">
-    <li><a href="{{ url_for('talk.index') }}">All</a></li>
-    <li><a href="{{ url_for('talk.create') }}">Create</a></li>
-</ul>
-<div class="top-padding-20">
+<div class="section">
+    <div class="right-align">
+        <a href="{{ url_for('talk.index') }}" class="waves-effect waves-light btn light-blue lighten-2 white-text">All</a>
+        <a href="{{ url_for('talk.create') }}" class="waves-effect waves-light btn light-blue lighten-2 white-text">
+            <i class="mdi-action-note-add left"></i> Create
+        </a>
+    </div>
     {% block container_talk %}
     {% endblock %}
 </div>

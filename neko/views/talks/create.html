@@ -1,11 +1,17 @@
 {% extends 'layouts/frontends/talk.html' %}
 
 {% block container_talk %}
-<form role="form" method="post">
+<form class="col s12" method="post">
     {{ form.csrf_token }}
-    <div class="form-group">
-        {{ form.content(class="form-control autosize no-border form-storage", placeholder="Please Please let me know what do you think ... :-)", rows="3", autofocus=autofocus) }}
+    <div class="row">
+        <div class="input-field col s12">
+            <i class="mdi-editor-mode-edit prefix"></i>
+            {{ form.content(class="materialize-textarea autosize no-border form-storage", rows="3", autofocus=autofocus) }}
+            <label for="icon_prefix2">Please Please let me know what do you think ... :-)</label>
+        </div>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <div class="right-align">
+        <button type="submit" class="waves-effect waves-light btn light-blue lighten-2 white-text">Submit</button>
+    </div>
 </form>
 {% endblock %}

@@ -24,16 +24,19 @@
 // 			}
 // 		}).focusout();
 
-// 		// Delete confirm
-// 		$("[data-confirm]").on('click', function(e) {
-// 			return window.confirm("Are you sure delete this data?")
-// 		});
+
 // 	});
 
 // })(jQuery);
 
 (function($){
 	$(function(){
+        // Slide menu for mobile
 		$('.button-collapse').sideNav();
-	});
+
+        // Delete confirm
+        $("[data-confirm]").on('click', function(e) {
+            return window.confirm("Are you sure delete this data?")
+        });
+    });
 })(jQuery);
