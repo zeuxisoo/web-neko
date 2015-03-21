@@ -18,7 +18,7 @@ def index():
 
     if form.validate_on_submit():
         login_user(form.user, form.permanent.data)
-        return redirect(url_for('index.home'))
+        return redirect(url_for('talk.index'))
 
     return render_template("index.html", form=form)
 
