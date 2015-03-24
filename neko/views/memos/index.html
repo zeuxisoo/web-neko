@@ -1,24 +1,26 @@
 {% extends 'layouts/frontends/memo.html' %}
 
 {% block container_memo %}
-<div class="list-group">
-    {% for memo in paginator.items %}
-        <a href="{{ url_for('memo.view', memo_id=memo.id) }}" class="list-group-item list-group-item-background">
-            <h4 class="list-group-item-heading">{{ memo.user.hashed_username | memo_card_heading(memo.create_at) }}</h4>
-            <blockquote class="list-group-item-text">
-                <p>{{ memo.content | nl2br | safe }}</p>
-                <small>{{ memo.update_at | timeago }}</small>
-            </blockquote>
-        </a>
-    {% endfor %}
-</div>
-<ul class="pager">
-    {% if paginator.has_prev %}
-        <li class="previous"><a href="{{ url_for('memo.index', page=paginator.prev_num) }}">Previous</a></li>
-    {% endif %}
 
-    {% if paginator.has_next %}
-        <li class="next"><a href="{{ url_for('memo.index', page=paginator.next_num) }}">Next</a></li>
+{% for memo in paginator.items %}
+    <div class="card">
+        <div class="card-content light-blue-text">
+            <a href="{{ url_for('memo.view', memo_id=memo.id) }}">
+                <span class="card-title light-blue-text text-darken-1">{{ memo.user.hashed_username | memo_card_heading(memo.create_at) }}</span>
+                {{ memo.content | nl2br | safe }}
+                <small class="grey-text text-lighten-1">{{ memo.update_at | timeago }}</small>
+            </a>
+        </div>
+    </div>
+{% endfor %}
+
+<div class="right-align">
+    {% if paginator.has_prev %}
+        <a href="{{ url_for('memo.index', page=paginator.prev_num) }}" class="waves-effect waves-light btn light-blue lighten-2 white-text">Previous</a>
     {% endif %}
-</ul>
+    {% if paginator.has_next %}
+        <a href="{{ url_for('memo.index', page=paginator.next_num) }}" class="waves-effect waves-light btn light-blue lighten-2 white-text">Next</a>
+    {% endif %}
+</div>
+
 {% endblock %}

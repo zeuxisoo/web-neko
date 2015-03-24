@@ -1,45 +1,41 @@
 {% extends 'layouts/frontends/memo.html' %}
 
 {% block container_memo %}
-<div class="row">
-    <div class="col-lg-10">
-        <h3>{{ memo.user.hashed_username | memo_card_heading(memo.create_at) }}</h3>
-    </div>
-    <div class="col-lg-2">
-        <div class="btn-group btn-group-sm pull-right">
-            <a class="btn btn-default" href="{{ url_for('memo.delete', memo_id=memo.id) }}" data-confirm="true">
-                <span class="glyphicon glyphicon-trash"></span>
-            </a>
-            <a class="btn btn-default" href="{{ url_for('memo.edit', memo_id=memo.id) }}">
-                <span class="glyphicon glyphicon-pencil"></span>
-            </a>
-            <a class="btn btn-default" href="{{ url_for('memo.index') }}">
-                <span class="glyphicon glyphicon-list"></span>
-            </a>
-        </div>
-    </div>
-</div>
-<div>
+<div class="section">
+    <h4>{{ memo.user.hashed_username | memo_card_heading(memo.create_at) }}</h4>
+    <a class="btn light-blue white-text" href="{{ url_for('memo.delete', memo_id=memo.id) }}" data-confirm="true">Delete</a>
+    <a class="btn light-blue white-text" href="{{ url_for('memo.edit', memo_id=memo.id) }}">Edit</a>
+    <a class="btn light-blue white-text" href="{{ url_for('memo.index') }}">Back</a>
+
     <blockquote>
         <p>{{ memo.content | nl2br }}</p>
         <small>{{ memo.update_at | timeago }}</small>
     </blockquote>
 </div>
-{% for memo_append in memo.memo_appends %}
-<div>
-    <h3>{{ memo_append.user.hashed_username }}</h3>
-    <blockquote>
-        <p>{{ memo_append.content }}</p>
-        <small>{{ memo_append.update_at | timeago }}</small>
-    </blockquote>
+
+<div class="section">
+    {% for memo_append in memo.memo_appends %}
+        <div>
+            <h4>{{ memo_append.user.hashed_username }}</h4>
+            <blockquote>
+                <p>{{ memo_append.content }}</p>
+                <small>{{ memo_append.update_at | timeago }}</small>
+            </blockquote>
+        </div>
+    {% endfor %}
+    <hr />
+    <form class="col s12" method="post">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="mdi-editor-mode-edit prefix"></i>
+                {{ form.content(class="materialize-textarea autosize no-border form-storage", rows="5", autofocus=autofocus) }}
+                <label for="icon_prefix2">Cloud you mind to tell me what is your appendix ... :)</label>
+            </div>
+        </div>
+        <div class="right-align">
+            <button type="submit" class="waves-effect waves-light btn light-blue lighten-2 white-text">Submit</button>
+        </div>
+    </form>
 </div>
-{% endfor %}
-<hr />
-<form role="form" method="post">
-    {{ form.csrf_token }}
-    <div class="form-group">
-        {{ form.content(class="form-control autosize no-border form-storage", placeholder="Cloud you mind to tell me what is your appendix ... :)", rows="5", autofocus=autofocus) }}
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-</form>
 {% endblock %}

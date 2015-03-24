@@ -1,15 +1,11 @@
 {% extends 'layouts/frontend.html' %}
 
 {% block container %}
-<div class="btn-group btn-group-justified">
-    <a class="btn btn-default btn-darkblue" href="{{ url_for('memo.index') }}">
-        <span class="glyphicon glyphicon-th-large"></span>&nbsp;Show all Objects
-    </a>
-    <a class="btn btn-default btn-darkblue" href="{{ url_for('memo.create') }}">
-        <span class="glyphicon glyphicon-plus"></span>&nbsp;Create a New
-    </a>
-</div>
-<div class="top-padding-20">
+<div class="section">
+    <div class="right-align">
+        <a class="waves-effect waves-light btn light-blue lighten-2 white-text" href="{{ url_for('memo.index') }}">Show all Objects</a>
+        <a class="waves-effect waves-light btn light-blue lighten-2 white-text" href="{{ url_for('memo.create') }}">Create a New</a>
+    </div>
     {% block container_memo %}
     {% endblock %}
 </div>
