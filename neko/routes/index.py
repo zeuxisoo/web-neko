@@ -12,7 +12,7 @@ blueprint = Blueprint("index", __name__)
 @blueprint.route('/', methods=['GET', 'POST'])
 def index():
     if g.user:
-        return redirect(url_for('index.home'))
+        return redirect(url_for('talk.index'))
 
     form = SigninForm()
 
@@ -21,18 +21,6 @@ def index():
         return redirect(url_for('talk.index'))
 
     return render_template("index.html", form=form)
-
-@blueprint.route('/home')
-@require_login
-def home():
-    counter = {
-        'user': User.query.count(),
-        'article': Article.query.count(),
-        'memo': Memo.query.count(),
-        'talk': Talk.query.filter(Talk.service.in_(("system", "api"))).count()
-    }
-
-    return render_template("home.html", counter=counter, time=datetime.now())
 
 @blueprint.route('/signout')
 def signout():

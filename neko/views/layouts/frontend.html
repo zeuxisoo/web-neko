@@ -12,9 +12,8 @@
 <body>
 <nav class="light-blue">
     <div class="nav-wrapper container">
-        <a href="#" class="brand-logo">Neko</a>
+        <a href="{{ url_for('index.index') }}" class="brand-logo">Neko</a>
         <ul class="right hide-on-med-and-down">
-            <li><a href="{{ url_for('index.home') }}">Home</a></li>
             <li><a href="{{ url_for('article.index') }}">Articles</a></li>
             <li><a href="{{ url_for('memo.index') }}">Memos</a></li>
             <li><a href="{{ url_for('talk.index') }}">Talks</a></li>
@@ -29,7 +28,6 @@
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
-            <li><a href="{{ url_for('index.home') }}">Home</a></li>
             <li><a href="{{ url_for('article.index') }}">Articles</a></li>
             <li><a href="{{ url_for('memo.index') }}">Memos</a></li>
             <li><a href="{{ url_for('talk.index') }}">Talks</a></li>
