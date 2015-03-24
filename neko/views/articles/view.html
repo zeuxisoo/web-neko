@@ -1,29 +1,20 @@
 {% extends 'layouts/frontend.html' %}
 
 {% block container %}
-<div class="row">
-    <div class="col-lg-9">
-        <h1>{{ article.title }}</h1>
+<div class="card">
+    <div class="card-content grey-text text-darken-1">
+        <span class="card-title light-blue-text text-darken-1">{{ article.title }}</span>
+        <span class="badge">{{ article.create_at | timeago }}</span>
+        <p class="markdown">
+            {{ article.content | safe }}
+        </p>
     </div>
-    <div class="col-lg-3">
-        <div class="pull-right">
-            <div class="btn btn-sm btn-info">{{ article.create_at | timeago }}</div>
-            <div class="btn-group btn-group-sm">
-                <a class="btn btn-default" href="{{ url_for('article.delete', article_id=article.id) }}" data-confirm="true">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </a>
-                <a class="btn btn-default" href="{{ url_for('article.edit', article_id=article.id) }}">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </a>
-                <a class="btn btn-default" href="{{ url_for('article.index') }}">
-                    <span class="glyphicon glyphicon-list"></span>
-                </a>
-            </div>
+    <div class="card-action">
+        <div class="btn-group btn-group-sm">
+            <a class="waves-effect waves-light btn light-blue lighten-2 white-text" href="{{ url_for('article.delete', article_id=article.id) }}" data-confirm="true">Delete</a>
+            <a class="waves-effect waves-light btn light-blue lighten-2 white-text" href="{{ url_for('article.edit', article_id=article.id) }}">Edit</a>
+            <a class="waves-effect waves-light btn light-blue lighten-2 white-text" href="{{ url_for('article.index') }}">Back</a>
         </div>
     </div>
-</div>
-<hr />
-<div class="markdown">
-{{ article.content | safe }}
 </div>
 {% endblock %}
