@@ -66,8 +66,20 @@
     {% with messages = get_flashed_messages(with_categories = true) %}
         {% if messages %}
             {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    <strong>{{ category | capitalize }}!</strong> {{ message }}
+                <div class="row">
+                    <div class="card">
+                        {% if category == "success" %}
+                            <div class="card-content green-text text-lighten-2">
+                                <strong>{{ category | capitalize }}!</strong> {{ message }}
+                            </div>
+                        {% endif %}
+
+                        {% if category == "error" %}
+                            <div class="card-content red-text text-lighten-2">
+                                <strong>{{ category | capitalize }}!</strong> {{ message }}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             {% endfor %}
         {% endif %}
