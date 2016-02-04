@@ -1,0 +1,34 @@
+{
+  "scripts": {
+    "dev": "node webpack.config.develop.js",
+    "build": "NODE_ENV=production webpack --config webpack.config.production.js -p --progress --profile --colors"
+  },
+  "devDependencies": {
+    "babel-core": "^6.4.5",
+    "babel-loader": "^6.2.2",
+    "babel-plugin-transform-runtime": "^6.4.3",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "babel-runtime": "^5.8.35",
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "postcss-discard-comments": "^2.0.3",
+    "postcss-loader": "^0.8.0",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7",
+    "vue-hot-reload-api": "^1.3.2",
+    "vue-html-loader": "^1.1.0",
+    "vue-loader": "^8.1.1",
+    "vue-style-loader": "^1.0.0",
+    "webpack": "^1.12.12",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.0",
+    "vue": "^1.0.16",
+    "vue-resource": "^0.7.0",
+    "vue-router": "^0.7.10"
+  }
+}

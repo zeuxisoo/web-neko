@@ -1,10 +1,5 @@
-.DS_Store
-.*~
-*.pyc
-*.db
-.DS_Store
-
-venv
-log
-neko/configs/default.py
-storage/default.sqlite
+/vendor
+/node_modules
+Homestead.yaml
+Homestead.json
+.env
