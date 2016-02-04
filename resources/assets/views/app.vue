@@ -33,6 +33,8 @@ body {
 
 <script>
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'animate.css/animate.min.css'
+import 'toastr/build/toastr.min.css'
 
 export default {
 
