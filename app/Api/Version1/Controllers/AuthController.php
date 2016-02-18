@@ -19,6 +19,8 @@ class AuthController extends ApiController {
             $input['email'] = $account;
         }
 
+        unset($input['account']);
+
         try {
             $token = JWTAuth::attempt($input);
 
