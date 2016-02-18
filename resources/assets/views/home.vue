@@ -51,7 +51,20 @@ export default {
             }else if (this.password === "") {
                 this.shakeError("Please enter password");
             }else{
-                this.$api.user.login()
+                this.$api.auth.login({
+                    account : this.account,
+                    password: this.password
+                }).then(() => {
+
+                }).catch((response) => {
+                    let reason = response.data;
+
+                    if (reason.message) {
+                        this.shakeError(reason.message);
+                    }else{
+                        this.shakeError('Unknown error');
+                    }
+                });
             }
         },
 

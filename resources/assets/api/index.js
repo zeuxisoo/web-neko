@@ -1,4 +1,4 @@
-import User from './user'
+import Auth from './auth'
 
 export default class Api {
 
@@ -8,7 +8,7 @@ export default class Api {
 
     entries() {
         return {
-            user: new User(this.vue)
+            auth: new Auth(this.vue)
         }
     }
 
