@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
+import Api from './api'
 
 Vue.use(VueRouter)
 Vue.use(VueResource)
@@ -28,7 +29,7 @@ Router.map({
 Object.defineProperties(Vue.prototype, {
     $api: {
         get: function() {
-            return new Api(this);
+            return new Api(this).entries();
         }
     },
 });

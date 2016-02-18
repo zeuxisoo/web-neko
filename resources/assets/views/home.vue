@@ -51,7 +51,7 @@ export default {
             }else if (this.password === "") {
                 this.shakeError("Please enter password");
             }else{
-
+                this.$api.user.login()
             }
         },
 
