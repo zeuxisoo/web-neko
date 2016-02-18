@@ -32,6 +32,7 @@
 
 <script>
 import MessageHelper from '../helpers/message'
+import Storage from '../helpers/storage'
 
 export default {
 
@@ -54,8 +55,17 @@ export default {
                 this.$api.auth.login({
                     account : this.account,
                     password: this.password
-                }).then(() => {
+                }).then((response) => {
+                    let data = response.data;
+                    let token = data.token;
 
+                    if (token) {
+                        Storage.set('_token', token);
+
+                        this.$dispatch('tokenSaved', token);
+                    }else{
+                        this.shakeError('Not found token value');
+                    }
                 }).catch((response) => {
                     let reason = response.data;
 

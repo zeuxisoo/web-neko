@@ -38,5 +38,11 @@ import 'toastr/build/toastr.min.css'
 
 export default {
 
+    ready() {
+        this.$on('tokenSaved', (token) => {
+            this.$http.headers.common["Authorization"] = "Bearer " + token;
+        });
+    }
+
 }
 </script>
