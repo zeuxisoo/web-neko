@@ -14,7 +14,7 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li v-if="!authenticated"><a class="nav-link">Home</a></li>
-                        <li v-if="authenticated"><a class="nav-link">Logout</a></li>
+                        <li v-if="authenticated"><a class="nav-link" v-on:click="logout">Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -72,6 +72,8 @@ export default {
                         if (reason.status_code === 401) {
                             MessageHelper.error(reason.message);
                         }else{
+                            this.logout();
+
                             MessageHelper.error(response.statusText);
                         }
                     }
@@ -83,6 +85,21 @@ export default {
 
         if (token) {
             this.$emit('tokenSaved', token);
+        }
+    },
+
+    methods: {
+        logout() {
+            this.user          = {};
+            this.authenticated = false;
+
+            StorageHelper.remove('_token');
+
+            if (this.$route.auth) {
+                this.$route.router.go({
+                    name: 'home'
+                });
+            }
         }
     }
 
