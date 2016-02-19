@@ -13,7 +13,8 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a class="nav-link">Home</a></li>
+                        <li v-if="!authenticated"><a class="nav-link">Home</a></li>
+                        <li v-if="authenticated"><a class="nav-link">Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -61,7 +62,9 @@ export default {
                         this.user          = response.user;
                         this.authenticated = true;
 
-                        MessageHelper.success('Login success');
+                        this.$route.router.go({
+                            name: 'dashboard'
+                        });
                     },
                     (response) => {
                         let reason = response.data;
@@ -74,6 +77,13 @@ export default {
                     }
                 )
         });
+
+        // Re-activate login state when token also exists
+        let token = StorageHelper.get('_token');
+
+        if (token) {
+            this.$emit('tokenSaved', token);
+        }
     }
 
 }

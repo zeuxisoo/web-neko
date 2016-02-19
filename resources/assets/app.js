@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import Api from './api'
+import StorageHelper from './helpers/storage'
 
 Vue.use(VueRouter)
 Vue.use(VueResource)
@@ -20,10 +21,34 @@ Router.map({
         component: require('./views/home.vue')
     },
 
+    '/dashboard': {
+        auth     : true,
+        name     : 'dashboard',
+        component: require('./views/dashboard.vue')
+    },
+
     '*': {
         name     : 'any',
         component: require('./views/not-found.vue')
     }
+});
+
+Router.beforeEach((transition) => {
+    let token = StorageHelper.get('_token');
+
+    if (transition.to.auth) {
+        if (!token) {
+            transition.redirect('/');
+        }
+    }
+
+    if (transition.to.guest) {
+        if (token) {
+            transition.redirect('/');
+        }
+    }
+
+    transition.next();
 });
 
 Object.defineProperties(Vue.prototype, {
