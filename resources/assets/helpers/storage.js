@@ -1,4 +1,4 @@
-export default class Storage {
+export default class StorageHelper {
 
     static set(key, value) {
         if (Object.prototype.toString.call(value) === '[object Function]') {

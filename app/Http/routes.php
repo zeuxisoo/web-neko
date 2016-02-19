@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +25,9 @@ Route::get('/', function () {
 */
 
 Route::group(['middleware' => ['web']], function () {
-    //
+    Route::get('/', function () {
+        return view('index');
+    });
 });
 
 //
@@ -36,5 +36,9 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', function($api) {
     $api->group(['namespace' => 'App\Api\Version1\Controllers', 'prefix' => 'auth'], function($api) {
         $api->post('login', ['as' => 'api.auth.login', 'uses' => 'AuthController@login']);
+    });
+
+    $api->group(['namespace' => 'App\Api\Version1\Controllers', 'prefix' => 'user', 'middleware' => 'api.auth'], function($api) {
+        $api->post('me', ['as' => 'api.user.me', 'uses' => 'UserController@me']);
     });
 });

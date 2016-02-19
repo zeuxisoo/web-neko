@@ -35,12 +35,44 @@ body {
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'animate.css/animate.min.css'
 import 'toastr/build/toastr.min.css'
+import Vue from 'vue'
+import StorageHelper from '../helpers/storage'
+import MessageHelper from '../helpers/message'
 
 export default {
 
+    data() {
+        return {
+            user         : {},
+            authenticated: false
+        }
+    },
+
     ready() {
         this.$on('tokenSaved', (token) => {
-            this.$http.headers.common["Authorization"] = "Bearer " + token;
+            StorageHelper.set('_token', token);
+
+            Vue.http.headers.common['Authorization'] = "bearer " + token;
+
+            this.$api.user
+                .me()
+                .then(
+                    (response) => {
+                        this.user          = response.user;
+                        this.authenticated = true;
+
+                        MessageHelper.success('Login success');
+                    },
+                    (response) => {
+                        let reason = response.data;
+
+                        if (reason.status_code === 401) {
+                            MessageHelper.error(reason.message);
+                        }else{
+                            MessageHelper.error(response.statusText);
+                        }
+                    }
+                )
         });
     }
 
