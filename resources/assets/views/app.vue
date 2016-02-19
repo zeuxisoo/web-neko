@@ -72,10 +72,10 @@ export default {
                         if (reason.status_code === 401) {
                             MessageHelper.error(reason.message);
                         }else{
-                            this.logout();
-
                             MessageHelper.error(response.statusText);
                         }
+
+                        this.logout();
                     }
                 )
         });
