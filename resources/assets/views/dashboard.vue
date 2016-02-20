@@ -22,6 +22,28 @@
                 </form>
             </div>
         </div>
+
+        <div class="panel panel-default" v-for="message in messages">
+            <div class="panel-heading">{{ message.subject | byDefault 'N/A' }}</div>
+            <div class="panel-body">
+                {{ message.content }}
+            </div>
+        </div>
+
+        <div>
+            <ul class="pager">
+                <li class="previous" v-if="hasPrevious">
+                    <a v-link="{ name: 'dashboard', query: { page: pagination.current_page - 1 } }">
+                        <span aria-hidden="true">&larr;</span> Older
+                    </a>
+                </li>
+                <li class="next" v-if="hasNext">
+                    <a v-link="{ name: 'dashboard', query: { page: pagination.current_page + 1 } }">
+                        Newer <span aria-hidden="true">&rarr;</span></a>
+                    </li>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -37,8 +59,34 @@ export default {
         return {
             subject: "",
             content: "",
-            error  : false
+            error  : false,
+
+            page      : 1,
+            messages  : [],
+            pagination: {}
         }
+    },
+
+    route: {
+
+        data() {
+            let page = 'page' in this.$route.query ? this.$route.query.page : 1;
+
+            this.fetchMessages(page);
+        }
+
+    },
+
+    computed: {
+
+        hasNext() {
+            return this.pagination.current_page < this.pagination.total_pages;
+        },
+
+        hasPrevious() {
+            return this.pagination.current_page - 1 > 0;
+        }
+
     },
 
     methods: {
@@ -80,6 +128,26 @@ export default {
             setTimeout(function() {
               this.error = false;
             }.bind(this), 1000);
+        },
+
+        fetchMessages(page) {
+            this.$api.dashboard
+            .all({
+                page: page
+            })
+            .then(
+                (response) => {
+                    let data       = response.data;
+                    let messages   = data.data;
+                    let pagination = data.meta.pagination;
+
+                    this.messages   = messages;
+                    this.pagination = pagination;
+                },
+                (response) => {
+                    MessageHelper.error('Cannot fetch dashboard messages');
+                }
+            )
         }
 
     }

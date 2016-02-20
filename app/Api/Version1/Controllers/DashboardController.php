@@ -27,4 +27,10 @@ class DashboardController extends ApiController {
         return $this->response->item($dashboard, new DashboardTransformer);
     }
 
+    public function all() {
+        $dashboards = $this->dashboardRepository->all();
+
+        return $this->response->paginator($dashboards, new DashboardTransformer);
+    }
+
 }

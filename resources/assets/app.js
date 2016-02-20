@@ -4,6 +4,7 @@ import VueResource from 'vue-resource'
 import Api from './api'
 import StorageHelper from './helpers/storage'
 import MessageHelper from './helpers/message'
+import filters from './filters'
 
 Vue.use(VueRouter)
 Vue.use(VueResource)
@@ -78,5 +79,9 @@ Object.defineProperties(Vue.prototype, {
         }
     },
 });
+
+for(let filter in filters) {
+    Vue.filter(filter, filters[filter]);
+}
 
 Router.start(Vue.extend(require('./views/app.vue')), '#app');
