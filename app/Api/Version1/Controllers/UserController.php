@@ -2,7 +2,7 @@
 namespace App\Api\Version1\Controllers;
 
 use Illuminate\Http\Request;
-use App\Api\Version1\Contracts\ApiController;
+use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Transformers\UserTransformer;
 
 class UserController extends ApiController {

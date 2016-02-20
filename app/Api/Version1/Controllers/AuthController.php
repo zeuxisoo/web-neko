@@ -5,7 +5,7 @@ use JWTAuth;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use App\Api\Version1\Contracts\ApiController;
+use App\Api\Version1\Bases\ApiController;
 
 class AuthController extends ApiController {
 

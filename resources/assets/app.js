@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import Api from './api'
 import StorageHelper from './helpers/storage'
+import MessageHelper from './helpers/message'
 
 Vue.use(VueRouter)
 Vue.use(VueResource)
@@ -14,6 +15,25 @@ var Router = new VueRouter({
 });
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector("meta[name=csrf-token]").content;
+Vue.http.interceptors.push({
+    request: function (request) {
+        return request;
+    },
+
+    response: function (response) {
+        // if (response.status === 500) {
+        //     MessageHelper.error('Unknown server errors');
+        //     Router.app.logout();
+        // }
+
+        if (response.status === 401) {
+            MessageHelper.error('Session timeout, Please login again');
+            Router.app.logout();
+        }
+
+        return response;
+    }
+});
 
 Router.map({
     '/': {

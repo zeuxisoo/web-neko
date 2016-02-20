@@ -50,6 +50,10 @@ export default {
     },
 
     ready() {
+        this.$on('userLogout', () => {
+            this.logout();
+        });
+
         this.$on('tokenSaved', (token) => {
             StorageHelper.set('_token', token);
 

@@ -39,4 +39,8 @@ $api->version('v1', function($api) {
     $api->group(['namespace' => 'App\Api\Version1\Controllers', 'prefix' => 'user', 'middleware' => 'api.auth'], function($api) {
         $api->post('me', ['as' => 'api.user.me', 'uses' => 'UserController@me']);
     });
+
+    $api->group(['namespace' => 'App\Api\Version1\Controllers', 'prefix' => 'dashboard', 'middleware' => 'api.auth'], function($api) {
+        $api->post('create', ['as' => 'api.dashboard.create', 'uses' => 'DashboardController@create']);
+    });
 });
