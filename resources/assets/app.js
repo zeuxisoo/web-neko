@@ -48,6 +48,12 @@ Router.map({
         component: require('./views/dashboard.vue')
     },
 
+    'bookmark': {
+        auth     : true,
+        name     : 'bookmark',
+        component: require('./views/bookmark.vue')
+    },
+
     '*': {
         name     : 'any',
         component: require('./views/not-found.vue')

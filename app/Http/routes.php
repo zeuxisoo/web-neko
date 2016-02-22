@@ -44,4 +44,8 @@ $api->version('v1', function($api) {
         $api->post('create', ['as' => 'api.dashboard.create', 'uses' => 'DashboardController@create']);
         $api->get('all', ['as' => 'api.dashboard.all', 'uses' => 'DashboardController@all']);
     });
+
+    $api->group(['namespace' => 'App\Api\Version1\Controllers', 'prefix' => 'bookmark', 'middleware' => 'api.auth'], function($api) {
+        $api->post('create', ['as' => 'api.bookmark.create', 'uses' => 'BookmarkController@create']);
+    });
 });

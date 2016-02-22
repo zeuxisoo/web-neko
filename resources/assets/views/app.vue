@@ -14,6 +14,9 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li v-if="!authenticated"><a class="nav-link">Home</a></li>
+
+                        <li v-if="authenticated"><a class="nav-link" v-link="{ name: 'dashboard' }">Dashboard</a></li>
+                        <li v-if="authenticated"><a class="nav-link" v-link="{ name: 'bookmark' }">Bookmark</a></li>
                         <li v-if="authenticated"><a class="nav-link" v-on:click="logout">Logout</a></li>
                     </ul>
                 </div>
