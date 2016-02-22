@@ -15,7 +15,7 @@ class BookmarkRepository extends ApiRepository {
     }
 
     public function all() {
-        return $this->bookmark->orderBy('create_at', 'asc')->paginate(2);
+        return $this->bookmark->orderBy('created_at', 'desc')->paginate(2);
     }
 
 }

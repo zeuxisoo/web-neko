@@ -17,6 +17,28 @@
                 </form>
             </div>
         </div>
+
+        <div class="panel panel-default" v-for="bookmark in bookmarks">
+            <div class="panel-heading">{{ bookmark.created_at }}</div>
+            <div class="panel-body">
+                {{ bookmark.content }}
+            </div>
+        </div>
+
+        <div>
+            <ul class="pager">
+                <li class="previous" v-if="hasPrevious">
+                    <a v-link="{ name: 'bookmark', query: { page: pagination.current_page - 1 } }">
+                        <span aria-hidden="true">&larr;</span> Older
+                    </a>
+                </li>
+                <li class="next" v-if="hasNext">
+                    <a v-link="{ name: 'bookmark', query: { page: pagination.current_page + 1 } }">
+                        Newer <span aria-hidden="true">&rarr;</span></a>
+                    </li>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -32,8 +54,34 @@ export default {
     data() {
         return {
             content: "",
-            error  : false
+            error  : false,
+
+            page      : 1,
+            bookmarks : [],
+            pagination: {}
         }
+    },
+
+    route: {
+
+        data() {
+            let page = 'page' in this.$route.query ? this.$route.query.page : 1;
+
+            this.fetchBookmarks(page);
+        }
+
+    },
+
+    computed: {
+
+        hasNext() {
+            return this.pagination.current_page < this.pagination.total_pages;
+        },
+
+        hasPrevious() {
+            return this.pagination.current_page - 1 > 0;
+        }
+
     },
 
     methods: {
@@ -47,6 +95,7 @@ export default {
                 }).then(
                     (response) => {
                         MessageHelper.success('The content was bookmarked');
+                        this.fetchBookmarks(1);
                     },
                     (response) => {
                         let reason = response.data;
@@ -75,6 +124,26 @@ export default {
               this.error = false;
             }.bind(this), 1000);
         },
+
+        fetchBookmarks(page) {
+            this.$api.bookmark
+            .all({
+                page: page
+            })
+            .then(
+                (response) => {
+                    let data       = response.data;
+                    let bookmarks  = data.data;
+                    let pagination = data.meta.pagination;
+
+                    this.bookmarks  = bookmarks;
+                    this.pagination = pagination;
+                },
+                (response) => {
+                    MessageHelper.error('Cannot fetch bookmark');
+                }
+            )
+        }
 
     }
 

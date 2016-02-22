@@ -27,4 +27,10 @@ class BookmarkController extends ApiController {
         return $this->response->item($dashboard, new BookmarkTransformer);
     }
 
+    public function all() {
+        $bookmarks = $this->bookmarkRepository->all();
+
+        return $this->response->paginator($bookmarks, new BookmarkTransformer);
+    }
+
 }
