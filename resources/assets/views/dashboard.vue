@@ -101,6 +101,7 @@ export default {
                 }).then(
                     (response) => {
                         MessageHelper.success('Dashboard message created');
+                        this.fetchMessages(1);
                     },
                     (response) => {
                         let reason = response.data;
