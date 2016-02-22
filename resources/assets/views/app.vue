@@ -34,6 +34,7 @@ body {
 
 <script>
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.min'
 import 'animate.css/animate.min.css'
 import 'toastr/build/toastr.min.css'
 import Vue from 'vue'
@@ -50,6 +51,10 @@ export default {
     },
 
     ready() {
+        $('.navbar-collapse').click('li', function() {
+            $('.navbar-collapse').collapse('hide');
+        });
+
         this.$on('userLogout', () => {
             this.logout();
         });
