@@ -8,8 +8,8 @@ class DashboardTransformer extends TransformerAbstract {
 
     public function transform(Dashboard $dashboard) {
         return [
-            'id' => $dashboard->id,
-            'user' => $dashboard->user,
+            'id'      => $dashboard->id,
+            'user'    => $dashboard->user,
             'subject' => $dashboard->name,
             'content' => $dashboard->content,
         ];
