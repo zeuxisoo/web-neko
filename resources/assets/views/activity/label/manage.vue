@@ -18,7 +18,7 @@
                                         <td>{{ label.id }}</td>
                                         <td>{{ label.name }}</td>
                                         <td>
-                                            <a v-on:click="delete(label.id)">Delete</a>
+                                            <a v-on:click="destory(label.id)">Delete</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -59,10 +59,8 @@ export default {
                 (response) => {
                     let data       = response.data;
                     let labels     = data.data;
-                    let pagination = data.meta.pagination;
 
                     this.labels     = labels;
-                    this.pagination = pagination;
                 },
                 (response) => {
                     MessageHelper.error('Cannot fetch activity label list');
@@ -70,7 +68,7 @@ export default {
             );
         },
 
-        delete(id) {
+        destory(id) {
             this.$api.activity.deleteLabel({
                 id: id
             }).then(
