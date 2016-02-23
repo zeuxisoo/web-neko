@@ -11,8 +11,8 @@ class ActivityLabelController extends ApiController {
 
     protected $activityLabelRepository;
 
-    public function __construct(ActivityLabelRepository $ActivityLabelRepository) {
-        $this->activityLabelRepository = $ActivityLabelRepository;
+    public function __construct(ActivityLabelRepository $activityLabelRepository) {
+        $this->activityLabelRepository = $activityLabelRepository;
     }
 
     public function create(ActivityLabelRequest $request) {
