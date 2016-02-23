@@ -12,4 +12,12 @@ export default class Activity extends Base {
         return this.vue.$http.post(this.apiUrl('/activity/label/create'), data);
     }
 
+    allLabel() {
+        return this.vue.$http.get(this.apiUrl('/activity/label/all'));
+    }
+
+    deleteLabel(data) {
+        return this.vue.$http.post(this.apiUrl('/activity/label/delete'), data);
+    }
+
 }

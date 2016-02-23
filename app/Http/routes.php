@@ -53,6 +53,7 @@ $api->version('v1', function($api) {
     $api->group(['namespace' => 'App\Api\Version1\Controllers', 'prefix' => 'activity', 'middleware' => 'api.auth'], function($api) {
         $api->group(['prefix' => 'label'], function($api) {
             $api->post('create', ['as' => 'api.activity.label.create', 'uses' => 'ActivityLabelController@create']);
+            $api->get('all', ['as' => 'api.activity.label.all', 'uses' => 'ActivityLabelController@all']);
         });
     });
 });

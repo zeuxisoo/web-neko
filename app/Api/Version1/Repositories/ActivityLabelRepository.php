@@ -14,4 +14,8 @@ class ActivityLabelRepository extends ApiRepository {
         return (new $this->activity_label)->create($input);
     }
 
+    public function all() {
+        return $this->activity_label->orderBy('created_at', 'desc')->paginate();
+    }
+
 }

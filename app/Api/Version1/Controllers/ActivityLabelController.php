@@ -8,10 +8,10 @@ use App\Api\Version1\Transformers\ActivityLabelTransformer;
 
 class ActivityLabelController extends ApiController {
 
-    protected $ActivityLabelRepository;
+    protected $activityLabelRepository;
 
     public function __construct(ActivityLabelRepository $ActivityLabelRepository) {
-        $this->ActivityLabelRepository = $ActivityLabelRepository;
+        $this->activityLabelRepository = $ActivityLabelRepository;
     }
 
     public function create(ActivityLabelRequest $request) {
@@ -22,9 +22,15 @@ class ActivityLabelController extends ApiController {
             ]
         );
 
-        $activity_label = $this->ActivityLabelRepository->create($input);
+        $activity_label = $this->activityLabelRepository->create($input);
 
         return $this->response->item($activity_label, new ActivityLabelTransformer);
+    }
+
+    public function all() {
+        $activity_labels = $this->activityLabelRepository->all();
+
+        return $this->response->paginator($activity_labels, new ActivityLabelTransformer);
     }
 
 }
