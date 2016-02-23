@@ -64,6 +64,11 @@ Router.map({
                 component: require('./views/activity/index.vue')
             },
 
+            '/create': {
+                name     : 'activity_create',
+                component: require('./views/activity/create.vue')
+            },
+
             '/label/create': {
                 name     : 'activity_label_create',
                 component: require('./views/activity/label/create.vue')

@@ -6,8 +6,8 @@
                     <div class="panel-heading">Activity</div>
                     <div class="panel-body">
                         <ul class="nav nav-pills nav-stacked">
-                            <li><a href="#">All</a></li>
-                            <li><a href="#">Create</a></li>
+                            <li><a v-link="{ name: 'activity_index' }">All</a></li>
+                            <li><a v-link="{ name: 'activity_create' }">Create</a></li>
                         </ul>
                     </div>
                 </div>

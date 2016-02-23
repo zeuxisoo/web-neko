@@ -20,4 +20,8 @@ export default class Activity extends Base {
         return this.vue.$http.post(this.apiUrl('/activity/label/delete'), data);
     }
 
+    create(data) {
+        return this.vue.$http.post(this.apiUrl('/activity/create'), data);
+    }
+
 }
