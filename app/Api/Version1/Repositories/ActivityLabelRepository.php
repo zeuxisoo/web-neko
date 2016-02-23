@@ -18,4 +18,14 @@ class ActivityLabelRepository extends ApiRepository {
         return $this->activity_label->orderBy('created_at', 'desc')->paginate();
     }
 
+    public function destory($id) {
+        $activity_label = $this->activity_label->find($id);
+
+        if (empty($activity_label->id) === false) {
+            $activity_label->delete();
+        }
+
+        return $activity_label;
+    }
+
 }

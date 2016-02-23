@@ -75,6 +75,8 @@ export default {
                 id: id
             }).then(
                 (response) => {
+                    this.fetchLabels();
+
                     MessageHelper.success('The label deleted');
                 },
                 (response) => {

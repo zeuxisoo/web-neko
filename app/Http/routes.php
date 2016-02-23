@@ -54,6 +54,7 @@ $api->version('v1', function($api) {
         $api->group(['prefix' => 'label'], function($api) {
             $api->post('create', ['as' => 'api.activity.label.create', 'uses' => 'ActivityLabelController@create']);
             $api->get('all', ['as' => 'api.activity.label.all', 'uses' => 'ActivityLabelController@all']);
+            $api->post('delete', ['as' => 'api.activity.label.delete', 'uses' => 'ActivityLabelController@destory']);
         });
     });
 });
