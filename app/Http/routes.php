@@ -49,4 +49,10 @@ $api->version('v1', function($api) {
         $api->post('create', ['as' => 'api.bookmark.create', 'uses' => 'BookmarkController@create']);
         $api->get('all', ['as' => 'api.bookmark.all', 'uses' => 'BookmarkController@all']);
     });
+
+    $api->group(['namespace' => 'App\Api\Version1\Controllers', 'prefix' => 'activity', 'middleware' => 'api.auth'], function($api) {
+        $api->group(['prefix' => 'label'], function($api) {
+            $api->post('create', ['as' => 'api.activity.label.create', 'uses' => 'ActivityLabelController@create']);
+        });
+    });
 });

@@ -17,6 +17,7 @@
 
                         <li v-if="authenticated"><a class="nav-link" v-link="{ name: 'dashboard' }">Dashboard</a></li>
                         <li v-if="authenticated"><a class="nav-link" v-link="{ name: 'bookmark' }">Bookmark</a></li>
+                        <li v-if="authenticated"><a class="nav-link" v-link="{ name: 'activity' }">Activity</a></li>
                         <li v-if="authenticated"><a class="nav-link" v-on:click="logout">Logout</a></li>
                     </ul>
                 </div>

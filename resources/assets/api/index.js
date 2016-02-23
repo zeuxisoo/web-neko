@@ -2,6 +2,7 @@ import Auth from './auth'
 import User from './user'
 import Dashboard from './dashboard'
 import Bookmark from './bookmark'
+import Activity from './activity'
 
 export default class Api {
 
@@ -15,6 +16,7 @@ export default class Api {
             user      : new User(this.vue),
             dashboard : new Dashboard(this.vue),
             bookmark  : new Bookmark(this.vue),
+            activity  : new Activity(this.vue),
         }
     }
 

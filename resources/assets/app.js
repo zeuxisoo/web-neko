@@ -54,6 +54,28 @@ Router.map({
         component: require('./views/bookmark.vue')
     },
 
+    'activity': {
+        auth     : true,
+        name     : 'activity',
+        component: require('./views/activity.vue'),
+        subRoutes: {
+            '/': {
+                name     : 'activity_index',
+                component: require('./views/activity/index.vue')
+            },
+
+            '/label/create': {
+                name     : 'activity_label_create',
+                component: require('./views/activity/label/create.vue')
+            },
+
+            '/label/manage': {
+                name     : 'activity_label_manage',
+                component: require('./views/activity/label/manage.vue')
+            }
+        }
+    },
+
     '*': {
         name     : 'any',
         component: require('./views/not-found.vue')
