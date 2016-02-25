@@ -3,7 +3,7 @@
         <div class="panel panel-default" v-bind:class="{ 'shake': error, 'animated': error }">
             <div class="panel-heading">Sign in</div>
             <div class="panel-body">
-                <div class="form-horizontal">
+                <div class="form-horizontal" v-on:keyup.enter="submit">
                     <div class="form-group">
                         <label for="account" class="col-sm-2 control-label">Account</label>
                         <div class="col-sm-10">
