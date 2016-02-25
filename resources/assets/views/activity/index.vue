@@ -6,8 +6,21 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <span class="btn btn-xs btn-default label-space" v-for="label in labels">
-                            <a >{{ label.name }}</a>
+                            <a v-link="{ name: 'activity_index', query: { label: label.id } }">{{ label.name }}</a>
                         </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Activities</div>
+            <div class="panel-body">
+                <div class="row row-activity" v-for="activity in activities">
+                    <div class="col-sm-12">
+                        <label class="label label-default">{{ activity.activity_at }}</label>
+                        <label class="label label-info">{{ activity.label.name }}</label>
+                        <small class="text-muted">{{ activity.remark | byDefault 'No remark' }}</small>
                     </div>
                 </div>
             </div>
@@ -23,21 +36,31 @@
 .label-space a {
     text-decoration: none;
 }
+
+.row-activity:nth-child(n+2) {
+    padding-top: 10px;
+}
 </style>
 
 <script>
+import MessageHelper from '../../helpers/message';
+
 export default {
 
     data() {
         return {
-            labels: []
+            labels    : [],
+            activities: []
         }
     },
 
     route: {
 
         data() {
+            let label = 'label' in this.$route.query ? this.$route.query.label : "";
+
             this.fetchLabels();
+            this.fetchActivities(label);
         }
 
     },
@@ -57,6 +80,22 @@ export default {
                 }
             );
         },
+
+        fetchActivities(label) {
+            this.$api.activity.all({
+                label: label
+            }).then(
+                (response) => {
+                    let data       = response.data;
+                    let activities = data.data;
+
+                    this.activities = activities;
+                },
+                (response) => {
+                    MessageHelper.error('Cannot fetch activity list');
+                }
+            );
+        }
 
     }
 

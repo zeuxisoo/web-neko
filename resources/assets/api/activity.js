@@ -24,4 +24,8 @@ export default class Activity extends Base {
         return this.vue.$http.post(this.apiUrl('/activity/create'), data);
     }
 
+    all(data) {
+        return this.vue.$http.get(this.apiUrl('/activity/all'), data);
+    }
+
 }

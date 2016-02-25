@@ -30,4 +30,11 @@ class ActivityController extends ApiController {
         return $this->response->item($activity_label, new ActivityTransformer);
     }
 
+    public function all(Request $request) {
+        $input      = $request->only('label');
+        $activities = $this->activityRepository->all($input);
+
+        return $this->response->paginator($activities, new ActivityTransformer);
+    }
+
 }

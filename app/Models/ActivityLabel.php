@@ -12,7 +12,7 @@ class ActivityLabel extends Model {
 
     protected $fillable = ['user_id', 'name'];
 
-    protected $hidden = [];
+    protected $hidden = ['deleted_at'];
 
     public function user() {
         return $this->belongsTo('App\Models\User');

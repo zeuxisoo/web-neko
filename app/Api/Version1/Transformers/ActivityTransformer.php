@@ -10,7 +10,7 @@ class ActivityTransformer extends TransformerAbstract {
         return [
             'id'          => $activity->id,
             'label'       => $activity->label,
-            'activity_at' => $activity->name,
+            'activity_at' => $activity->activity_at,
             'remark'      => $activity->remark
         ];
     }
