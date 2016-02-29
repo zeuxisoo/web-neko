@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top navbar-app" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -31,7 +31,6 @@
 
 <style>
 body {
-    background-color: #EDECEC;
     padding-top: 70px;
 }
 </style>
@@ -41,6 +40,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
 import 'animate.css/animate.min.css'
 import 'toastr/build/toastr.min.css'
+import '../css/app.css'
 import Vue from 'vue'
 import StorageHelper from '../helpers/storage'
 import MessageHelper from '../helpers/message'
