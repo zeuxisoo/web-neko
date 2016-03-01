@@ -1,6 +1,6 @@
 l<template>
     <div id="home">
-        <div class="panel panel-default" v-bind:class="{ 'shake': error, 'animated': error }">
+        <shake-error-panel>
             <div class="panel-heading">Sign in</div>
             <div class="panel-body">
                 <div class="form-horizontal" v-on:keyup.enter="submit">
@@ -23,7 +23,7 @@ l<template>
                     </div>
                 </div>
             </div>
-        </div>
+        </shake-error-panel>
     </div>
 </template>
 
@@ -31,11 +31,15 @@ l<template>
 </style>
 
 <script>
-import ShakeErrorMixin from '../mixins/shake-error'
+import ShakeErrorPanel from '../components/shake-error-panel'
 
 export default {
 
-    mixins: [ShakeErrorMixin],
+    mixins: [ShakeErrorPanel.mixin],
+
+    components: {
+        "shake-error-panel": ShakeErrorPanel.component
+    },
 
     data() {
         return {
