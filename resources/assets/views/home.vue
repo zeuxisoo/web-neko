@@ -1,4 +1,4 @@
-<template>
+l<template>
     <div id="home">
         <div class="panel panel-default" v-bind:class="{ 'shake': error, 'animated': error }">
             <div class="panel-heading">Sign in</div>
@@ -31,13 +31,14 @@
 </style>
 
 <script>
-import MessageHelper from '../helpers/message'
+import ShakeErrorMixin from '../mixins/shake-error'
 
 export default {
 
+    mixins: [ShakeErrorMixin],
+
     data() {
         return {
-            error   : false,
             account : "",
             password: ""
         }
@@ -76,15 +77,6 @@ export default {
                     }
                 );
             }
-        },
-
-        shakeError(message) {
-            MessageHelper.error(message);
-
-            this.error = true;
-            setTimeout(function() {
-              this.error = false;
-            }.bind(this), 1000);
         }
 
     }
