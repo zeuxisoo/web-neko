@@ -1,6 +1,6 @@
 <template>
     <div id="dashboard">
-        <div class="panel panel-default" v-bind:class="{ 'shake': error, 'animated': error }">
+        <shake-error-panel>
             <div class="panel-heading">Dashboard</div>
             <div class="panel-body">
                 <form class="form-horizontal">
@@ -21,7 +21,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        <shake-error-panel>
 
         <div class="panel panel-default" v-for="message in messages">
             <div class="panel-heading">{{ message.subject | byDefault 'N/A' }}</div>
@@ -51,15 +51,21 @@
 </style>
 
 <script>
+import ShakeErrorPanel from '../components/shake-error-panel'
 import MessageHelper from '../helpers/message'
 
 export default {
+
+    mixins: [ShakeErrorPanel.mixin],
+
+    components: {
+        "shake-error-panel": ShakeErrorPanel.component
+    },
 
     data() {
         return {
             subject: "",
             content: "",
-            error  : false,
 
             page      : 1,
             messages  : [],
@@ -120,15 +126,6 @@ export default {
                     }
                 )
             }
-        },
-
-        shakeError(message) {
-            MessageHelper.error(message);
-
-            this.error = true;
-            setTimeout(function() {
-              this.error = false;
-            }.bind(this), 1000);
         },
 
         fetchMessages(page) {
