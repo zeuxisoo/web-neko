@@ -1,6 +1,6 @@
 <template>
     <div id="activity-label-create">
-        <div class="panel panel-default" v-bind:class="{ 'shake': error, 'animated': error }">
+        <shake-error-panel>
             <div class="panel-heading">Create Label</div>
             <div class="panel-body">
                 <form class="form-horizontal">
@@ -16,7 +16,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </shake-error-panel>
     </div>
 </template>
 
@@ -24,14 +24,20 @@
 </style>
 
 <script>
+import ShakeErrorPanel from '../../../components/shake-error-panel'
 import MessageHelper from '../../../helpers/message'
 
 export default {
 
+    mixins: [ShakeErrorPanel.mixin],
+
+    components: {
+        "shake-error-panel": ShakeErrorPanel.component
+    },
+
     data() {
         return {
             name : "",
-            error: false
         }
     },
 
@@ -64,15 +70,6 @@ export default {
                     }
                 )
             }
-        },
-
-        shakeError(message) {
-            MessageHelper.error(message);
-
-            this.error = true;
-            setTimeout(function() {
-              this.error = false;
-            }.bind(this), 1000);
         },
 
     }
