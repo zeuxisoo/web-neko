@@ -1,6 +1,6 @@
 <template>
     <div id="bookmark">
-        <div class="panel panel-default" v-bind:class="{ 'shake': error, 'animated': error }">
+        <shake-error-panel>
             <div class="panel-heading">Bookmark</div>
             <div class="panel-body">
                 <form class="form-horizontal">
@@ -16,7 +16,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        <shake-error-panel>
 
         <div class="panel panel-default" v-for="bookmark in bookmarks">
             <div class="panel-heading">{{ bookmark.created_at }}</div>
@@ -47,14 +47,20 @@
 </style>
 
 <script>
+import ShakeErrorPanel from '../components/shake-error-panel'
 import MessageHelper from '../helpers/message'
 
 export default {
 
+    mixins: [ShakeErrorPanel.mixin],
+
+    components: {
+        "shake-error-panel": ShakeErrorPanel.component
+    },
+
     data() {
         return {
             content: "",
-            error  : false,
 
             page      : 1,
             bookmarks : [],
@@ -114,15 +120,6 @@ export default {
                     }
                 )
             }
-        },
-
-        shakeError(message) {
-            MessageHelper.error(message);
-
-            this.error = true;
-            setTimeout(function() {
-              this.error = false;
-            }.bind(this), 1000);
         },
 
         fetchBookmarks(page) {
