@@ -1,6 +1,6 @@
 <template>
     <div id="activity-create">
-        <div class="panel panel-default">
+        <shake-error-panel>
             <div class="panel-heading">Create Activity</div>
             <div class="panel-body">
                 <form class="form-horizontal">
@@ -28,7 +28,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        <shake-error-panel>
     </div>
 </template>
 
@@ -36,10 +36,17 @@
 </style>
 
 <script>
+import ShakeErrorPanel from '../../components/shake-error-panel'
 import MessageHelper from '../../helpers/message'
 import moment from 'moment'
 
 export default {
+
+    mixins: [ShakeErrorPanel.mixin],
+
+    components: {
+        "shake-error-panel": ShakeErrorPanel.component
+    },
 
     data() {
         return {
