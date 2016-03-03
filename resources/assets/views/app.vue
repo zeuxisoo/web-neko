@@ -13,12 +13,32 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li v-if="!authenticated"><a class="nav-link">Home</a></li>
+                        <li v-if="!authenticated">
+                            <a class="nav-link">
+                                <i class="glyphicon glyphicon-home"></i> Home
+                            </a>
+                        </li>
 
-                        <li v-if="authenticated"><a class="nav-link" v-link="{ name: 'dashboard' }">Dashboard</a></li>
-                        <li v-if="authenticated"><a class="nav-link" v-link="{ name: 'bookmark' }">Bookmark</a></li>
-                        <li v-if="authenticated"><a class="nav-link" v-link="{ name: 'activity' }">Activity</a></li>
-                        <li v-if="authenticated"><a class="nav-link" v-on:click="logout">Logout</a></li>
+                        <li v-if="authenticated">
+                            <a class="nav-link" v-link="{ name: 'dashboard' }">
+                                <i class="glyphicon glyphicon-dashboard"></i> Dashboard
+                            </a>
+                        </li>
+                        <li v-if="authenticated">
+                            <a class="nav-link" v-link="{ name: 'bookmark' }">
+                                <i class="glyphicon glyphicon-bookmark"></i> Bookmark
+                            </a>
+                        </li>
+                        <li v-if="authenticated">
+                            <a class="nav-link" v-link="{ name: 'activity' }">
+                                <i class="glyphicon glyphicon-stats"></i> Activity
+                            </a>
+                        </li>
+                        <li v-if="authenticated">
+                            <a class="nav-link" v-on:click="logout">
+                                <i class="glyphicon glyphicon-log-out"></i> Logout
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
