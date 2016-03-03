@@ -7,6 +7,7 @@
                     <div class="form-group">
                         <div class="col-sm-12">
                             <input type="text" class="form-control" id="subject" placeholder="Subject" v-model="subject">
+                            <p class="help-block help-tips">Optional, Please keep it blank if you have not subject</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -48,6 +49,10 @@
 </template>
 
 <style>
+.help-tips {
+    margin: 5px 0px 0px 10px;
+    font-size: 12px;
+}
 </style>
 
 <script>
