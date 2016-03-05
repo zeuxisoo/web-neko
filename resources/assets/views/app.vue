@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="container">
-            <router-view></router-view>
+            <router-view class="animated" transition="bounce"></router-view>
         </div>
     </div>
 </template>
@@ -64,6 +64,11 @@ import '../css/app.css'
 import Vue from 'vue'
 import StorageHelper from '../helpers/storage'
 import MessageHelper from '../helpers/message'
+
+Vue.transition('bounce', {
+  enterClass: 'bounceInUp',
+  leaveClass: 'bounceOutDown',
+});
 
 export default {
 
