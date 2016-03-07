@@ -8,6 +8,12 @@ composer:
 	@php composer-setup.php
 	@php -r "unlink('composer-setup.php');"
 
+vendor:
+	@php composer.phar install
+
+update-vendor:
+	@php composer.phar update
+
 watch:
 	@npm run dev
 
