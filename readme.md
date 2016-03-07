@@ -24,3 +24,17 @@ Create environment, generate keys and edit
 Migrate database
 
     make database
+
+## Development
+
+Start server
+
+    make server
+
+Watch assets
+
+    make watch
+
+Seed database
+
+    php artisan db:seed
