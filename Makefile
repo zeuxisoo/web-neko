@@ -14,6 +14,9 @@ vendor:
 update-vendor:
 	@php composer.phar update
 
+database:
+	@php artisan migrate
+
 watch:
 	@npm run dev
 
