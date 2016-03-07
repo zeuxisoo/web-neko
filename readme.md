@@ -25,6 +25,11 @@ Migrate database
 
     make database
 
+Build assets
+
+    npm install
+    make assets
+
 ## Development
 
 Start server

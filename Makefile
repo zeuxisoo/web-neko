@@ -22,3 +22,6 @@ watch:
 
 server:
 	@php artisan serve
+
+assets:
+	@npm run build
