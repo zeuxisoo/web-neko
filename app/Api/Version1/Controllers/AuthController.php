@@ -15,8 +15,10 @@ class AuthController extends ApiController {
 
         if (preg_match("/^[0-9+]{8}$/i", $account) == true) {
             $input['phone'] = $account;
-        }else{
+        }else if (filter_var($account, FILTER_VALIDATE_EMAIL) !== false) {
             $input['email'] = $account;
+        }else{
+            $input['name'] = $account;
         }
 
         unset($input['account']);
