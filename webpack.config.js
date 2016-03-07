@@ -2,7 +2,7 @@ var webpack = require("webpack");
 var vue = require("vue-loader");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var cssLoader  = ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!postcss-loader");
+var cssLoader = ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!postcss-loader");
 
 var publicPath = "/build/";
 
@@ -60,9 +60,6 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery",
             "window.jQuery": "jquery"
-        }),
-        new ExtractTextPlugin("bundle.css", {
-            disable: false
         })
     ],
 }

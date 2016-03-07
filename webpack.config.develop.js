@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.config');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+var config    = require('./webpack.config');
 
 config.devtool = 'eval';
 
@@ -13,7 +15,10 @@ config.output.publicPath = 'http://localhost:9090/' + config.output.publicPath.r
 
 config.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new ExtractTextPlugin("bundle.css", {
+        disable: false
+    })
 );
 
 var app = new WebpackDevServer(webpack(config), {

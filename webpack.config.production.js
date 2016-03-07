@@ -1,11 +1,17 @@
 var webpack = require('webpack');
-var discardComments = require('postcss-discard-comments');
+var discardComments = require('postcss-discard-comments')
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ManifestPlugin = require('webpack-manifest-plugin');
 
 var config = require('./webpack.config');
 
-config.devtool = 'hidden-source-map';
+config.output.filename = 'bundle.[hash].js';
+config.devtool         = 'hidden-source-map';
 
 config.plugins.push(
+    new ExtractTextPlugin("bundle.[hash].css", {
+        disable: false
+    }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({
         '__DEV__': false,
@@ -21,6 +27,9 @@ config.plugins.push(
             screw_ie8: true,
             warnings: false
         }
+    }),
+    new ManifestPlugin({
+        fileName: 'rev-manifest.json',
     })
 );
 

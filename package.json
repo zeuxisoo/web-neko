@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "node webpack.config.develop.js",
-    "build": "NODE_ENV=production webpack --config webpack.config.production.js -p --progress --profile --colors"
+    "build": "rm -rf ./public/build; NODE_ENV=production webpack --config webpack.config.production.js -p --progress --profile --colors"
   },
   "devDependencies": {
     "babel-core": "^6.4.5",
@@ -22,7 +22,8 @@
     "vue-loader": "^8.1.1",
     "vue-style-loader": "^1.0.0",
     "webpack": "^1.12.12",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "webpack-manifest-plugin": "^1.0.0"
   },
   "dependencies": {
     "animate.css": "^3.5.1",
