@@ -60,6 +60,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
 import 'animate.css/animate.min.css'
 import 'toastr/build/toastr.min.css'
+import 'sweetalert/dist/sweetalert.css'
+import 'sweetalert/dist/sweetalert.min'
 import '../css/app.css'
 import Vue from 'vue'
 import StorageHelper from '../helpers/storage'
@@ -80,6 +82,14 @@ export default {
     },
 
     ready() {
+        if (sessionStorage.length === 0) {
+            swal({
+                title             : "Oops !!!",
+                text              : "Please do not using this application in safari private mode",
+                showConfirmButton : false
+            });
+        }
+
         $('.navbar-collapse').click('li', function() {
             $('.navbar-collapse').collapse('hide');
         });
