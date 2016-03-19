@@ -80,6 +80,8 @@ export default {
                 }).then(
                     (response) => {
                         MessageHelper.success('The activity created');
+
+                        this.activity_at = moment().format('YYYY-MM-DD HH:mm:ss');
                     },
                     (response) => {
                         let reason = response.data;

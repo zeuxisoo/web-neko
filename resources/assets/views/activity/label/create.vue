@@ -52,6 +52,8 @@ export default {
                 }).then(
                     (response) => {
                         MessageHelper.success('Activity label created');
+
+                        this.name = "";
                     },
                     (response) => {
                         let reason = response.data;
