@@ -82,7 +82,9 @@ export default {
     },
 
     ready() {
-        if (sessionStorage.length === 0) {
+        try {
+            StorageHelper.set('_test', new Date());
+        }catch(e) {
             swal({
                 title             : "Oops !!!",
                 text              : "Please do not using this application in safari private mode",
