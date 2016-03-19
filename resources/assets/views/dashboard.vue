@@ -112,6 +112,10 @@ export default {
                 }).then(
                     (response) => {
                         MessageHelper.success('Dashboard message created');
+
+                        this.subject = "";
+                        this.content = "";
+
                         this.fetchMessages(1);
                     },
                     (response) => {
