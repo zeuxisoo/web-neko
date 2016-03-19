@@ -101,6 +101,9 @@ export default {
                 }).then(
                     (response) => {
                         MessageHelper.success('The content was bookmarked');
+
+                        this.content = "";
+
                         this.fetchBookmarks(1);
                     },
                     (response) => {
