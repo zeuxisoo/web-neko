@@ -16,7 +16,7 @@
                     </div>
                 </form>
             </div>
-        <shake-error-panel>
+        </shake-error-panel>
 
         <div class="panel panel-default" v-for="bookmark in bookmarks">
             <div class="panel-heading">{{ bookmark.created_at }}</div>

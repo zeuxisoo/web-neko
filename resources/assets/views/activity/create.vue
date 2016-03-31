@@ -28,7 +28,7 @@
                     </div>
                 </form>
             </div>
-        <shake-error-panel>
+        </shake-error-panel>
     </div>
 </template>
 

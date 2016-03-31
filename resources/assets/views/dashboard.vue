@@ -22,7 +22,7 @@
                     </div>
                 </form>
             </div>
-        <shake-error-panel>
+        </shake-error-panel>
 
         <div class="panel panel-default" v-for="message in messages">
             <div class="panel-heading">{{ message.subject | byDefault 'N/A' }}</div>
