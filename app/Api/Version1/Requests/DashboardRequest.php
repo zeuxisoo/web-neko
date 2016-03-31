@@ -12,7 +12,7 @@ class DashboardRequest extends ApiRequest {
 
     public function rules() {
         return [
-            'content' => 'required',
+            'content' => 'required|unique:dashboards,content',
         ];
     }
 
