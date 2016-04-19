@@ -10,7 +10,7 @@ class Dashboard extends Model {
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'subject', 'content'];
+    protected $fillable = ['user_id', 'kind', 'subject', 'content'];
 
     protected $hidden = [];
 

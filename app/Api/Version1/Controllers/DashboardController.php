@@ -18,7 +18,8 @@ class DashboardController extends ApiController {
         $input = array_merge(
             $request->only('subject', 'content'),
             [
-                'user_id' => $this->auth->user()->id
+                'user_id' => $this->auth->user()->id,
+                'kind'    => 'text'
             ]
         );
 
