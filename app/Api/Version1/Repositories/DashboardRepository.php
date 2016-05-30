@@ -15,7 +15,7 @@ class DashboardRepository extends ApiRepository {
     }
 
     public function all() {
-        return $this->dashboard->orderBy('created_at', 'desc')->paginate(2);
+        return $this->dashboard->orderBy('created_at', 'desc')->paginate(8);
     }
 
 }
