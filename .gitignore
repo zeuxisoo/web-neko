@@ -1,8 +1,18 @@
-/vendor
 /node_modules
-Homestead.yaml
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+/.idea
+/.vagrant
 Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
 .env
 
+/public/fonts
+/public/js
+/public/mix-manifest.json
+/storage/default.sqlite
 composer.phar
-/public/build

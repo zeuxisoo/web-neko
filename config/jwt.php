@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of jwt-auth.
+ *
+ * (c) Sean Tymon <tymon148@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 return [
 
     /*
@@ -12,7 +21,7 @@ return [
     |
     */
 
-    'secret' => env('JWT_SECRET', 'K96BmuCK8kRxSvTMssOT1iWgCXrAvrTB'),
+    'secret' => env('JWT_SECRET', 'changeme'),
 
     /*
     |--------------------------------------------------------------------------
@@ -96,7 +105,7 @@ return [
     | Blacklist Enabled
     |--------------------------------------------------------------------------
     |
-    | In order to invalidate tokens, you must have the the blacklist enabled.
+    | In order to invalidate tokens, you must have the blacklist enabled.
     | If you do not want or need this functionality, then set this to false.
     |
     */
@@ -146,9 +155,7 @@ return [
         |
         */
 
-        'auth' => function ($app) {
-            return new Tymon\JWTAuth\Providers\Auth\IlluminateAuthAdapter($app['auth']);
-        },
+        'auth' => 'Tymon\JWTAuth\Providers\Auth\IlluminateAuthAdapter',
 
         /*
         |--------------------------------------------------------------------------
@@ -159,10 +166,8 @@ return [
         |
         */
 
-        'storage' => function ($app) {
-            return new Tymon\JWTAuth\Providers\Storage\IlluminateCacheAdapter($app['cache']);
-        }
+        'storage' => 'Tymon\JWTAuth\Providers\Storage\IlluminateCacheAdapter',
 
-    ]
+    ],
 
 ];

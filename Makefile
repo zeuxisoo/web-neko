@@ -1,12 +1,20 @@
 all:
-	@echo "make watch"
-	@echo "make server"
+	@echo
+	@echo "Command            : Description"
+	@echo "------------------ : ------------------"
+	@echo "make composer      : Download the composer.phar file"
+	@echo "make vendor        : Install the application vendors"
+	@echo "make update-vendor : Update the application vendors"
+	@echo "make database      : Migrate the database schemas"
+	@echo "make server        : Start the development web server"
+	@echo "make watch-assets  : Watch the assets when changed"
+	@echo "make hot-assets    : Start hot server for assets development"
+	@echo "make dev-assets    : Generate the development ready assets"
+	@echo "make prod-assets   : Generate the production ready assets"
+	@echo
 
 composer:
-	@php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php
-	@php -r "if (hash('SHA384', file_get_contents('composer-setup.php')) === 'fd26ce67e3b237fffd5e5544b45b0d92c41a4afe3e3f778e942e43ce6be197b9cdc7c251dcde6e2a52297ea269370680') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); }"
-	@php composer-setup.php
-	@php -r "unlink('composer-setup.php');"
+	wget https://getcomposer.org/composer.phar
 
 vendor:
 	@php composer.phar install
@@ -17,11 +25,17 @@ update-vendor:
 database:
 	@php artisan migrate
 
-watch:
-	@npm run dev
-
 server:
 	@php artisan serve
 
-assets:
-	@npm run build
+watch-assets:
+	@npm run watch
+
+hot-assets:
+	@npm run hot
+
+dev-assets:
+	@npm run dev
+
+prod-assets:
+	@npm run prod

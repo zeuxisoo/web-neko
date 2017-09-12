@@ -28,7 +28,7 @@ Migrate database
 Build assets
 
     npm install
-    make assets
+    make prod-assets
 
 ## Development
 
@@ -38,7 +38,7 @@ Start server
 
 Watch assets
 
-    make watch
+    make hot-assets
 
 Seed database
 

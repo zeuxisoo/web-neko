@@ -7,17 +7,19 @@
 <title>Brand</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 @if (config("app.debug") === true)
-    <link rel="stylesheet" href="http://localhost:9090/build/bundle.css">
+    <link rel="stylesheet" href="http://localhost:8080/css/app.css">
 @else
-    <link rel="stylesheet" href="{{ elixir('main.css') }}">
+    <link rel="stylesheet" href="{{ elixir('app.css') }}">
 @endif
 </head>
 <body>
-<div id="app"></div>
+<div id="app">
+    <example></example>
+</div>
 @if (config("app.debug") === true)
-    <script src="http://localhost:9090/build/bundle.js"></script>
+    <script src="http://localhost:8080/js/app.js"></script>
 @else
-    <script src="{{ elixir('main.js') }}"></script>
+    <script src="{{ elixir('app.js') }}"></script>
 @endif
 </body>
 </html>
