@@ -1,6 +1,7 @@
 import './bootstrap'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import App from './views/App'
 
 window.Vue = Vue
 
@@ -22,6 +23,11 @@ const router = new VueRouter({
     ]
 });
 
-const app = new Vue({
-  router
-}).$mount('#app')
+const application = new Vue({
+    el: '#app',
+    router: router,
+    template: '<App/>',
+    components: {
+        App
+    }
+})

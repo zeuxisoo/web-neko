@@ -13,9 +13,7 @@
 @endif
 </head>
 <body>
-<div id="app">
-    <router-view></router-view>
-</div>
+<div id="app"></div>
 @if (config("app.debug") === true)
     <script src="http://localhost:8080/js/app.js"></script>
 @else
