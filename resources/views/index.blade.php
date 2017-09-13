@@ -14,7 +14,7 @@
 </head>
 <body>
 <div id="app">
-    <example></example>
+    <router-view></router-view>
 </div>
 @if (config("app.debug") === true)
     <script src="http://localhost:8080/js/app.js"></script>
