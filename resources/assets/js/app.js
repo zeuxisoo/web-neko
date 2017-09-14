@@ -2,6 +2,8 @@ import './bootstrap'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './views/App'
+import Api from './api'
+import axios from 'axios'
 
 window.Vue = Vue
 
@@ -21,7 +23,27 @@ const router = new VueRouter({
             redirect: '/'
         }
     ]
-});
+})
+
+Object.defineProperties(Vue.prototype, {
+    $http: {
+        get() {
+            return axios.create({
+                timeout: 1000,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN'    : document.head.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+        }
+    },
+
+    $api: {
+        get() {
+            return new Api(this).entries();
+        }
+    },
+})
 
 const application = new Vue({
     el: '#app',
