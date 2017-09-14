@@ -10,7 +10,7 @@ class DashboardTransformer extends TransformerAbstract {
         return [
             'id'      => $dashboard->id,
             'user'    => $dashboard->user,
-            'subject' => $dashboard->name,
+            'subject' => $dashboard->subject,
             'content' => $dashboard->content,
         ];
     }
