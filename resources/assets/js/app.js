@@ -3,6 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './views/App'
 import Api from './api'
+import EventBus from './helpers/event-bus'
 import axios from 'axios'
 
 window.Vue = Vue
@@ -40,9 +41,13 @@ Object.defineProperties(Vue.prototype, {
 
     $api: {
         get() {
-            return new Api(this).entries();
+            return new Api(this).entries()
         }
     },
+
+    $eventBus: {
+        value: new EventBus()
+    }
 })
 
 const application = new Vue({

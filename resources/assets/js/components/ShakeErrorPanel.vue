@@ -1,8 +1,9 @@
 <script>
 import Vue from 'vue'
 import MessageHelper from '../helpers/message'
+import EventBus from '../helpers/event-bus'
 
-const EventHub = new Vue()
+const EventHub = new EventBus()
 
 const component = Vue.extend({
     template: `
@@ -18,7 +19,7 @@ const component = Vue.extend({
     },
 
     created() {
-        EventHub.$on("shake", (message) => {
+        EventHub.on("shake", (message) => {
             MessageHelper.error(message)
 
             this.error = true;
@@ -26,13 +27,17 @@ const component = Vue.extend({
               this.error = false
             }.bind(this), 1000)
         })
+    },
+
+    beforeDestroy() {
+        EventHub.off("shake")
     }
 })
 
 const mixin = {
     methods: {
         shakeError(message) {
-            EventHub.$emit("shake", message)
+            EventHub.emit("shake", message)
         }
     }
 }
