@@ -15,7 +15,7 @@ class CreateDashboardTable extends Migration
         Schema::create('dashboards', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
-            $table->string('subject', 180);
+            $table->string('subject', 180)->nullable();
             $table->text('content');
             $table->softDeletes();
             $table->timestamps();
