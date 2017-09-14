@@ -9,7 +9,7 @@ export default class User extends Base {
     }
 
     me() {
-        return this.vue.$http.post(this.apiUrl('/user/me'));
+        return this.vue.$http.post(this.apiUrl('/user/me'))
     }
 
 }

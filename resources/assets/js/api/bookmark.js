@@ -9,11 +9,13 @@ export default class Bookmark extends Base {
     }
 
     create(data) {
-        return this.vue.$http.post(this.apiUrl('/bookmark/create'), data);
+        return this.vue.$http.post(this.apiUrl('/bookmark/create'), data)
     }
 
     all(params) {
-        return this.vue.$http.get(this.apiUrl('/bookmark/all'), params);
+        return this.vue.$http.get(this.apiUrl('/bookmark/all'), {
+            params: params
+        })
     }
 
 }
