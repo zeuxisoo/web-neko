@@ -48,7 +48,36 @@ export default {
 
     methods: {
         submit() {
-            this.shakeError("Testing");
+            if (this.account === "") {
+                this.shakeError("Please enter account")
+            }else if (this.password === "") {
+                this.shakeError("Please enter password")
+            }else{
+                this.$api.auth.login({
+                    account : this.account,
+                    password: this.password
+                }).then(response => {
+                    let data = response.data
+                    let token = data.token
+
+                    if (token) {
+                        this.$eventBus.emit('tokenSaved', token)
+                    }else{
+                        this.shakeError('Not found token value')
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        let data = error.response.data
+
+                        if (data.message) {
+                            this.shakeError(data.message)
+                            return
+                        }
+                    }
+
+                    console.log("Home.vue", error)
+                })
+            }
         }
     }
 }
