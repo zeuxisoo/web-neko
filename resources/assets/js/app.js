@@ -30,6 +30,14 @@ const router = new VueRouter({
             }
         },
         {
+            path     : '/bookmark',
+            name     : 'bookmark',
+            component: require('./views/Bookmark.vue'),
+            meta     : {
+                auth: true,
+            }
+        },
+        {
             path    : '*',
             redirect: '/'
         }

@@ -24,6 +24,11 @@
                             </router-link>
                         </li>
                         <li v-if="authenticated">
+                            <router-link :to="{ name: 'bookmark' }" class="nav-link">
+                                <i class="glyphicon glyphicon-bookmark"></i> Bookmark
+                            </router-link>
+                        </li>
+                        <li v-if="authenticated">
                             <a href="javascript:void(0)" class="nav-link" v-on:click="logout">
                                 <i class="glyphicon glyphicon-log-out"></i> Logout
                             </a>
