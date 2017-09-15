@@ -15,6 +15,10 @@
 //     return view('welcome');
 // });
 
-Route::group(['middleware' => ['web']], function () {
-    Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
-});
+// Route::group(['middleware' => ['web']], function () {
+//     Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
+// });
+
+Route::get('{path}', function() {
+    return view('index');
+})->where('path', '(.*)');
