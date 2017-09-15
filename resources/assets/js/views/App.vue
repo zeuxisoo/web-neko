@@ -86,9 +86,12 @@ export default {
                     this.user          = response.user
                     this.authenticated = true
 
-                    this.$router.push({
-                        name: 'dashboard'
-                    });
+                    // If the in home page (/), redirect to dashboard page (/dashboard)
+                    if (this.$route.name === 'home') {
+                        this.$router.push({
+                            name: 'dashboard'
+                        })
+                    }
                 }).catch(error => {
                     if (error.response) {
                         let data = error.response.data
