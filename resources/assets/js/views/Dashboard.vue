@@ -80,14 +80,12 @@ export default {
     },
 
     created() {
-        this.fetchMessages(1)
+        this.fetchMessagesByPageNo()
     },
 
     watch: {
         $route() {
-            let page = 'page' in this.$route.query ? this.$route.query.page : 1
-
-            this.fetchMessages(page)
+            this.fetchMessagesByPageNo()
         }
     },
 
@@ -138,6 +136,12 @@ export default {
                     console.log("Dashboard.vue", error)
                 })
             }
+        },
+
+        fetchMessagesByPageNo() {
+            let page = 'page' in this.$route.query ? this.$route.query.page : 1
+
+            this.fetchMessages(page)
         },
 
         fetchMessages(page) {
