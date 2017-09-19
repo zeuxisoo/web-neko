@@ -39,6 +39,7 @@ const router = new VueRouter({
         },
         {
             path     : '/activity',
+            component: require('./views/Activity.vue'),
             meta     : {
                 auth: true,
             },
