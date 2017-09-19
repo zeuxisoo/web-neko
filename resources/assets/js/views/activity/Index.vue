@@ -22,7 +22,7 @@
                     <div class="col-sm-12">
                         <label class="label label-default">{{ activity.activity_at }}</label>
                         <label class="label label-info">{{ activity.label.name }}</label>
-                        <small class="text-muted">{{ activity.remark | byDefault 'No remark' }}</small>
+                        <small class="text-muted">{{ activity.remark | byDefault('No remark') }}</small>
                     </div>
                 </div>
             </div>
