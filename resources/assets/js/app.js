@@ -47,22 +47,34 @@ const router = new VueRouter({
                 {
                     path     : 'index',
                     name     : 'activity_index',
-                    component: require('./views/activity/Index.vue')
+                    component: require('./views/activity/Index.vue'),
+                    meta     : {
+                        auth: true,
+                    }
                 },
                 {
                     path     : 'create',
                     name     : 'activity_create',
-                    component: require('./views/activity/Create.vue')
+                    component: require('./views/activity/Create.vue'),
+                    meta     : {
+                        auth: true,
+                    }
                 },
                 {
                     path     : 'label/create',
                     name     : 'activity_label_create',
-                    component: require('./views/activity/label/Create.vue')
+                    component: require('./views/activity/label/Create.vue'),
+                    meta     : {
+                        auth: true,
+                    }
                 },
                 {
                     path     : 'label/manage',
                     name     : 'activity_label_manage',
-                    component: require('./views/activity/label/Manage.vue')
+                    component: require('./views/activity/label/Manage.vue'),
+                    meta     : {
+                        auth: true,
+                    }
                 }
             ]
         },
