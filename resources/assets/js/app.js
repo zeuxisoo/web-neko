@@ -38,6 +38,34 @@ const router = new VueRouter({
             }
         },
         {
+            path     : '/activity',
+            meta     : {
+                auth: true,
+            },
+            children: [
+                {
+                    path     : 'index',
+                    name     : 'activity_index',
+                    component: require('./views/activity/Index.vue')
+                },
+                {
+                    path     : 'create',
+                    name     : 'activity_create',
+                    component: require('./views/activity/Create.vue')
+                },
+                {
+                    path     : 'label/create',
+                    name     : 'activity_label_create',
+                    component: require('./views/activity/label/Create.vue')
+                },
+                {
+                    path     : 'label/manage',
+                    name     : 'activity_label_manage',
+                    component: require('./views/activity/label/Manage.vue')
+                }
+            ]
+        },
+        {
             path    : '*',
             redirect: '/'
         }

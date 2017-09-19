@@ -29,6 +29,11 @@
                             </router-link>
                         </li>
                         <li v-if="authenticated">
+                            <router-link :to="{ name: 'activity_index' }" class="nav-link">
+                                <i class="glyphicon glyphicon-stats"></i> Activity
+                            </router-link>
+                        </li>
+                        <li v-if="authenticated">
                             <a href="javascript:void(0)" class="nav-link" v-on:click="logout">
                                 <i class="glyphicon glyphicon-log-out"></i> Logout
                             </a>
