@@ -6,7 +6,9 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <span class="btn btn-xs btn-default label-space" v-for="label in labels">
-                            <a v-link="{ name: 'activity_index', query: { label: label.id } }">{{ label.name }}</a>
+                            <router-link :to="{ name: 'activity_index', query: { label: label.id } }">
+                                {{ label.name }}
+                            </router-link>
                         </span>
                     </div>
                 </div>
@@ -29,6 +31,17 @@
 </template>
 
 <style>
+.label-space {
+    margin: 0px 2px;
+}
+
+.label-space a {
+    text-decoration: none;
+}
+
+.row-activity:nth-child(n+2) {
+    padding-top: 10px;
+}
 </style>
 
 <script>
