@@ -9,7 +9,7 @@
 @if (config("app.debug") === true)
     <link rel="stylesheet" href="http://localhost:8080/css/app.css">
 @else
-    <link rel="stylesheet" href="{{ elixir('app.css') }}">
+    <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 @endif
 </head>
 <body>
@@ -17,7 +17,7 @@
 @if (config("app.debug") === true)
     <script src="http://localhost:8080/js/app.js"></script>
 @else
-    <script src="{{ elixir('app.js') }}"></script>
+    <script src="{{ elixir('js/app.js') }}"></script>
 @endif
 </body>
 </html>
