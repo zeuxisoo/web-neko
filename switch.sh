@@ -32,6 +32,8 @@ function close_home {
 		clean_views_cache
 
 		rm -rf $OPEN_STATUS_FILE
+
+        echo "OK"
 	else
 		echo "Error! The page is not open"
 	fi
