@@ -15,5 +15,4 @@ yarn-error.log
 /public/js
 /public/mix-manifest.json
 /storage/default.sqlite
-/resources/views/.openning
 composer.phar
