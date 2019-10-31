@@ -10,8 +10,8 @@ class DashboardTransformer extends TransformerAbstract {
         return [
             'id'      => $dashboard->id,
             'user'    => $dashboard->user,
-            'subject' => $dashboard->subject,
-            'content' => $dashboard->content,
+            'subject' => base64_encode($dashboard->subject),
+            'content' => base64_encode($dashboard->content),
         ];
     }
 
