@@ -26,7 +26,7 @@
 
         <div class="panel panel-default" v-for="message in messages">
             <div class="panel-heading">{{ message.subject | byDefault('N/A') }}</div>
-            <div class="panel-body">
+            <div class="panel-body wrap-text">
                 {{ message.content }}
             </div>
         </div>
@@ -52,6 +52,10 @@
 .help-tips {
     margin: 5px 0px 0px 10px;
     font-size: 12px;
+}
+
+.wrap-text {
+    overflow-wrap: break-word;
 }
 </style>
 
