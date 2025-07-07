@@ -9,6 +9,7 @@ all:
 	@echo "make dev      : Start frontned and backend server"
 	@echo "make web      : Start the backend development server"
 	@echo "make assets   : Start the frontned development server"
+	@echo "make format   : format the php file by pint"
 	@echo
 
 composer:
@@ -25,3 +26,6 @@ web:
 
 assets:
 	@npm run dev
+
+format:
+	@php ./vendor/bin/pint
