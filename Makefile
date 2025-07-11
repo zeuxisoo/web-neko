@@ -28,4 +28,4 @@ assets:
 	@npm run dev
 
 format:
-	@php ./vendor/bin/pint
+	@php ./vendor/bin/pint --config ./pint.json
