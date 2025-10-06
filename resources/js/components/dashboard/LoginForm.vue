@@ -1,23 +1,17 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 w-full">
-        <a href="#" class="flex items-center gap-2 self-center font-medium">
-            🐱 Neko
-        </a>
-        <Card class="mx-auto max-w-sm w-full">
+    <div class="flex w-full flex-col gap-6">
+        <a href="#" class="flex items-center gap-2 self-center font-medium"> 🐱 Neko </a>
+        <Card class="mx-auto w-full max-w-sm">
             <CardHeader class="text-center">
-                <CardTitle class="text-xl">
-                    Login
-                </CardTitle>
-                <CardDescription>
-                    Enter your account below to login
-                </CardDescription>
+                <CardTitle class="text-xl"> Login </CardTitle>
+                <CardDescription> Enter your account below to login </CardDescription>
             </CardHeader>
             <CardContent>
                 <div class="grid gap-4">
@@ -28,15 +22,11 @@ import { Label } from "@/components/ui/label"
                     <div class="grid gap-2">
                         <div class="flex items-center">
                             <Label for="password">Password</Label>
-                            <a href="javascript:alert('Don\'t touch me 😡')" class="ml-auto inline-block text-sm">
-                                🔒
-                            </a>
+                            <a href="javascript:alert('Don\'t touch me 😡')" class="ml-auto inline-block text-sm"> 🔒 </a>
                         </div>
                         <Input id="password" type="password" required />
                     </div>
-                    <Button type="button" class="w-full">
-                        Login
-                    </Button>
+                    <Button type="button" class="w-full"> Login </Button>
                 </div>
             </CardContent>
         </Card>
