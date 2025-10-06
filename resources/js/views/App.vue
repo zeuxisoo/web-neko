@@ -1,7 +1,9 @@
 <script setup lang="ts">
-const name: string = 'main';
+import LoginForm from '@/components/dashboard/LoginForm.vue';
 </script>
 
 <template>
-    <div class="app">It's app {{ name }}</div>
+    <div class="flex h-screen w-full items-center justify-center px-4">
+        <LoginForm />
+    </div>
 </template>
