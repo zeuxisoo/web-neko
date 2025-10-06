@@ -11,6 +11,10 @@
 @endif
 </head>
 <body>
-<div id="neko">It is work</div>
+<div id="neko">
+    <div class="flex h-screen w-full items-center justify-center">
+        It is work?
+    </div>
+</div>
 </body>
 </html>
