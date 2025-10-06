@@ -6,34 +6,39 @@ import { Label } from "@/components/ui/label"
 </script>
 
 <template>
-    <Card class="w-full mx-auto max-w-sm">
-        <CardHeader>
-            <CardTitle class="text-2xl">
-                Login
-            </CardTitle>
-            <CardDescription>
-                Enter your account below to login
-            </CardDescription>
-        </CardHeader>
-        <CardContent>
-            <div class="grid gap-4">
-                <div class="grid gap-2">
-                    <Label for="account">Account</Label>
-                    <Input id="account" type="text" placeholder="username / email" required />
-                </div>
-                <div class="grid gap-2">
-                    <div class="flex items-center">
-                        <Label for="password">Password</Label>
-                        <a href="javascript:alert('???')" class="ml-auto inline-block text-sm">
-                            🔒
-                        </a>
-                    </div>
-                    <Input id="password" type="password" required />
-                </div>
-                <Button type="button" class="w-full">
+    <div class="flex flex-col gap-6 w-full">
+        <a href="#" class="flex items-center gap-2 self-center font-medium">
+            🐱 Neko
+        </a>
+        <Card class="mx-auto max-w-sm w-full">
+            <CardHeader class="text-center">
+                <CardTitle class="text-xl">
                     Login
-                </Button>
-            </div>
-        </CardContent>
-    </Card>
+                </CardTitle>
+                <CardDescription>
+                    Enter your account below to login
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div class="grid gap-4">
+                    <div class="grid gap-2">
+                        <Label for="account">Account</Label>
+                        <Input id="account" type="text" placeholder="username / email" required />
+                    </div>
+                    <div class="grid gap-2">
+                        <div class="flex items-center">
+                            <Label for="password">Password</Label>
+                            <a href="javascript:alert('Don\'t touch me 😡')" class="ml-auto inline-block text-sm">
+                                🔒
+                            </a>
+                        </div>
+                        <Input id="password" type="password" required />
+                    </div>
+                    <Button type="button" class="w-full">
+                        Login
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
+    </div>
 </template>
