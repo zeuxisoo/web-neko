@@ -10,11 +10,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 @endif
 </head>
-<body>
-<div id="neko">
-    <div class="flex h-screen w-full items-center justify-center">
-        It is work?
+<body class="bg-background overscroll-none font-sans antialiased">
+    <div id="neko">
+        <div class="flex h-screen w-full items-center justify-center">
+            It is work?
+        </div>
     </div>
-</div>
 </body>
 </html>
