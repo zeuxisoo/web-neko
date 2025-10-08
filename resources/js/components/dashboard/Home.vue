@@ -5,7 +5,7 @@ import AppBar from '@/components/dashboard/home/AppBar.vue';
 </script>
 
 <template>
-    <SidebarProvider>
+    <SidebarProvider style="--sidebar-width: 15rem; --sidebar-width-mobile: 17rem;">
         <AppBar />
         <SidebarInset>
             <header
