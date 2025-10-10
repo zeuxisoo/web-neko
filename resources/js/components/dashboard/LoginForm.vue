@@ -3,6 +3,7 @@ import { Button } from '@/components/base/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/base/card';
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
+import { Lock } from 'lucide-vue-next';
 </script>
 
 <template>
@@ -22,7 +23,9 @@ import { Label } from '@/components/base/label';
                     <div class="grid gap-2">
                         <div class="flex items-center">
                             <Label for="password">Password</Label>
-                            <a href="javascript:alert('Don\'t touch me 😡')" class="ml-auto inline-block text-sm"> 🔒 </a>
+                            <a href="javascript:alert('Don\'t touch me 😡')" class="ml-auto inline-block text-sm">
+                                <Lock :size="14" />
+                            </a>
                         </div>
                         <Input id="password" type="password" required />
                     </div>

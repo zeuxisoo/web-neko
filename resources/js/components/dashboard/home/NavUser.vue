@@ -10,6 +10,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/base/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/base/sidebar';
+import { ChevronsUpDown, LogOut, User } from 'lucide-vue-next';
 
 const props = defineProps<{
     user: {
@@ -36,7 +37,7 @@ const { isMobile } = useSidebar();
                             <span class="truncate font-semibold">{{ user.name }}</span>
                             <span class="truncate text-xs">{{ user.email }}</span>
                         </div>
-                        👉
+                        <ChevronsUpDown class="ml-auto size-4" />
                     </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -59,10 +60,16 @@ const { isMobile } = useSidebar();
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                        <DropdownMenuItem> 😒 Profile </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <User />
+                            Profile
+                        </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem> ➡️ Log out </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <LogOut />
+                        Log out
+                    </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </SidebarMenuItem>

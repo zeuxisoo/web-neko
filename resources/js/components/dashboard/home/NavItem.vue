@@ -11,6 +11,7 @@ import {
     SidebarMenuSubItem,
 } from '@/components/base/sidebar';
 import { type NavItem as NavItemType } from '@/types/dashboard';
+import { ChevronRight } from 'lucide-vue-next';
 
 const props = defineProps<{
     items: NavItemType[];
@@ -26,9 +27,9 @@ const props = defineProps<{
                     <SidebarMenuItem>
                         <CollapsibleTrigger as-child>
                             <SidebarMenuButton :tooltip="item.title">
-                                <div v-if="item.icon">{{ item.icon }}</div>
+                                <component :is="item.icon" v-if="item.icon" />
                                 <span>{{ item.title }}</span>
-                                <div class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90">➡️</div>
+                                <ChevronRight class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                             </SidebarMenuButton>
                         </CollapsibleTrigger>
                         <CollapsibleContent>
@@ -48,7 +49,7 @@ const props = defineProps<{
                 <SidebarMenuItem v-if="item.kind === 'single'">
                     <SidebarMenuButton as-child>
                         <a :href="item.url">
-                            {{ item.icon }}
+                            <component :is="item.icon" v-if="item.icon" />
                             <span>{{ item.title }}</span>
                         </a>
                     </SidebarMenuButton>

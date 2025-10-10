@@ -12,6 +12,7 @@ import {
 import NavItem from '@/components/dashboard/home/NavItem.vue';
 import NavUser from '@/components/dashboard/home/NavUser.vue';
 import { type NavItem as NavItemType } from '@/types/dashboard';
+import { Shrub, Box } from 'lucide-vue-next';
 
 const props = withDefaults(defineProps<SidebarProps>(), {
     collapsible: 'icon',
@@ -28,7 +29,7 @@ const data = {
             kind: 'group',
             title: 'Park',
             url: '#',
-            icon: '🐱',
+            icon: Shrub,
             isActive: true,
             items: [
                 { title: 'Pulse', url: '#' },
@@ -39,7 +40,7 @@ const data = {
             kind: 'single',
             title: 'Inventory',
             url: '#',
-            icon: '🐶',
+            icon: Box,
         },
     ] as NavItemType[],
 };
