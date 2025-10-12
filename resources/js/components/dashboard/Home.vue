@@ -2,7 +2,7 @@
 import { Separator } from '@/components/base/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/base/sidebar';
 import AppBar from '@/components/dashboard/home/AppBar.vue';
-import ThemeSwitcher from '@/components/dashboard/home/ThemeSwitcher.vue';
+import AppearanceSwitcher from '@/components/dashboard/home/AppearanceSwitcher.vue';
 </script>
 
 <template>
@@ -17,7 +17,7 @@ import ThemeSwitcher from '@/components/dashboard/home/ThemeSwitcher.vue';
                     <Separator orientation="vertical" class="mr-2 h-4" />
                     <h1 className="text-base font-medium">Yowl</h1>
                     <div className="ml-auto flex items-center gap-2">
-                        <ThemeSwitcher />
+                        <AppearanceSwitcher />
                     </div>
                 </div>
             </header>
