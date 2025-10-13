@@ -2,12 +2,10 @@
 const isLoggedIn = true;
 
 import Home from '@/components/dashboard/Home.vue';
-import LoginForm from '@/components/dashboard/LoginForm.vue';
+import Login from '@/components/login/Login.vue';
 </script>
 
 <template>
-    <div class="flex h-screen w-full items-center justify-center px-4" v-if="!isLoggedIn">
-        <LoginForm />
-    </div>
+    <Login v-if="!isLoggedIn" />
     <Home v-else />
 </template>
