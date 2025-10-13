@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Separator } from '@/components/base/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/base/sidebar';
-import AppBar from '@/components/dashboard/home/AppBar.vue';
-import AppearanceSwitcher from '@/components/dashboard/home/AppearanceSwitcher.vue';
-import ThemeSwitcher from './home/ThemeSwitcher.vue';
+import AppBar from '@/components/home/sidebar/AppBar.vue';
+import AppearanceSwitcher from '@/components/home/sidebar/AppearanceSwitcher.vue';
+import ThemeSwitcher from '@/components/home/sidebar/ThemeSwitcher.vue';
 </script>
 
 <template>
