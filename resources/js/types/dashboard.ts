@@ -1,5 +1,5 @@
-import { LucideProps } from "lucide-vue-next";
-import { FunctionalComponent } from "vue";
+import { LucideProps } from 'lucide-vue-next';
+import { FunctionalComponent } from 'vue';
 
 export type NavItem = {
     kind: 'group' | 'single';

@@ -12,7 +12,7 @@ import {
 import NavItem from '@/components/dashboard/home/NavItem.vue';
 import NavUser from '@/components/dashboard/home/NavUser.vue';
 import { type NavItem as NavItemType } from '@/types/dashboard';
-import { Shrub, Box } from 'lucide-vue-next';
+import { Box, Shrub } from 'lucide-vue-next';
 
 const props = withDefaults(defineProps<SidebarProps>(), {
     collapsible: 'icon',
