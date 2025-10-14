@@ -9,8 +9,8 @@ import {
     SidebarProps,
     SidebarRail,
 } from '@/components/base/sidebar';
-import NavItem from '@/components/home/sidebar/NavItem.vue';
-import NavUser from '@/components/home/sidebar/NavUser.vue';
+import NavItem from '@/components/sidebar/NavItem.vue';
+import NavUser from '@/components/sidebar/NavUser.vue';
 import { type NavItem as NavItemType } from '@/types/dashboard';
 import { Box, Shrub } from 'lucide-vue-next';
 
