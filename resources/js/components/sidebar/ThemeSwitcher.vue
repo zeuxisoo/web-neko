@@ -9,10 +9,11 @@ import {
     DropdownMenuTrigger,
 } from '@/components/base/dropdown-menu';
 import { useStorage } from '@vueuse/core';
-import { SwatchBook } from 'lucide-vue-next';
+import { Check, SwatchBook } from 'lucide-vue-next';
 import { onMounted } from 'vue';
 
 const themes = {
+    default : 'Default',
     eggplant: 'Eggplant',
     mushroom: 'Mushroom',
 };
@@ -21,13 +22,15 @@ const activeTheme = useStorage<string>('active-theme', '');
 
 onMounted(() => {
     if (activeTheme.value !== '') {
-        document.documentElement.classList.add(`${activeTheme.value}`);
+    document.documentElement.classList.add(addThemePrefix(activeTheme.value));
     }
 });
 
+const addThemePrefix = (name: string) => `theme-${name}`;
+
 const setTheme = (name: string) => {
     const oldTheme = activeTheme.value;
-    const newTheme = `theme-${name}`;
+    const newTheme = name;
 
     changeTheme(oldTheme, newTheme);
 };
@@ -36,9 +39,9 @@ const changeTheme = (from: string, to: string) => {
     const html = document.documentElement;
 
     if (from !== '') {
-        html.classList.remove(from);
+        html.classList.remove(addThemePrefix(from));
     }
-    html.classList.add(to);
+    html.classList.add(addThemePrefix(to));
 
     activeTheme.value = to;
 };
@@ -56,7 +59,10 @@ const changeTheme = (from: string, to: string) => {
             <DropdownMenuLabel>Theme List</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <template v-for="(name, key) in themes">
-                <DropdownMenuItem @click="setTheme(key)">{{ name }}</DropdownMenuItem>
+                <DropdownMenuItem class="flex" @click="setTheme(key)">
+                    <div class="flex-1">{{ name }}</div>
+                    <Check v-if="key === activeTheme" />
+                </DropdownMenuItem>
             </template>
         </DropdownMenuContent>
     </DropdownMenu>
