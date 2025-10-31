@@ -3,7 +3,8 @@ import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import { Textarea } from '@/components/base/textarea';
 import TagsInput from '@/components/tags-input/TagsInput.vue';
-import { ImageUp, SendHorizontal } from 'lucide-vue-next';
+import ImageDialog from '@/components/upload-dialog/ImageDialog.vue';
+import { SendHorizontal } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 const remoteTags = [
@@ -33,9 +34,7 @@ const submit = () => {
                     </div>
                     <div class="flex gap-2">
                         <div class="flex-1">
-                            <Button>
-                                <ImageUp />
-                            </Button>
+                            <ImageDialog />
                         </div>
                         <Button @click="submit">
                             <SendHorizontal /> Submit
