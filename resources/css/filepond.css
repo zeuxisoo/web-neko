@@ -2,10 +2,26 @@
     .filepond--root {
         margin-bottom: 0rem;
     }
+    .filepond--file-info-main {
+        text-overflow: ellipsis;
+    }
+    .filepond--file-status {
+        overflow: hidden;
+        max-width: 50%;
+        text-overflow: ellipsis;
+    }
     .filepond--item {
-        width: calc(25% - 0.5em);
+        width: calc(100% - 0.5em);
     }
     .filepond--credits {
         display: none;
     }
+    /* max-width < 24rem (384px)
+     * @container (max-width < 24rem) { … }
+    @media (max-width: theme("screens.sm")) {
+        .filepond--item {
+            width: calc(50% - 0.5em);
+        }
+    }
+    */
 }
