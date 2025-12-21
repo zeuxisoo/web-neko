@@ -60,6 +60,12 @@ const changeTheme = (from: string, to: string) => {
             <DropdownMenuSeparator />
             <template v-for="(name, key) in themes">
                 <DropdownMenuItem class="flex" @click="setTheme(key)">
+                    <div :class="[`theme-${key}`, 'bg-base-100 grid grid-cols-2 gap-0.5 rounded-sm p-1 shadow-sm']">
+                        <div class="background size-1 rounded-md"></div>
+                        <div class="bg-primary size-1 rounded-md"></div>
+                        <div class="bg-secondary size-1 rounded-md"></div>
+                        <div class="bg-accent size-1 rounded-md"></div>
+                    </div>
                     <div class="flex-1">{{ name }}</div>
                     <Check v-if="key === activeTheme" />
                 </DropdownMenuItem>
