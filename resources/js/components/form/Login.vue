@@ -4,6 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
 import { Lock } from 'lucide-vue-next';
+import { ref } from 'vue';
+import PasswordInput from './PasswordInput.vue';
+
+const account = ref('');
+const password = ref('');
+
+const handleLogin = () => {
+    console.log(account.value, password.value);
+}
 </script>
 
 <template>
@@ -18,7 +27,12 @@ import { Lock } from 'lucide-vue-next';
                 <div class="grid gap-4">
                     <div class="grid gap-2">
                         <Label for="account">Account</Label>
-                        <Input id="account" type="text" placeholder="username / email" required />
+                        <Input
+                            v-model="account"
+                            id="account"
+                            type="text"
+                            placeholder="username / email"
+                            required />
                     </div>
                     <div class="grid gap-2">
                         <div class="flex items-center">
@@ -27,9 +41,13 @@ import { Lock } from 'lucide-vue-next';
                                 <Lock :size="14" />
                             </a>
                         </div>
-                        <Input id="password" type="password" required />
+                        <PasswordInput
+                            v-model="password"
+                            :enable-password-toggle="true"
+                            id="password"
+                            type="password" />
                     </div>
-                    <Button type="button" class="w-full"> Login </Button>
+                    <Button type="button" class="w-full" @click="handleLogin"> Login </Button>
                 </div>
             </CardContent>
         </Card>
