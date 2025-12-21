@@ -1,23 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Card, CardContent } from '@/components/base/card';
 import { Button } from '@/components/base/button';
+import { Card, CardContent } from '@/components/base/card';
+import { Textarea } from '@/components/base/textarea';
 import { ImageDialog } from '@/components/upload-dialog';
 import { SendHorizontal } from 'lucide-vue-next';
-import { Textarea } from '@/components/base/textarea';
-import { TagsInput } from '@/components/tags-input';
+import { ref, useTemplateRef } from 'vue';
 
-const currentTags = ref<string[]>([]);
+const editorRef = useTemplateRef<HTMLTextAreaElement>('editor-ref');
+const editor = ref('');
 
-const remoteTags = [
-    { value: 'apple', label: 'Apple' },
-    { value: 'banana', label: 'Banana' },
-    { value: 'cherry', label: 'Cherry' },
-    { value: 'durian', label: 'Durian' },
-];
+const updateEditorHeight = () => {
+    // add 4px to match `p-1` style when user input
+    if (editorRef.value && editorRef.value.style) {
+        console.log(editorRef.value);
+        editorRef.value.style.height = 'auto';
+        editorRef.value.style.height = (editorRef.value.scrollHeight ?? 0) + 4 + 'px';
+    }
+};
 
-const submit = () => {
-    console.log(currentTags.value);
+const handleEditorInput = (_: InputEvent) => {
+    updateEditorHeight();
+};
+
+const handleSubmit = () => {
+    console.log(editor.value);
 };
 </script>
 
@@ -26,18 +32,23 @@ const submit = () => {
         <CardContent>
             <div class="item-center grid w-full gap-4">
                 <div class="flex flex-col">
-                    <Textarea name="content" class="min-h-[100px]" placeholder="Place whatever you want" />
-                </div>
-                <div class="flex w-full items-center">
-                    <TagsInput v-model="currentTags" :remote-tags="remoteTags"  />
+                    <Textarea
+                        v-model="editor"
+                        ref="editor-ref"
+                        rows="1"
+                        name="editor"
+                        class="w-full resize-none rounded-md border-2 p-1"
+                        placeholder="Place whatever you want"
+                        @input="handleEditorInput($event)"
+                        autofocus
+                    >
+                    </Textarea>
                 </div>
                 <div class="flex gap-2">
                     <div class="flex-1">
                         <ImageDialog />
                     </div>
-                    <Button @click="submit">
-                        <SendHorizontal /> Submit
-                    </Button>
+                    <Button @click="handleSubmit"> <SendHorizontal /> Submit </Button>
                 </div>
             </div>
         </CardContent>
