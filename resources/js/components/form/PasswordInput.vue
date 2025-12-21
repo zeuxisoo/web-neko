@@ -28,7 +28,7 @@ const modelValue = useVModel(props, 'modelValue', emits, {
     defaultValue: props.defaultValue,
 });
 
-//
+// control toggle eye button
 const visible = ref(false);
 const isPasswordType = props.type === 'password';
 const inputType = computed(() => {
