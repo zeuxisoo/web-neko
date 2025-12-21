@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const isLoggedIn = true;
+const isLoggedIn = false;
 
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
