@@ -10,6 +10,7 @@ all:
 	@echo "make web      : Start the backend development server"
 	@echo "make assets   : Start the frontned development server"
 	@echo "make format   : format the php file by pint"
+	@echo "make format:cs: format the php file by phpcsfix"
 	@echo
 
 composer:
@@ -29,3 +30,6 @@ assets:
 
 format:
 	@php ./vendor/bin/pint --config ./pint.json
+
+format\:cs:
+	@php ./vendor/bin/php-cs-fixer fix --config=$(CURDIR)/.php-cs-fixer.dist.php
