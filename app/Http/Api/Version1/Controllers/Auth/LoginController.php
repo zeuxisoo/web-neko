@@ -10,7 +10,6 @@ use Laravel\Sanctum\NewAccessToken;
 
 class LoginController extends ApiController
 {
-
     public function login(LoginRequest $request): JsonResponse {
         $request->authenticate();
 
@@ -38,5 +37,4 @@ class LoginController extends ApiController
 
         return $this->respondJsonData($data);
     }
-
 }

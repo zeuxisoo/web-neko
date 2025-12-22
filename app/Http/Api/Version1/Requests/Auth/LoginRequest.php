@@ -70,8 +70,8 @@ class LoginRequest extends ApiFormRequest
         throw ValidationException::withMessages([
             'account' => trans('auth.throttle', [
                 'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60)
-            ])
+                'minutes' => ceil($seconds / 60),
+            ]),
         ]);
     }
 
@@ -104,5 +104,4 @@ class LoginRequest extends ApiFormRequest
     public function getAccountColumnName(): string {
         return filter_var($this->input('account'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
     }
-
 }

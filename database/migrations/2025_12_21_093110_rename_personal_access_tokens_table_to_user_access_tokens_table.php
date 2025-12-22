@@ -4,14 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class() extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::table('personal_access_tokens', function (Blueprint $table) {
+    public function up(): void {
+        Schema::table('personal_access_tokens', function(Blueprint $table) {
             $table->rename('user_access_tokens');
         });
     }
@@ -19,9 +17,8 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::table('user_access_tokens', function (Blueprint $table) {
+    public function down(): void {
+        Schema::table('user_access_tokens', function(Blueprint $table) {
             $table->rename('personal_access_tokens');
         });
     }

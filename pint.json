@@ -1,6 +1,7 @@
 {
     "preset": "laravel",
     "rules": {
+        "not_operator_with_successor_space": false,
         "new_with_parentheses": {
             "anonymous_class": true,
             "named_class": true
@@ -8,7 +9,7 @@
         "braces_position": {
             "control_structures_opening_brace": "same_line",
             "functions_opening_brace": "same_line",
-            "classes_opening_brace": "same_line"
+            "classes_opening_brace": "next_line_unless_newline_at_signature_end"
         },
         "function_declaration": {
             "closure_function_spacing": "none",
