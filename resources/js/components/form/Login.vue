@@ -5,14 +5,16 @@ import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
 import { Lock } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
 import PasswordInput from './PasswordInput.vue';
 
 const account = ref('');
 const password = ref('');
+const isLoading = ref(false);
 
-const handleLogin = () => {
-    console.log(account.value, password.value);
-}
+const handleLogin = async () => {
+    toast.info('Hello');
+};
 </script>
 
 <template>
@@ -27,12 +29,7 @@ const handleLogin = () => {
                 <div class="grid gap-4">
                     <div class="grid gap-2">
                         <Label for="account">Account</Label>
-                        <Input
-                            v-model="account"
-                            id="account"
-                            type="text"
-                            placeholder="username / email"
-                            required />
+                        <Input v-model="account" id="account" type="text" placeholder="username / email" required />
                     </div>
                     <div class="grid gap-2">
                         <div class="flex items-center">
@@ -41,13 +38,11 @@ const handleLogin = () => {
                                 <Lock :size="14" />
                             </a>
                         </div>
-                        <PasswordInput
-                            v-model="password"
-                            :enable-password-toggle="true"
-                            id="password"
-                            type="password" />
+                        <PasswordInput v-model="password" :enable-password-toggle="true" id="password" type="password" />
                     </div>
-                    <Button type="button" class="w-full" @click="handleLogin"> Login </Button>
+                    <Button type="button" class="w-full" @click="handleLogin" :disabled="isLoading">
+                        {{ isLoading ? '<Loader class="animate-spin" />' : "Login" }}
+                    </Button>
                 </div>
             </CardContent>
         </Card>
