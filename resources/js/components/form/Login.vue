@@ -3,6 +3,7 @@ import { Button } from '@/components/base/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/base/card';
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
+import validator from '@/validators';
 import { Lock } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
@@ -13,7 +14,24 @@ const password = ref('');
 const isLoading = ref(false);
 
 const handleLogin = async () => {
-    toast.info('Hello');
+    try {
+        const formData = validator.form('auth.login').validate({
+            account: account.value,
+            password: password.value,
+        });
+
+        console.log(formData);
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            toast.error(e.message);
+            return;
+        }
+
+        toast.error('Unknown error on login action');
+        console.log(e);
+    }
+
+    toast.info('TODO: Call backend api to handle login');
 };
 </script>
 
