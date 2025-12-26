@@ -1,20 +1,22 @@
 <script setup lang="ts">
+import api from '@/api';
 import { Button } from '@/components/base/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/base/card';
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
-import validator from '@/validators';
-import { Lock } from 'lucide-vue-next';
-import { ref } from 'vue';
-import { toast } from 'vue-sonner';
-import PasswordInput from './PasswordInput.vue';
 import { WhoopsHandler } from '@/helpers';
+import validator from '@/validators';
+import { Loader, Lock } from 'lucide-vue-next';
+import { ref } from 'vue';
+import PasswordInput from './PasswordInput.vue';
 
 const account = ref('');
 const password = ref('');
 const isLoading = ref(false);
 
 const handleLogin = async () => {
+    isLoading.value = true;
+
     try {
         const formData = validator.form('auth.login').validate({
             account: account.value,
@@ -23,10 +25,10 @@ const handleLogin = async () => {
 
         console.log(formData);
     } catch (e: unknown) {
-        WhoopsHandler.handleError(e, "Unknown error on handle login action");
+        WhoopsHandler.handleError(e, 'Unknown error on handle login action');
+    } finally {
+        isLoading.value = false;
     }
-
-    toast.info('TODO: Call backend api to handle login');
 };
 </script>
 
@@ -54,7 +56,8 @@ const handleLogin = async () => {
                         <PasswordInput v-model="password" :enable-password-toggle="true" id="password" type="password" />
                     </div>
                     <Button type="button" class="w-full" @click="handleLogin" :disabled="isLoading">
-                        {{ isLoading ? '<Loader class="animate-spin" />' : "Login" }}
+                        <Loader class="animate-spin" v-if="isLoading" />
+                        <template v-else>Login</template>
                     </Button>
                 </div>
             </CardContent>
