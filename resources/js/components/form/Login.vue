@@ -8,6 +8,7 @@ import { Lock } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
 import PasswordInput from './PasswordInput.vue';
+import { WhoopsHandler } from '@/helpers';
 
 const account = ref('');
 const password = ref('');
@@ -22,13 +23,7 @@ const handleLogin = async () => {
 
         console.log(formData);
     } catch (e: unknown) {
-        if (e instanceof Error) {
-            toast.error(e.message);
-            return;
-        }
-
-        toast.error('Unknown error on login action');
-        console.log(e);
+        WhoopsHandler.handleError(e, "Unknown error on handle login action");
     }
 
     toast.info('TODO: Call backend api to handle login');

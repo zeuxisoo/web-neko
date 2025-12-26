@@ -1,4 +1,5 @@
 import AuthLoginValidator from './auth/login';
+import { ValidateError } from './error';
 import Validator from './validator';
 
 /*
@@ -30,3 +31,6 @@ const validator = {
 };
 
 export default validator;
+export {
+    ValidateError
+};

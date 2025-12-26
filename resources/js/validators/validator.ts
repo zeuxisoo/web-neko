@@ -1,6 +1,7 @@
 import { isObject } from 'es-toolkit/compat';
 import { sprintf } from 'sprintf-js';
 import Rule from './rule';
+import { ValidateError } from './error';
 
 class Validator {
 
@@ -72,7 +73,7 @@ class Validator {
             if (!isValid) {
                 const message = sprintf(this.locales[`${attribute}.${ruleName}`], { args: ruleParameters });
 
-                throw new Error(message);
+                throw new ValidateError(message);
             }
         }
 
@@ -118,7 +119,7 @@ class Validator {
         const childAttributeName = childAttributeNames.shift();
 
         if (!childAttributeName) {
-            throw new Error('The child attribute name is undefined');
+            throw new ValidateError('The child attribute name is undefined');
         }
 
         // loop for validate each attribute data inside parent attribute
@@ -146,7 +147,7 @@ class Validator {
                         index: index,
                     });
 
-                    throw new Error(message);
+                    throw new ValidateError(message);
                 }
             }
         }
@@ -188,11 +189,11 @@ class Validator {
     }
 
     rules(): Record<string, string[]> {
-        throw new Error('Method rules() is not implemented');
+        throw new ValidateError('Method rules() is not implemented');
     }
 
     messages(): Record<string, string> {
-        throw new Error('Method locales() is not implemented');
+        throw new ValidateError('Method locales() is not implemented');
     }
 
     checkers() {
