@@ -1,12 +1,11 @@
-import { AfterFetchContext, createFetch } from "@vueuse/core";
-import ApiError from "./error";
-import { WhoopsHandler } from "@/helpers";
+import { createFetch } from '@vueuse/core';
+import ApiError from './error';
 
 const useAgent = createFetch({
-    baseUrl: "/api/v1",
+    baseUrl: '/api/v1',
     options: {
         updateDataOnError: true,
-        beforeFetch: async({ options }) => {
+        beforeFetch: async ({ options }) => {
             const accessToken = window.localStorage.getItem('access-token');
             const headers = new Headers(options.headers);
             headers.set('Accept', 'application/json');
