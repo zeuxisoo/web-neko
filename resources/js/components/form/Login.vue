@@ -23,7 +23,13 @@ const handleLogin = async () => {
             password: password.value,
         });
 
-        console.log(formData);
+        const { data, error } = await api.auth.login(formData as LoginPayload).json<LoginResponse>();
+
+        if (data.value && data.value.ok) {
+            console.log(data.value);
+        } else {
+            throw error.value;
+        }
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error on handle login action');
     } finally {

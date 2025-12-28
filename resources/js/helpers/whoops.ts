@@ -1,11 +1,20 @@
+import { ApiError } from '@/api';
 import { ValidateError } from '@/validators';
 import { toast } from 'vue-sonner';
 
 export default class WhoopsHandler {
 
-    static handleError(error: unknown | ValidateError, fallbackMessage: string) {
-        if (error instanceof ValidateError) {
-            toast.error(error.message);
+    static handleError(error: unknown, fallbackMessage?: string) {
+        if (error instanceof Error) {
+            const name = error.name;
+
+            if (['ValidateError', 'ApiError'].includes(name)) {
+                toast.error(error.message);
+            }else{
+                toast.error(error.message);
+                console.log(error);
+            }
+
             return;
         }
 
