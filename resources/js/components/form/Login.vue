@@ -5,9 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
 import { WhoopsHandler } from '@/helpers';
+import { useAuthStore } from '@/stores';
 import validator from '@/validators';
 import { Loader, Lock } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
 import PasswordInput from './PasswordInput.vue';
 
 const account = ref('');
@@ -26,7 +28,12 @@ const handleLogin = async () => {
         const { data, error } = await api.auth.login(formData as LoginPayload).json<LoginResponse>();
 
         if (data.value && data.value.ok) {
-            console.log(data.value);
+            const result = data.value;
+
+            const authStore = useAuthStore();
+            authStore.activateAuth(result.data);
+
+            toast.success('Welcome back');
         } else {
             throw error.value;
         }
