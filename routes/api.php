@@ -11,5 +11,9 @@ Route::prefix('v1')->group(function() {
     // api.auth.*
     Route::prefix('auth')->group(function() {
         Route::post('/login', [Auth\LoginController::class, 'login'])->name('api.auth.login');
+
+        Route::middleware('auth:sanctum')->group(function() {
+            Route::get('/me', [Auth\MeController::class, 'me'])->name('api.auth.me');
+        });
     });
 });
