@@ -1,4 +1,5 @@
 import { useAuthStorage } from '@/composables';
+import { isEmpty } from 'es-toolkit/compat';
 import { defineStore } from 'pinia';
 
 // create empty auth state if not init
@@ -17,12 +18,23 @@ const useAuthStore = defineStore('auth', {
         auth: storeStateAuthValue,
         isLoggedIn: false,
     }),
+    getters: {
+        isAuthenticated(): boolean {
+            return this.isLoggedIn === true && this.auth.access_token.length > 0 && this.auth.token_type.length > 0 && this.auth.expires_in !== 0;
+        },
+    },
     actions: {
         activateAuth(auth: AuthStorageValue) {
             authStorage.value = auth;
 
             this.auth = auth;
             this.isLoggedIn = true;
+        },
+        restoreAuth() {
+            const authValue = authStorage.value;
+            if (!isEmpty(authValue)) {
+                this.activateAuth(authValue);
+            }
         },
     },
 });
