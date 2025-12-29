@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Api\Version1\Controllers\Auth;
+namespace App\Api\Version1\Controllers\Auth;
 
-use App\Http\Api\Version1\Bases\ApiController;
-use App\Http\Api\Version1\Requests\Auth\LoginRequest;
+use App\Api\Version1\Bases\ApiController;
+use App\Api\Version1\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Laravel\Sanctum\NewAccessToken;

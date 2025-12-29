@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Api\Version1\Requests\Auth;
+namespace App\Api\Version1\Requests\Auth;
 
-use App\Http\Api\Version1\Bases\ApiFormRequest;
+use App\Api\Version1\Bases\ApiFormRequest;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;

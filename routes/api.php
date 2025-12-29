@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Api\Version1\Controllers\Auth;
+use App\Api\Version1\Controllers\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
