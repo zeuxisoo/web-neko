@@ -19,8 +19,8 @@ const useAuthStore = defineStore('auth', {
         isLoggedIn: false,
     }),
     getters: {
-        isAuthenticated(): boolean {
-            return this.isLoggedIn === true && this.auth.access_token.length > 0 && this.auth.token_type.length > 0 && this.auth.expires_in !== 0;
+        isAuthenticated(state): boolean {
+            return state.isLoggedIn === true && state.auth.access_token.length > 0 && state.auth.token_type.length > 0 && state.auth.expires_in !== 0;
         },
     },
     actions: {
