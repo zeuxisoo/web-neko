@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores';
 import { createFetch } from '@vueuse/core';
 import ApiError from './error';
 
@@ -6,7 +7,9 @@ const useAgent = createFetch({
     options: {
         updateDataOnError: true,
         beforeFetch: async ({ options }) => {
-            const accessToken = window.localStorage.getItem('access-token');
+            const auth = useAuthStore();
+            const accessToken = auth.auth.access_token;
+
             const headers = new Headers(options.headers);
             headers.set('Accept', 'application/json');
 

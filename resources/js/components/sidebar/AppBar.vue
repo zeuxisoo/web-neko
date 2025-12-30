@@ -14,16 +14,15 @@ import NavUser from '@/components/sidebar/NavUser.vue';
 import { type NavItem as NavItemType } from '@/types/dashboard';
 import { Box, Shrub } from 'lucide-vue-next';
 
-const props = withDefaults(defineProps<SidebarProps>(), {
+interface AppBarProps extends SidebarProps {
+    user: User;
+}
+
+const props = withDefaults(defineProps<AppBarProps>(), {
     collapsible: 'icon',
 });
 
 const data = {
-    user: {
-        name: 'username',
-        email: 'm@example.com',
-        avatar: '/avatars/username.png',
-    },
     items: [
         {
             kind: 'group',
@@ -65,7 +64,7 @@ const data = {
             <NavItem :items="data.items" />
         </SidebarContent>
         <SidebarFooter>
-            <NavUser :user="data.user" />
+            <NavUser :user="props.user" />
         </SidebarFooter>
         <SidebarRail />
     </Sidebar>
