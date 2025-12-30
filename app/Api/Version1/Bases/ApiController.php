@@ -16,7 +16,7 @@ class ApiController extends Controller
         $user = Auth::guard($guard)->user();
 
         if ($user === null) {
-            throw new ModelNotFoundException(trans('app.error.authorized_user_not_found'));
+            throw new ModelNotFoundException('Cannot found the authorized user');
         }
 
         return $user;
