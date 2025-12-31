@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import api from '@/api';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import {
     DropdownMenu,
@@ -10,13 +11,33 @@ import {
     DropdownMenuTrigger,
 } from '@/components/base/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/base/sidebar';
+import { WhoopsHandler } from '@/helpers';
+import { useAuthStore } from '@/stores';
 import { ChevronsUpDown, LogOut, User } from 'lucide-vue-next';
+import { toast } from 'vue-sonner';
 
 const props = defineProps<{
     user: User;
 }>();
 
 const { isMobile } = useSidebar();
+
+const handleLogout = async () => {
+    try {
+        const { data, error } = await api.auth.logout().json<LogoutResponse>();
+
+        if (data.value && data.value.ok) {
+            const authStore = useAuthStore();
+            authStore.deactivateAuth();
+
+            toast.success('Good Bye! See you later');
+        } else {
+            throw error.value;
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error on handle logout action');
+    }
+};
 </script>
 
 <template>
@@ -26,12 +47,12 @@ const { isMobile } = useSidebar();
                 <DropdownMenuTrigger as-child>
                     <SidebarMenuButton size="lg" class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                         <Avatar class="h-8 w-8 rounded-lg">
-                            <AvatarImage :src="user.avatar" :alt="user.username" />
+                            <AvatarImage :src="props.user.avatar" :alt="props.user.username" />
                             <AvatarFallback class="rounded-lg"> AV </AvatarFallback>
                         </Avatar>
                         <div class="grid flex-1 text-left text-sm leading-tight">
-                            <span class="truncate font-semibold">{{ user.username }}</span>
-                            <span class="truncate text-xs">{{ user.email }}</span>
+                            <span class="truncate font-semibold">{{ props.user.username }}</span>
+                            <span class="truncate text-xs">{{ props.user.email }}</span>
                         </div>
                         <ChevronsUpDown class="ml-auto size-4" />
                     </SidebarMenuButton>
@@ -45,12 +66,12 @@ const { isMobile } = useSidebar();
                     <DropdownMenuLabel class="p-0 font-normal">
                         <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                             <Avatar class="h-8 w-8 rounded-lg">
-                                <AvatarImage :src="user.avatar" :alt="user.username" />
+                                <AvatarImage :src="props.user.avatar" :alt="props.user.username" />
                                 <AvatarFallback class="rounded-lg"> AV </AvatarFallback>
                             </Avatar>
                             <div class="grid flex-1 text-left text-sm leading-tight">
-                                <span class="truncate font-semibold">{{ user.username }}</span>
-                                <span class="truncate text-xs">{{ user.email }}</span>
+                                <span class="truncate font-semibold">{{ props.user.username }}</span>
+                                <span class="truncate text-xs">{{ props.user.email }}</span>
                             </div>
                         </div>
                     </DropdownMenuLabel>
@@ -62,7 +83,7 @@ const { isMobile } = useSidebar();
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
+                    <DropdownMenuItem @click="handleLogout">
                         <LogOut />
                         Log out
                     </DropdownMenuItem>

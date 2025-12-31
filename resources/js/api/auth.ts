@@ -9,4 +9,8 @@ export default {
     me(): UseFetchReturn<MeResponse> & PromiseLike<UseFetchReturn<MeResponse>> {
         return useAgent<MeResponse>('auth/me').get();
     },
+
+    logout(): UseFetchReturn<LogoutResponse> & PromiseLike<UseFetchReturn<LogoutResponse>> {
+        return useAgent<LogoutResponse>('auth/logout').get();
+    },
 };

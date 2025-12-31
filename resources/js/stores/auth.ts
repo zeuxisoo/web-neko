@@ -36,6 +36,12 @@ const useAuthStore = defineStore('auth', {
                 this.activateAuth(authValue);
             }
         },
+        deactivateAuth() {
+            authStorage.value = authDefaultValue;
+
+            this.auth = storeStateAuthValue;
+            this.isLoggedIn = false;
+        },
     },
 });
 

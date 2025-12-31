@@ -25,3 +25,7 @@ interface MeResponse extends ApiResponse {
         email: string;
     };
 }
+
+interface LogoutResponse extends ApiResponse {
+    data: string[];
+}
