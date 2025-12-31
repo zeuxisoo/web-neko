@@ -25,7 +25,14 @@ const useAgent = createFetch({
             const status = ctx.response?.status;
             const data = ctx.data;
 
-            if (status == 422) {
+            if (status === 401) {
+                const authStore = useAuthStore();
+                authStore.deactivateAuth();
+
+                ctx.error = new ApiError(data.message);
+            }
+
+            if (status === 422) {
                 ctx.error = new ApiError(data.message);
             }
 

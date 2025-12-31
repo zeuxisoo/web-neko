@@ -22,6 +22,10 @@ const props = defineProps<{
 
 const { isMobile } = useSidebar();
 
+const handleProfile = async () => {
+    console.log('profile clicked');
+};
+
 const handleLogout = async () => {
     try {
         const { data, error } = await api.auth.logout().json<LogoutResponse>();
@@ -77,7 +81,7 @@ const handleLogout = async () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem @click="handleProfile">
                             <User />
                             Profile
                         </DropdownMenuItem>

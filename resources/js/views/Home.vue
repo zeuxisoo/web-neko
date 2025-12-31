@@ -19,7 +19,7 @@ const isLoading = ref(false);
     isLoading.value = true;
 
     try {
-        const { data } = await api.auth.me().json<MeResponse>();
+        const { data, error } = await api.auth.me().json<MeResponse>();
 
         if (data.value && data.value.ok) {
             const result = data.value;
@@ -30,7 +30,7 @@ const isLoading = ref(false);
 
             isLoading.value = false;
         } else {
-            throw new Error('Unexcepted error when fetch me response in app sidebar');
+            throw error.value;
         }
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error when fetch me action in app sidebar');
