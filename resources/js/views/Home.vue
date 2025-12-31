@@ -5,7 +5,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/base
 import AppBar from '@/components/sidebar/AppBar.vue';
 import AppearanceSwitcher from '@/components/sidebar/AppearanceSwitcher.vue';
 import ThemeSwitcher from '@/components/sidebar/ThemeSwitcher.vue';
-import { WhoopsHandler } from '@/helpers';
+import { WhoopsHandler } from '@/utils';
 import { ref } from 'vue';
 
 const user = ref<User>({

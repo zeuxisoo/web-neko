@@ -32,6 +32,7 @@ const useAuthStore = defineStore('auth', {
         },
         restoreAuth() {
             const authValue = authStorage.value;
+
             if (!isEmpty(authValue)) {
                 this.activateAuth(authValue);
             }

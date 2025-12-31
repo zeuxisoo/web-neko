@@ -11,8 +11,8 @@ import {
     DropdownMenuTrigger,
 } from '@/components/base/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/base/sidebar';
-import { WhoopsHandler } from '@/helpers';
 import { useAuthStore } from '@/stores';
+import { WhoopsHandler } from '@/utils';
 import { ChevronsUpDown, LogOut, User } from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
 
