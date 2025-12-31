@@ -14,6 +14,7 @@ Route::prefix('v1')->group(function() {
 
         Route::middleware('auth:sanctum')->group(function() {
             Route::get('/me', [Auth\MeController::class, 'me'])->name('api.auth.me');
+            Route::get('/logout', [Auth\LogoutController::class, 'destroy'])->name('api.auth.logout');
         });
     });
 });

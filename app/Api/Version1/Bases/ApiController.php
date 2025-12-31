@@ -35,4 +35,9 @@ class ApiController extends Controller
     protected function respondJsonData(array $data, int $status = 200): JsonResponse {
         return $this->respondJson($status === 200, $data, '', $status);
     }
+
+    //
+    protected function respondJsonMessage(string $message, int $status = 200): JsonResponse {
+        return $this->respondJson($status === 200, [], $message, $status);
+    }
 }
