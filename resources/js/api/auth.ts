@@ -1,16 +1,15 @@
-import { UseFetchReturn } from '@vueuse/core';
 import useAgent from './useAgent';
 
 export default {
-    login(payload: LoginPayload): UseFetchReturn<LoginResponse> & PromiseLike<UseFetchReturn<LoginResponse>> {
+    login(payload: LoginPayload) {
         return useAgent<LoginResponse>('auth/login').post(payload);
     },
 
-    me(): UseFetchReturn<MeResponse> & PromiseLike<UseFetchReturn<MeResponse>> {
+    me() {
         return useAgent<MeResponse>('auth/me').get();
     },
 
-    logout(): UseFetchReturn<LogoutResponse> & PromiseLike<UseFetchReturn<LogoutResponse>> {
+    logout() {
         return useAgent<LogoutResponse>('auth/logout').get();
     },
 };
