@@ -15,6 +15,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function(Middleware $middleware) {
         //
         $middleware->statefulApi();
+
+        // set default route from `login` to `web.index`
+        // when unauthenticated and no `Accept: application/json` headers
+        $middleware->redirectGuestsTo(function() {
+            return route('web.index', '/');
+        });
     })
     ->withExceptions(function(Exceptions $exceptions) {
         //
