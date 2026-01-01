@@ -1,6 +1,6 @@
-import Gallery from '@/views/home/Gallery.vue';
-import Profile from '@/views/home/Profile.vue';
-import Pulse from '@/views/home/Pulse.vue';
+import Gallery from '@/views/home/park/Gallery.vue';
+import Pulse from '@/views/home/park/Pulse.vue';
+import Profile from '@/views/home/user/Profile.vue';
 import NotFound from '@/views/misc/NotFound.vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
