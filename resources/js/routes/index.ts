@@ -1,12 +1,24 @@
-import Pulse from "@/views/home/Pulse.vue";
-import NotFound from "@/views/misc/NotFound.vue";
-import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
+import Gallery from '@/views/home/Gallery.vue';
+import Profile from '@/views/home/Profile.vue';
+import Pulse from '@/views/home/Pulse.vue';
+import NotFound from '@/views/misc/NotFound.vue';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
-        name: 'index',
+        name: 'pulse',
         component: Pulse,
+    },
+    {
+        path: '/gallery',
+        name: 'gallery',
+        component: Gallery,
+    },
+    {
+        path: '/profile',
+        name: 'profile',
+        component: Profile,
     },
     {
         path: '/:catchAll(.*)*',

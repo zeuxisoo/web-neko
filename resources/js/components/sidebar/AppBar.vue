@@ -27,18 +27,24 @@ const data = {
         {
             kind: 'group',
             title: 'Park',
-            url: '#',
+            to: { path: '#' },
             icon: Shrub,
             isActive: true,
             items: [
-                { title: 'Pulse', url: '#' },
-                { title: 'Gallery', url: '#' },
+                {
+                    title: 'Pulse',
+                    to: { name: 'pulse' },
+                },
+                {
+                    title: 'Gallery',
+                    to: { name: 'gallery' },
+                },
             ],
         },
         {
             kind: 'single',
             title: 'Inventory',
-            url: '#',
+            to: { path: '#' },
             icon: Box,
         },
     ] as NavItemType[],

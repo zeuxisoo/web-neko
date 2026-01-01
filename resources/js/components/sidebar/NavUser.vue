@@ -14,16 +14,21 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/c
 import { useAuthStore } from '@/stores';
 import { WhoopsHandler } from '@/utils';
 import { ChevronsUpDown, LogOut, User } from 'lucide-vue-next';
+import { useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
 const props = defineProps<{
     user: User;
 }>();
 
+const router = useRouter();
+
 const { isMobile } = useSidebar();
 
-const handleProfile = async () => {
-    console.log('profile clicked');
+const handleProfile = () => {
+    router.push({
+        name: 'profile',
+    });
 };
 
 const handleLogout = async () => {

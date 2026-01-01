@@ -1,14 +1,17 @@
 import { LucideProps } from 'lucide-vue-next';
 import { FunctionalComponent } from 'vue';
+import { RouterLinkProps } from 'vue-router';
+
+type NavItemTo = RouterLinkProps['to'];
 
 export type NavItem = {
     kind: 'group' | 'single';
     title: string;
-    url: string;
+    to: NavItemTo;
     icon: FunctionalComponent<LucideProps, {}, any, {}>;
     isActive?: boolean;
     items?: {
         title: string;
-        url: string;
+        to: NavItemTo;
     }[];
 };

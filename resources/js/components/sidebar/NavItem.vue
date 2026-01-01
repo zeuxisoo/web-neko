@@ -36,9 +36,9 @@ const props = defineProps<{
                             <SidebarMenuSub>
                                 <SidebarMenuSubItem v-for="subItem in item.items" :key="subItem.title">
                                     <SidebarMenuSubButton as-child>
-                                        <a :href="subItem.url">
+                                        <RouterLink :to="subItem.to">
                                             <span>{{ subItem.title }}</span>
-                                        </a>
+                                        </RouterLink>
                                     </SidebarMenuSubButton>
                                 </SidebarMenuSubItem>
                             </SidebarMenuSub>
@@ -48,10 +48,10 @@ const props = defineProps<{
 
                 <SidebarMenuItem v-if="item.kind === 'single'">
                     <SidebarMenuButton as-child>
-                        <a :href="item.url">
+                        <RouterLink :to="item.to">
                             <component :is="item.icon" v-if="item.icon" />
                             <span>{{ item.title }}</span>
-                        </a>
+                        </RouterLink>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
             </template>
