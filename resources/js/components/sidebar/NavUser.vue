@@ -27,7 +27,7 @@ const { isMobile } = useSidebar();
 
 const handleProfile = () => {
     router.push({
-        name: 'profile',
+        name: 'user.profile',
     });
 };
 

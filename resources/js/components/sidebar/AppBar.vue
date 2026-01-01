@@ -13,6 +13,7 @@ import NavItem from '@/components/sidebar/NavItem.vue';
 import NavUser from '@/components/sidebar/NavUser.vue';
 import { type NavItem as NavItemType } from '@/types/dashboard';
 import { Box, Shrub } from 'lucide-vue-next';
+import { useRouter } from 'vue-router';
 
 interface AppBarProps extends SidebarProps {
     user: User;
@@ -21,6 +22,8 @@ interface AppBarProps extends SidebarProps {
 const props = withDefaults(defineProps<AppBarProps>(), {
     collapsible: 'icon',
 });
+
+const router = useRouter();
 
 const data = {
     items: [
@@ -33,11 +36,11 @@ const data = {
             items: [
                 {
                     title: 'Pulse',
-                    to: { name: 'pulse' },
+                    to: { name: 'park.pulse' },
                 },
                 {
                     title: 'Gallery',
-                    to: { name: 'gallery' },
+                    to: { name: 'park.gallery' },
                 },
             ],
         },
@@ -49,11 +52,17 @@ const data = {
         },
     ] as NavItemType[],
 };
+
+const handleSidebarHeader = () => {
+    router.push({
+        name: 'index',
+    });
+};
 </script>
 
 <template>
     <Sidebar v-bind="props">
-        <SidebarHeader>
+        <SidebarHeader @click="handleSidebarHeader">
             <SidebarMenuItem>
                 <SidebarMenuButton size="lg" class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                     <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">

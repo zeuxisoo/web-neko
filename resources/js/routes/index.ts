@@ -7,18 +7,36 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
-        name: 'pulse',
+        name: 'index',
         component: Pulse,
+        alias: '/park',
     },
     {
-        path: '/gallery',
-        name: 'gallery',
-        component: Gallery,
+        path: '/park',
+        name: 'park',
+        children: [
+            {
+                path: 'pulse',
+                name: 'park.pulse',
+                component: Pulse,
+            },
+            {
+                path: 'gallery',
+                name: 'park.gallery',
+                component: Gallery,
+            },
+        ],
     },
     {
-        path: '/profile',
-        name: 'profile',
-        component: Profile,
+        path: '/user',
+        name: 'user',
+        children: [
+            {
+                path: 'profile',
+                name: 'user.profile',
+                component: Profile,
+            },
+        ],
     },
     {
         path: '/:catchAll(.*)*',
