@@ -25,9 +25,9 @@ const router = useRouter();
 
 const { isMobile } = useSidebar();
 
-const handleProfile = () => {
+const handleAccount = () => {
     router.push({
-        name: 'user.profile',
+        name: 'user.account',
     });
 };
 
@@ -86,9 +86,9 @@ const handleLogout = async () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                        <DropdownMenuItem @click="handleProfile">
+                        <DropdownMenuItem @click="handleAccount">
                             <User />
-                            Profile
+                            Account
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />

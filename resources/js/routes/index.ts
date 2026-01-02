@@ -1,6 +1,6 @@
 import Gallery from '@/views/home/park/Gallery.vue';
 import Pulse from '@/views/home/park/Pulse.vue';
-import Profile from '@/views/home/user/Profile.vue';
+import Account from '@/views/home/user/Account.vue';
 import NotFound from '@/views/misc/NotFound.vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
@@ -32,9 +32,9 @@ const routes: RouteRecordRaw[] = [
         name: 'user',
         children: [
             {
-                path: 'profile',
-                name: 'user.profile',
-                component: Profile,
+                path: 'account',
+                name: 'user.account',
+                component: Account,
             },
         ],
     },

@@ -9,17 +9,17 @@ import { Header } from '@/components/page';
 
 <template>
     <div class="pulse grid gap-3">
-        <Header>Profile Settings</Header>
-        <Tabs default-value="account">
+        <Header>Account Settings</Header>
+        <Tabs default-value="profile">
             <TabsList>
-                <TabsTrigger value="account"> Account </TabsTrigger>
+                <TabsTrigger value="profile"> Profile </TabsTrigger>
                 <TabsTrigger value="password"> Password </TabsTrigger>
             </TabsList>
-            <TabsContent value="account">
+            <TabsContent value="profile">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Account</CardTitle>
-                        <CardDescription>Make changes to your account here. Click save when you're done.</CardDescription>
+                        <CardTitle>Profile</CardTitle>
+                        <CardDescription>Make changes to your profile here. Click save when you're done.</CardDescription>
                     </CardHeader>
                     <CardContent class="grid gap-6">
                         <div class="grid gap-3">
