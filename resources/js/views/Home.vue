@@ -2,9 +2,7 @@
 import api from '@/api';
 import { Separator } from '@/components/base/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/base/sidebar';
-import AppBar from '@/components/sidebar/AppBar.vue';
-import AppearanceSwitcher from '@/components/sidebar/AppearanceSwitcher.vue';
-import ThemeSwitcher from '@/components/sidebar/ThemeSwitcher.vue';
+import { AppBar, AppearanceSwitcher, ThemeSwitcher } from '@/components/sidebar';
 import { WhoopsHandler } from '@/utils';
 import { ref } from 'vue';
 

@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import { Button } from '@/components/base/button';
-import { CardDescription, CardFooter } from '@/components/base/card';
-import Card from '@/components/base/card/Card.vue';
-import CardContent from '@/components/base/card/CardContent.vue';
-import CardHeader from '@/components/base/card/CardHeader.vue';
-import CardTitle from '@/components/base/card/CardTitle.vue';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/base/card';
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/base/tabs';
-import Header from '@/components/page/Header.vue';
+import { Header } from '@/components/page';
 </script>
 
 <template>
