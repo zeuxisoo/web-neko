@@ -22,7 +22,9 @@ body:json {
 }
 
 script:post-response {
-  bru.setEnvVar("accessToken", res.body.data.access_token);
+  if (res.body.data?.access_token) {
+    bru.setEnvVar("accessToken", res.body.data.access_token);
+  }
 }
 
 settings {
