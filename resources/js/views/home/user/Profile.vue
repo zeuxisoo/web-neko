@@ -9,11 +9,6 @@ import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/base/tabs';
 import Header from '@/components/page/Header.vue';
-import { ref } from 'vue';
-
-type TabType = 'base' | 'security';
-
-const activeTab = ref<TabType>('base');
 </script>
 
 <template>
