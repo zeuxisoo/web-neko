@@ -13,13 +13,13 @@ import { Header } from '@/components/page';
         <Tabs default-value="profile">
             <TabsList>
                 <TabsTrigger value="profile"> Profile </TabsTrigger>
-                <TabsTrigger value="password"> Password </TabsTrigger>
+                <TabsTrigger value="security"> Security </TabsTrigger>
             </TabsList>
             <TabsContent value="profile">
                 <Card>
                     <CardHeader>
                         <CardTitle>Profile</CardTitle>
-                        <CardDescription>Make changes to your profile here. Click save when you're done.</CardDescription>
+                        <CardDescription>Make changes to your profile here. After saving, you'll be logged out.</CardDescription>
                     </CardHeader>
                     <CardContent class="grid gap-6">
                         <div class="grid gap-3">
@@ -36,11 +36,11 @@ import { Header } from '@/components/page';
                     </CardFooter>
                 </Card>
             </TabsContent>
-            <TabsContent value="password">
+            <TabsContent value="security">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Password</CardTitle>
-                        <CardDescription>Change your password here. After saving, you'll be logged out.</CardDescription>
+                        <CardTitle>Security</CardTitle>
+                        <CardDescription>Change your security here. After saving, you'll be logged out.</CardDescription>
                     </CardHeader>
                     <CardContent class="grid gap-6">
                         <div class="grid gap-3">
