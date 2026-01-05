@@ -1,0 +1,27 @@
+meta {
+  name: update
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/account/profile/update
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{accessToken}}
+}
+
+body:json {
+  {
+    "username": "test",
+    "email": "test2@test2.com"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
