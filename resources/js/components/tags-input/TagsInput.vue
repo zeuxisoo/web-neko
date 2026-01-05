@@ -9,15 +9,16 @@ const modelValue = defineModel({
     required: true,
 });
 
-const props = withDefaults(defineProps<{
-    remoteTags: Array<{value: string, label: string}>,
-}>(), {
-    // remoteTags: () => [],
-});
+const props = withDefaults(
+    defineProps<{
+        remoteTags: Array<{ value: string; label: string }>;
+    }>(),
+    {
+        // remoteTags: () => [],
+    },
+);
 
-const emit = defineEmits([
-    'update:modelValue',
-]);
+const emit = defineEmits(['update:modelValue']);
 
 const openTagList = ref(false);
 const searchTag = ref('');
@@ -25,15 +26,13 @@ const searchTag = ref('');
 const { contains } = useFilter({ sensitivity: 'base' });
 const filteredTags = computed(() => {
     // filter out tags that are already selected in `modelValue`
-    const unselectedRemoteTags = props.remoteTags.filter(tag =>
-        !modelValue.value.includes(tag.label)
-    );
+    const unselectedRemoteTags = props.remoteTags.filter((tag) => !modelValue.value.includes(tag.label));
 
     // if search term entered by the user
     // filter `unselectedRemoteTags` again, ensure the tags label only contains the search string.
     // otherwise, return all `unselectedRemoteTags` or `empty` list
     if (searchTag.value) {
-        return unselectedRemoteTags.filter(tag => contains(tag.label, searchTag.value));
+        return unselectedRemoteTags.filter((tag) => contains(tag.label, searchTag.value));
     } else {
         return unselectedRemoteTags;
     }

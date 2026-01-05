@@ -1,5 +1,3 @@
 <template>
-    <div class="h-full text-center content-center">
-        Page not found
-    </div>
+    <div class="h-full content-center text-center">Page not found</div>
 </template>

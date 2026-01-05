@@ -1,7 +1,6 @@
 // value must be match the rule => pass!
 const checkers: Record<string, CheckerFunction> = {
-
-    'required': ({ value }) => {
+    required: ({ value }) => {
         if (Array.isArray(value)) {
             return value.length > 0;
         }
@@ -9,23 +8,21 @@ const checkers: Record<string, CheckerFunction> = {
         return value !== null && String(value).length > 0;
     },
 
-    'email': ({ value }) => {
+    email: ({ value }) => {
         return /\S+@\S+\.\S+/.test(value);
     },
 
-    'min': ({ value, parameters }) => {
+    min: ({ value, parameters }) => {
         const minimum = parameters[0];
 
         return value.length >= minimum;
     },
-
-}
+};
 
 class Rule {
-
     private checker?: CheckerFunction;
     private parameters: string[] = [];
-    private attribute: string = "";
+    private attribute: string = '';
 
     add(name: string, checker: CheckerFunction): this {
         checkers[name] = checker;
@@ -34,9 +31,9 @@ class Rule {
     }
 
     create(name: string, parameters: string[], attribute: string): this {
-        this.checker    = checkers[name];
+        this.checker = checkers[name];
         this.parameters = parameters;
-        this.attribute  = attribute;
+        this.attribute = attribute;
 
         return this;
     }
@@ -46,14 +43,13 @@ class Rule {
             throw new Error('The validate checker is undefined');
         }
 
-        return (this.checker).call(this, {
-            value     : data[this.attribute],
+        return this.checker.call(this, {
+            value: data[this.attribute],
             parameters: this.parameters,
-            data      : data,
-            attribute : this.attribute,
+            data: data,
+            attribute: this.attribute,
         });
     }
-
 }
 
 export default Rule;

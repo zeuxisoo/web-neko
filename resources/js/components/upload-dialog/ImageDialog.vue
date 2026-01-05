@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { CircleX, ImageUp, Upload } from 'lucide-vue-next';
 import { Button } from '@/components/base/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/base/dialog';
-import VueFilePond from 'vue-filepond';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/base/dialog';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import { CircleX, ImageUp, Upload } from 'lucide-vue-next';
+import VueFilePond from 'vue-filepond';
 
-const FilePond = VueFilePond(
-    FilePondPluginFileValidateSize,
-    FilePondPluginFileValidateType,
-    FilePondPluginImagePreview,
-);
+const FilePond = VueFilePond(FilePondPluginFileValidateSize, FilePondPluginFileValidateType, FilePondPluginImagePreview);
 </script>
 
 <template>
@@ -37,17 +42,14 @@ const FilePond = VueFilePond(
                         accepted-file-types="image/jpeg, image/jpg, image/png, image/webp"
                         label-file-type-not-allowed="Wrong file type"
                         file-validate-type-label-expected-types="Expects images"
-                        image-preview-max-height="80" />
+                        image-preview-max-height="80"
+                    />
                 </div>
             </div>
             <DialogFooter class="grid grid-cols-2">
-                <Button type="button">
-                    <Upload /> Upload
-                </Button>
+                <Button type="button"> <Upload /> Upload </Button>
                 <DialogClose as-child>
-                    <Button type="button" variant="secondary">
-                        <CircleX /> Close
-                    </Button>
+                    <Button type="button" variant="secondary"> <CircleX /> Close </Button>
                 </DialogClose>
             </DialogFooter>
         </DialogContent>

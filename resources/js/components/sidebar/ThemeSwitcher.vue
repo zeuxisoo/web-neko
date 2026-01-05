@@ -13,7 +13,7 @@ import { Check, SwatchBook } from 'lucide-vue-next';
 import { onMounted } from 'vue';
 
 const themes = {
-    default : 'Default',
+    default: 'Default',
     eggplant: 'Eggplant',
     mushroom: 'Mushroom',
 };
@@ -22,7 +22,7 @@ const activeTheme = useStorage<string>('active-theme', '');
 
 onMounted(() => {
     if (activeTheme.value !== '') {
-    document.documentElement.classList.add(addThemePrefix(activeTheme.value));
+        document.documentElement.classList.add(addThemePrefix(activeTheme.value));
     }
 });
 
@@ -62,9 +62,9 @@ const changeTheme = (from: string, to: string) => {
                 <DropdownMenuItem class="flex" @click="setTheme(key)">
                     <div :class="[`theme-${key}`, 'bg-base-100 grid grid-cols-2 gap-0.5 rounded-sm p-1 shadow-sm']">
                         <div class="background size-1 rounded-md"></div>
-                        <div class="bg-primary size-1 rounded-md"></div>
-                        <div class="bg-secondary size-1 rounded-md"></div>
-                        <div class="bg-accent size-1 rounded-md"></div>
+                        <div class="size-1 rounded-md bg-primary"></div>
+                        <div class="size-1 rounded-md bg-secondary"></div>
+                        <div class="size-1 rounded-md bg-accent"></div>
                     </div>
                     <div class="flex-1">{{ name }}</div>
                     <Check v-if="key === activeTheme" />

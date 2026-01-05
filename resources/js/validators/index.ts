@@ -31,6 +31,4 @@ const validator = {
 };
 
 export default validator;
-export {
-    ValidateError
-};
+export { ValidateError };

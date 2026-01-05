@@ -1,12 +1,9 @@
-import useAgent from "./useAgent";
-import ApiError from "./error";
-import auth from "./auth";
+import auth from './auth';
+import ApiError from './error';
+import useAgent from './useAgent';
 
 export default {
     auth,
-}
+};
 
-export {
-    useAgent,
-    ApiError,
-}
+export { ApiError, useAgent };

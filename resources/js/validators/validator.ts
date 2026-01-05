@@ -1,10 +1,9 @@
 import { isObject } from 'es-toolkit/compat';
 import { sprintf } from 'sprintf-js';
-import Rule from './rule';
 import { ValidateError } from './error';
+import Rule from './rule';
 
 class Validator {
-
     private regs: Record<string, string[]>; // regulations
     private locales: Record<string, string>;
     private rule: Rule;
@@ -205,7 +204,6 @@ class Validator {
             // }
         ];
     }
-
 }
 
 export default Validator;
