@@ -1,0 +1,25 @@
+info:
+  name: update
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/account/profile/update"
+  headers:
+    - name: Authorization
+      value: Bearer {{accessToken}}
+  body:
+    type: json
+    data: |-
+      {
+        "username": "test",
+        "email": "test2@test2.com"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

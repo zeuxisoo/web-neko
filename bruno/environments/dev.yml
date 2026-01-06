@@ -1,0 +1,8 @@
+name: dev
+variables:
+  - name: baseUrl
+    value: http://localhost:8000/api/v1
+  - name: account
+    value: test
+  - secret: true
+    name: password
