@@ -5,7 +5,6 @@ const useAuthUser = async () => {
     const user = ref<User>({
         username: '',
         email: '',
-        avatar: '',
     });
     const isLoading = ref(true);
 
