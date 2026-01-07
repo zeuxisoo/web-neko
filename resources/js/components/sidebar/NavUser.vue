@@ -39,6 +39,11 @@ const handleLogout = async () => {
             const authStore = useAuthStore();
             authStore.deactivateAuth();
 
+            router.push({
+                name: 'index',
+                replace: true,
+            });
+
             toast.success('Good Bye! See you later');
         } else {
             throw error.value;
