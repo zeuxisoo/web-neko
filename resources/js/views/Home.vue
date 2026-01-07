@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import api from '@/api';
 import { Separator } from '@/components/base/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/base/sidebar';
 import { AppBar, AppearanceSwitcher, ThemeSwitcher } from '@/components/sidebar';
+import { useAuthUser } from '@/composables';
 import { WhoopsHandler } from '@/utils';
 import { ref } from 'vue';
 
@@ -14,22 +14,13 @@ const user = ref<User>({
 const isLoading = ref(false);
 
 (async () => {
-    isLoading.value = true;
-
     try {
-        const { data, error } = await api.auth.me().json<MeResponse>();
+        isLoading.value = true;
 
-        if (data.value && data.value.ok) {
-            const result = data.value;
-            const me = result.data;
+        const authUser = await useAuthUser();
 
-            user.value.username = me.username;
-            user.value.email = me.email;
-
-            isLoading.value = false;
-        } else {
-            throw error.value;
-        }
+        user.value = authUser.user.value;
+        isLoading.value = isLoading.value;
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error when fetch me action in app sidebar');
     } finally {
