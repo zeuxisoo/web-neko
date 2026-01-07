@@ -5,6 +5,30 @@ import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/base/tabs';
 import { Header } from '@/components/page';
+import { useAuthUser } from '@/composables';
+import { WhoopsHandler } from '@/utils';
+import { onMounted, ref } from 'vue';
+
+const user = ref<User>({
+    username: '',
+    email: '',
+});
+const isLoading = ref(false);
+
+onMounted(async () => {
+    try {
+        isLoading.value = true;
+
+        const authUser = await useAuthUser();
+
+        user.value = authUser.user.value;
+        isLoading.value = isLoading.value;
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error when fetch me action in account profile');
+    } finally {
+        isLoading.value = false;
+    }
+});
 </script>
 
 <template>
@@ -24,15 +48,15 @@ import { Header } from '@/components/page';
                     <CardContent class="grid gap-6">
                         <div class="grid gap-3">
                             <Label for="tabs-demo-name">Username</Label>
-                            <Input id="tabs-demo-name" default-value="meow" />
+                            <Input id="tabs-demo-name" placeholder="meow" v-model="user.username" />
                         </div>
                         <div class="grid gap-3">
                             <Label for="tabs-demo-username">Email</Label>
-                            <Input id="tabs-demo-username" default-value="meow@home.local" />
+                            <Input id="tabs-demo-username" placeholder="meow@home.local" v-model="user.email" />
                         </div>
                     </CardContent>
                     <CardFooter>
-                        <Button>Save</Button>
+                        <Button @click="">Save</Button>
                     </CardFooter>
                 </Card>
             </TabsContent>
