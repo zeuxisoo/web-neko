@@ -4,7 +4,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/base
 import { AppBar, AppearanceSwitcher, ThemeSwitcher } from '@/components/sidebar';
 import { useAuthUser } from '@/composables';
 import { WhoopsHandler } from '@/utils';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const user = ref<User>({
     username: '',
@@ -13,7 +13,7 @@ const user = ref<User>({
 });
 const isLoading = ref(false);
 
-(async () => {
+onMounted(async () => {
     try {
         isLoading.value = true;
 
@@ -26,7 +26,7 @@ const isLoading = ref(false);
     } finally {
         isLoading.value = false;
     }
-})();
+});
 </script>
 
 <template>
