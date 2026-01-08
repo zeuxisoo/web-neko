@@ -29,3 +29,13 @@ interface MeResponse extends ApiResponse {
 interface LogoutResponse extends ApiResponse {
     data: string[];
 }
+
+// account
+type AccountProfileUpdatePayload = {
+    username: string;
+    email: string;
+};
+
+interface AccountProfileResponse extends ApiResponse {
+    data: string[];
+}
