@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/base/tabs';
+import { PasswordInput } from '@/components/form';
 import { Header } from '@/components/page';
 import { useAuthUser } from '@/composables';
 import { useAuthStore } from '@/stores';
@@ -112,12 +113,16 @@ const handleAccountProfileSave = async () => {
                     </CardHeader>
                     <CardContent class="grid gap-6">
                         <div class="grid gap-3">
-                            <Label for="tabs-demo-current">Current password</Label>
-                            <Input id="tabs-demo-current" type="password" />
+                            <Label for="old-password">Current password</Label>
+                            <PasswordInput id="old-password" type="password" enable-password-toggle="true" />
                         </div>
                         <div class="grid gap-3">
-                            <Label for="tabs-demo-new">New password</Label>
-                            <Input id="tabs-demo-new" type="password" />
+                            <Label for="new-password">New password</Label>
+                            <PasswordInput id="new-password" type="password" enable-password-toggle="true" />
+                        </div>
+                        <div class="grid gap-3">
+                            <Label for="confirm-password">Confirm password</Label>
+                            <PasswordInput id="confirm-password" type="password" enable-password-toggle="true" />
                         </div>
                     </CardContent>
                     <CardFooter>
