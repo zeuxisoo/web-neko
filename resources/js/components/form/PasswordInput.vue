@@ -43,7 +43,6 @@ const toggleButtonIcon = computed(() => {
 });
 
 const handleToggleButton = () => {
-    console.log(visible.value);
     visible.value = !visible.value;
 };
 </script>
