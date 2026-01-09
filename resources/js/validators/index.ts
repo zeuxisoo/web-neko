@@ -1,4 +1,5 @@
-import AuthLoginValidator from './auth/login';
+import AccountProfileUpdate from './account/profile/update';
+import AuthLogin from './auth/login';
 import { ValidateError } from './error';
 import Validator from './validator';
 
@@ -21,11 +22,12 @@ import Validator from './validator';
  *   });
  */
 const validators: Record<string, typeof Validator> = {
-    'auth.login': AuthLoginValidator,
+    'auth.login': AuthLogin,
+    'account.profile.update': AccountProfileUpdate,
 };
 
 const validator = {
-    form(name: string): Validator {
+    form(name: keyof typeof validators): Validator {
         return new validators[name]();
     },
 };
