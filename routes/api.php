@@ -25,6 +25,9 @@ Route::prefix('v1')->group(function() {
             Route::prefix('profile')->group(function() {
                 Route::post('/update', [Account\ProfileController::class, 'update'])->name('api.account.profile.update');
             });
+            Route::prefix('security')->group(function() {
+                Route::post('/update/password', [Account\SecurityController::class, 'updatePassword'])->name('api.account.security.update_password');
+            });
         });
     });
 });

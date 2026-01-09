@@ -19,6 +19,6 @@ class ProfileController extends ApiController
 
         $user->currentAccessToken()->delete();
 
-        return $this->respondJsonMessage('Successfully updated account, Please Login again.');
+        return $this->respondJsonMessage('Successfully updated profile, Please Login again.');
     }
 }
