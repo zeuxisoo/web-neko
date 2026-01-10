@@ -6,3 +6,5 @@ variables:
     value: test
   - secret: true
     name: password
+  - secret: true
+    name: newPassword
