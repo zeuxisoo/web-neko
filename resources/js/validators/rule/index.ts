@@ -17,6 +17,12 @@ const checkers: Record<string, CheckerFunction> = {
 
         return value.length >= minimum;
     },
+
+    confirmed: ({ value, data, attribute }) => {
+        const confirmationValue = data[`${attribute}_confirmation`];
+
+        return value === confirmationValue;
+    },
 };
 
 class Rule {
