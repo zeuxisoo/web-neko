@@ -2,6 +2,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/base/tabs';
 import { Header } from '@/components/page';
 import Profile from './Profile.vue';
+import Security from './Security.vue';
 </script>
 
 <template>
@@ -15,7 +16,9 @@ import Profile from './Profile.vue';
             <TabsContent value="profile">
                 <Profile />
             </TabsContent>
-            <TabsContent value="security"> </TabsContent>
+            <TabsContent value="security">
+                <Security />
+            </TabsContent>
         </Tabs>
     </div>
 </template>
