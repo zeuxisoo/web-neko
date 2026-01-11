@@ -1,14 +1,59 @@
 <script setup lang="ts">
+import api from '@/api';
 import { Button } from '@/components/base/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/base/card';
 import { Label } from '@/components/base/label';
 import { PasswordInput } from '@/components/form';
+import { useAuthStore } from '@/stores';
+import { WhoopsHandler } from '@/utils';
+import validator from '@/validators';
 import { Loader } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue-sonner';
 
+const old_password = ref('');
+const new_password = ref('');
+const new_password_confirmation = ref('');
 const isLoading = ref(false);
 
-const handleAccountSecuritySave = async () => {};
+const router = useRouter();
+
+const handleAccountSecuritySave = async () => {
+    isLoading.value = true;
+
+    try {
+        const formData = validator.form('account.security.update').validate({
+            old_password: old_password.value,
+            new_password: new_password.value,
+            new_password_confirmation: new_password_confirmation.value,
+        });
+
+        const { data, error } = await api.account.security
+            .updatePassword(formData as AccountSecurityUpdatePasswordPayload)
+            .json<AccountSecurityResponse>();
+
+        if (data.value && data.value.ok) {
+            const result = data.value;
+
+            const authStore = useAuthStore();
+            authStore.deactivateAuth();
+
+            router.push({
+                name: 'index',
+                replace: true,
+            });
+
+            toast.success(result.message);
+        } else {
+            throw error.value;
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error on handle account security save action');
+    } finally {
+        isLoading.value = false;
+    }
+};
 </script>
 
 <template>
@@ -20,15 +65,15 @@ const handleAccountSecuritySave = async () => {};
         <CardContent class="grid gap-6">
             <div class="grid gap-3">
                 <Label for="old-password">Current password</Label>
-                <PasswordInput id="old-password" type="password" :enable-password-toggle="true" />
+                <PasswordInput v-model="old_password" id="old-password" type="password" :enable-password-toggle="true" />
             </div>
             <div class="grid gap-3">
                 <Label for="new-password">New password</Label>
-                <PasswordInput id="new-password" type="password" :enable-password-toggle="true" />
+                <PasswordInput v-model="new_password" id="new-password" type="password" :enable-password-toggle="true" />
             </div>
             <div class="grid gap-3">
                 <Label for="confirm-password">Confirm password</Label>
-                <PasswordInput id="confirm-password" type="password" :enable-password-toggle="true" />
+                <PasswordInput v-model="new_password_confirmation" id="confirm-password" type="password" :enable-password-toggle="true" />
             </div>
         </CardContent>
         <CardFooter>

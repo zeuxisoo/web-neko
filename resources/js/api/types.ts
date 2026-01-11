@@ -39,3 +39,13 @@ type AccountProfileUpdatePayload = {
 interface AccountProfileResponse extends ApiResponse {
     data: string[];
 }
+
+type AccountSecurityUpdatePasswordPayload = {
+    old_password: string;
+    new_password: string;
+    new_password_confirmation: string;
+};
+
+interface AccountSecurityResponse extends ApiResponse {
+    data: string[];
+}

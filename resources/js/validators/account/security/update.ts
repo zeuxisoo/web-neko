@@ -5,7 +5,7 @@ class AccountSecurityUpdate extends Validator {
         return {
             old_password: ['required'],
             new_password: ['required', 'min:8', 'confirmed'],
-            new_password_confirmation: [],
+            new_password_confirmation: ['required', 'min:8'],
         };
     }
 
@@ -15,6 +15,8 @@ class AccountSecurityUpdate extends Validator {
             'new_password.required': 'Please enter new password',
             'new_password.min': 'New password letters must be more than %(args[0])s',
             'new_password.confirmed': 'New Password must be same as password confirmation',
+            'new_password_confirmation.required': 'Please enter new password confirmation',
+            'new_password_confirmation.min': 'New password confirmation letters must be more than %(args[0])s',
         };
     }
 }

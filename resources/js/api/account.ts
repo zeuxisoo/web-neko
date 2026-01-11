@@ -6,8 +6,18 @@ class Profile {
     }
 }
 
+class Security {
+    updatePassword(payload: AccountSecurityUpdatePasswordPayload) {
+        return useAgent<AccountSecurityResponse>('account/security/update/password').post(payload);
+    }
+}
+
 export default {
     get profile() {
         return new Profile();
+    },
+
+    get security() {
+        return new Security();
     },
 };
