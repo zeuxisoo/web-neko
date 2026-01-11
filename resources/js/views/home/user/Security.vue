@@ -3,7 +3,7 @@ import api from '@/api';
 import { Button } from '@/components/base/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/base/card';
 import { Label } from '@/components/base/label';
-import { PasswordInput } from '@/components/form';
+import { PasswordInput } from '@/components/password-input';
 import { useAuthStore } from '@/stores';
 import { WhoopsHandler } from '@/utils';
 import validator from '@/validators';

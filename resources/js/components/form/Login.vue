@@ -4,13 +4,13 @@ import { Button } from '@/components/base/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/base/card';
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
+import { PasswordInput } from '@/components/password-input';
 import { useAuthStore } from '@/stores';
 import { WhoopsHandler } from '@/utils';
 import validator from '@/validators';
 import { Loader, Lock } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
-import PasswordInput from './PasswordInput.vue';
 
 const account = ref('');
 const password = ref('');
