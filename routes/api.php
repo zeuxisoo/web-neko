@@ -2,6 +2,7 @@
 
 use App\Api\Version1\Controllers\Account;
 use App\Api\Version1\Controllers\Auth;
+use App\Api\Version1\Controllers\Pulse;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
@@ -27,6 +28,13 @@ Route::prefix('v1')->group(function() {
             });
             Route::prefix('security')->group(function() {
                 Route::post('/update/password', [Account\SecurityController::class, 'updatePassword'])->name('api.account.security.update_password');
+            });
+        });
+
+        // api.pulse.attachment.*
+        Route::prefix('pulse')->group(function() {
+            Route::prefix('attachment')->group(function() {
+                Route::post('/upload', [Pulse\AttachmentController::class, 'upload'])->name('api.pulse.attachment.upload');
             });
         });
     });
