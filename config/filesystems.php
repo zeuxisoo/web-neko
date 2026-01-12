@@ -60,6 +60,14 @@ return [
             'report' => false,
         ],
 
+        'pulse' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/pulse'),
+            'visibility' => 'private',
+            'throw' => false,
+            'report' => false,
+        ],
+
     ],
 
     /*

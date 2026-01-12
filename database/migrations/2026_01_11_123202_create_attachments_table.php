@@ -12,6 +12,7 @@ return new class() extends Migration {
         Schema::create('attachments', function(Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('pulse_id')->nullable()->index();
             $table->string('kind')->default('file')->index();             // e.g. image/video/file
             $table->string('filename');
             $table->string('original_name');

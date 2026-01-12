@@ -14,6 +14,7 @@ class Attachment extends Model
 
     protected $fillable = [
         'user_id',
+        'pulse_id',
         'kind',
         'filename',
         'original_name',
