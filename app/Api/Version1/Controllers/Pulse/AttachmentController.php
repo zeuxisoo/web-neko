@@ -61,9 +61,10 @@ class AttachmentController extends ApiController
             'sort_order' => 0,
         ]);
 
-        // generate cover for images
+        // generate cover and thumb for images
         if ($attachment->kind === AttachmentKind::IMAGE) {
             $this->generateCover($attachment, $storeFolder);
+            $this->generateThumb($attachment, $storeFolder);
         }
 
         return $attachment;
@@ -103,15 +104,46 @@ class AttachmentController extends ApiController
         );
     }
 
+    private function generateThumb(Attachment $attachment, string $storeFolder): void {
+        $sourcePath = $storeFolder.'/'.$attachment->filename;
+        $fullSourcePath = Storage::disk('pulse')->path($sourcePath);
+
+        // skip if source file doesn't exist
+        if (!file_exists($fullSourcePath)) {
+            throw new FileNotFoundException("Cannot found source file: {$sourcePath}");
+        }
+
+        // generate thumb filename
+        $sourceFilename = pathinfo($attachment->filename, PATHINFO_FILENAME);
+        $sourceExtension = pathinfo($attachment->filename, PATHINFO_EXTENSION);
+        $thumbFilename = $sourceFilename.'_thumb.'.$sourceExtension;
+        $thumbPath = $storeFolder.'/'.$thumbFilename;
+
+        // Create thumb using Intervention Image
+        // - resize to 512x512 maintaining aspect ratio
+        $manager = new ImageManager(new Driver());
+        $image = $manager->read($fullSourcePath)->scaleDown(512, 512);
+
+        Storage::disk('pulse')->put(
+            path: $thumbPath,
+            contents: (string) $image->encode()
+        );
+    }
+
     private function cleanupAttachment(Attachment $attachment, string $storeFolder): void {
         // delete original file
         Storage::disk('pulse')->delete($storeFolder.'/'.$attachment->filename);
 
-        // delete cover if exists
+        // find source filename and extension
         $sourceFilename = pathinfo($attachment->filename, PATHINFO_FILENAME);
         $sourceExtension = pathinfo($attachment->filename, PATHINFO_EXTENSION);
-        $coverFilename = $sourceFilename.'_cover.'.$sourceExtension;
 
+        // delete cover if exists
+        $coverFilename = $sourceFilename.'_cover.'.$sourceExtension;
         Storage::disk('pulse')->delete($storeFolder.'/'.$coverFilename);
+
+        // delete thumb if exists
+        $thumbFilename = $sourceFilename.'_thumb.'.$sourceExtension;
+        Storage::disk('pulse')->delete($storeFolder.'/'.$thumbFilename);
     }
 }
