@@ -1,0 +1,29 @@
+info:
+  name: upload
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/pulse/attachment/upload"
+  headers:
+    - name: Authorization
+      value: Bearer {{accessToken}}
+  body:
+    type: multipart-form
+    data:
+      - name: files[]
+        type: file
+        value:
+          - /Users/zeuxis/Desktop/0.png
+      - name: files[]
+        type: file
+        value:
+          - /Users/zeuxis/Desktop/0FLCZF382CFF9F0AB4059Apx-1.webp
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
