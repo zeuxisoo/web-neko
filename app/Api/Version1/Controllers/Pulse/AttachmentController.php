@@ -78,56 +78,33 @@ class AttachmentController extends ApiController
         };
     }
 
-    private function generateCover(Attachment $attachment, string $storeFolder): void {
+    // @param callable $processCallback Call generate action (cover/scaleDown)
+    private function generateImageVariant(Attachment $attachment, string $storeFolder, string $suffix, callable $processCallback): void {
         $sourcePath = $storeFolder.'/'.$attachment->filename;
         $fullSourcePath = Storage::disk('pulse')->path($sourcePath);
 
-        // skip if source file doesn't exist
         if (!file_exists($fullSourcePath)) {
             throw new FileNotFoundException("Cannot found source file: {$sourcePath}");
         }
 
-        // generate cover filename
         $sourceFilename = pathinfo($attachment->filename, PATHINFO_FILENAME);
         $sourceExtension = pathinfo($attachment->filename, PATHINFO_EXTENSION);
-        $coverFilename = $sourceFilename.'_cover.'.$sourceExtension;
-        $coverPath = $storeFolder.'/'.$coverFilename;
 
-        // Create cover using Intervention Image
-        // - resize with max 300x300 maintaining aspect ratio
+        $storeFilename = $sourceFilename.'_'.$suffix.'.'.$sourceExtension;
+        $storePath = $storeFolder.'/'.$storeFilename;
+
         $manager = new ImageManager(new Driver());
-        $image = $manager->read($fullSourcePath)->cover(48, 48, 'center');
+        $image = $processCallback($manager->read($fullSourcePath));
 
-        Storage::disk('pulse')->put(
-            path: $coverPath,
-            contents: (string) $image->encode()
-        );
+        Storage::disk('pulse')->put($storePath, (string) $image->encode());
+    }
+
+    private function generateCover(Attachment $attachment, string $storeFolder): void {
+        $this->generateImageVariant($attachment, $storeFolder, 'cover', fn($image) => $image->cover(48, 48, 'center'));
     }
 
     private function generateThumb(Attachment $attachment, string $storeFolder): void {
-        $sourcePath = $storeFolder.'/'.$attachment->filename;
-        $fullSourcePath = Storage::disk('pulse')->path($sourcePath);
-
-        // skip if source file doesn't exist
-        if (!file_exists($fullSourcePath)) {
-            throw new FileNotFoundException("Cannot found source file: {$sourcePath}");
-        }
-
-        // generate thumb filename
-        $sourceFilename = pathinfo($attachment->filename, PATHINFO_FILENAME);
-        $sourceExtension = pathinfo($attachment->filename, PATHINFO_EXTENSION);
-        $thumbFilename = $sourceFilename.'_thumb.'.$sourceExtension;
-        $thumbPath = $storeFolder.'/'.$thumbFilename;
-
-        // Create thumb using Intervention Image
-        // - resize to 512x512 maintaining aspect ratio
-        $manager = new ImageManager(new Driver());
-        $image = $manager->read($fullSourcePath)->scaleDown(512, 512);
-
-        Storage::disk('pulse')->put(
-            path: $thumbPath,
-            contents: (string) $image->encode()
-        );
+        $this->generateImageVariant($attachment, $storeFolder, 'thumb', fn($image) => $image->scaleDown(512, 512));
     }
 
     private function cleanupAttachment(Attachment $attachment, string $storeFolder): void {
