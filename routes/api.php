@@ -33,6 +33,9 @@ Route::prefix('v1')->group(function() {
 
         // api.pulse.attachment.*
         Route::prefix('pulse')->group(function() {
+            Route::prefix('memo')->group(function() {
+                Route::post('/store', [Pulse\MemoController::class, 'store'])->name('api.pulse.memo.store');
+            });
             Route::prefix('attachment')->group(function() {
                 Route::post('/upload', [Pulse\AttachmentController::class, 'upload'])->name('api.pulse.attachment.upload');
             });

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Api\Version1\Requests\Pulse\Attachment;
+namespace App\Api\Version1\Requests\Pulse\Memo;
 
 use App\Api\Version1\Bases\ApiFormRequest;
+use App\Api\Version1\Rules\ValidUserAttachments;
 
-class UploadRequest extends ApiFormRequest
+class StoreRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,17 +21,21 @@ class UploadRequest extends ApiFormRequest
      */
     public function rules(): array {
         return [
-            'files' => [
+            'content' => [
                 'required',
-                'array',
-                'min:1',
-                'max:8', // limit for attachments same as Memo\StoreRequest
+                'string',
+                'max:5000',
             ],
-            'files.*' => [
+            'attachments' => [
+                'nullable',
+                'array',
+                'max:8', // limit for attachments same as Attachment\UploadRequest
+                new ValidUserAttachments(),
+            ],
+            // keep check basic structure for the id in children
+            'attachments.*.id' => [
                 'required',
-                'file',
-                'mimes:jpeg,png,jpg,webp,mp4,mov',
-                'max:8192', // 8MB limit
+                'integer',
             ],
         ];
     }
