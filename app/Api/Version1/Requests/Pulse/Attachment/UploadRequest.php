@@ -20,10 +20,16 @@ class UploadRequest extends ApiFormRequest
      */
     public function rules(): array {
         return [
-            'file' => [
+            'files' => [
+                'required',
+                'array',
+                'min:1',
+                'max:8',
+            ],
+            'files.*' => [
                 'required',
                 'file',
-                'mimes:jpeg,png,jpg,webp,mp4,mov,pdf,zip,docx',
+                'mimes:jpeg,png,jpg,webp,mp4,mov',
                 'max:8192', // 8MB limit
             ],
         ];

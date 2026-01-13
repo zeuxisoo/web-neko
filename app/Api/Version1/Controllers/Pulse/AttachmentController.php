@@ -4,43 +4,57 @@ namespace App\Api\Version1\Controllers\Pulse;
 
 use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Requests\Pulse\Attachment\UploadRequest;
-use App\Api\Version1\Resources\Pulse\AttachmentResource;
+use App\Api\Version1\Resources\Pulse\AttachmentResourceCollection;
 use App\Enums\AttachmentKind;
 use App\Models\Attachment;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class AttachmentController extends ApiController
 {
     public function upload(UploadRequest $request): JsonResource {
-        $file = $request->file('file');
+        $files = $request->file('files');
+
+        $attachments = [];
+        $storeFolder = now()->format('Y/m');
+
+        try {
+            DB::transaction(function() use ($files, &$attachments, $storeFolder) {
+                foreach ($files as $file) {
+                    $uploadedFile = $this->processUpload($file, $storeFolder);
+                    $attachments[] = $uploadedFile;
+                }
+            });
+        } catch (\Exception $e) {
+            foreach ($attachments as $attachment) {
+                Storage::disk('pulse')->delete($storeFolder.'/'.$attachment->filename);
+            }
+        }
+
+        return new AttachmentResourceCollection($attachments);
+    }
+
+    private function processUpload(UploadedFile $file, string $storeFolder): Attachment {
         $mime = $file->getMimeType();
 
-        // detect kind (image/video/file)
-        $kind = $this->detectKind($mime);
+        // generate filename using ulids
+        $newFilename = strtolower((string) Str::ulid()).'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
 
-        // generate filename (prefix + random suffix + extension)
-        $storeFolder = now()->format('Y/m');
-        $generateFilename = strtolower((string) Str::ulid()).'_'.Str::random(8);
-        $fileExtension = $file->getClientOriginalExtension();
-        $newFilename = $generateFilename.'.'.$fileExtension;
+        // store to 'pulse' disk
+        $file->storeAs($storeFolder, $newFilename, 'pulse');
 
-        // store to storage folder
-        $path = $file->storeAs($storeFolder, $newFilename, 'pulse');
-
-        // store to database
-        $attachment = Attachment::create([
-            'user_id' => $request->user()->id,
-            'kind' => $kind,
+        return Attachment::create([
+            'user_id' => $this->user()->id,
+            'kind' => $this->detectKind($mime),
             'filename' => $newFilename,
             'original_name' => $file->getClientOriginalName(),
             'mime_type' => $mime,
             'size' => $file->getSize(),
             'sort_order' => 0,
         ]);
-
-        // TODO: create resource response !!!!
-        return new AttachmentResource($attachment);
     }
 
     private function detectKind(string $mime): AttachmentKind {
