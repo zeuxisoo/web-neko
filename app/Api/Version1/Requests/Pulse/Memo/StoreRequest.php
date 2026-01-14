@@ -26,6 +26,16 @@ class StoreRequest extends ApiFormRequest
                 'string',
                 'max:5000',
             ],
+            'tags' => [
+                'required',
+                'array',
+                'max:10',
+            ],
+            'tags.*' => [
+                'string',
+                'distinct',
+                'max:50',
+            ],
             'attachments' => [
                 'nullable',
                 'array',
