@@ -16,29 +16,26 @@ class ValidUserAttachments implements ValidationRule
             return;
         }
 
-        // convert ids: [{id: 1}, {id: 2}] -> [1, 2]
-        $formDataIds = collect($value)->pluck('id')->filter()->toArray();
+        // convert ids: [{id: 1, etc}, {id: 2, etc}] -> [1, 2]
+        $formData = collect($value);
+        $formDataIds = $formData->pluck('id')->filter();
 
-        if (empty($formDataIds)) {
+        if ($formDataIds->isEmpty()) {
             return;
         }
 
-        // find all exists attachments related to user id
+        // find valid ids collection from DB with related user id
         $validDbIds = Attachment::where('user_id', auth()->id())
             ->whereIn('id', $formDataIds)
-            ->pluck('id')
-            ->all();
+            ->pluck('id');
 
-        // find invalid ids
-        $invalidIds = array_diff($formDataIds, $validDbIds);
+        // find invalid ids that aren not in the DB results
+        $invalidIds = $formDataIds->diff($validDbIds);
 
-        if (!empty($invalidIds)) {
-            $invalidFiles = collect($value)
-                ->whereIn('id', $invalidIds)
+        if ($invalidIds->isNotEmpty()) {
+            $filenameList = $formData->whereIn('id', $invalidIds)
                 ->pluck('filename')
-                ->all();
-
-            $filenameList = implode(', ', $invalidFiles);
+                ->implode(', ');
 
             $fail("The following files could not be processed: [{$filenameList}]");
         }
