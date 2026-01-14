@@ -1,0 +1,29 @@
+info:
+  name: store
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/pulse/memo/store"
+  headers:
+    - name: Authorization
+      value: Bearer {{accessToken}}
+  body:
+    type: json
+    data: |-
+      {
+        "content": "this is a test",
+        "tags": ["tag1", "tag2"],
+        "attachments": [
+          { "id": 1, "filename": "1.png" },
+          { "id": 2, "filename": "2.png" }
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
