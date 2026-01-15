@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import api from '@/api';
+import AvatarUpload from '@/components/avatar-upload/AvatarUpload.vue';
 import { Button } from '@/components/base/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/base/card';
 import { Input } from '@/components/base/input';
@@ -84,6 +85,10 @@ const handleAccountProfileSave = async () => {
             <div class="grid gap-3">
                 <Label for="tabs-username">Email</Label>
                 <Input id="tabs-username" placeholder="meow@home.local" v-model="user.email" />
+            </div>
+            <div class="grid gap-3">
+                <Label for="tabs-avatar">Avatar</Label>
+                <AvatarUpload />
             </div>
         </CardContent>
         <CardFooter>
