@@ -78,12 +78,12 @@ const handleAccountProfileSave = async () => {
         </CardHeader>
         <CardContent class="grid gap-6">
             <div class="grid gap-3">
-                <Label for="tabs-demo-name">Username</Label>
-                <Input id="tabs-demo-name" placeholder="meow" v-model="user.username" />
+                <Label for="tabs-name">Username</Label>
+                <Input id="tabs-name" placeholder="meow" v-model="user.username" />
             </div>
             <div class="grid gap-3">
-                <Label for="tabs-demo-username">Email</Label>
-                <Input id="tabs-demo-username" placeholder="meow@home.local" v-model="user.email" />
+                <Label for="tabs-username">Email</Label>
+                <Input id="tabs-username" placeholder="meow@home.local" v-model="user.email" />
             </div>
         </CardContent>
         <CardFooter>
