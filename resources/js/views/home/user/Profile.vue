@@ -13,16 +13,20 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
-const user = useUserStore();
+const user = ref<User>({} as User);
 const isLoading = ref(false);
 
 const router = useRouter();
+const userStore = useUserStore();
 
 onMounted(async () => {
     try {
         isLoading.value = true;
 
-        await user.fetch();
+        const me = await userStore.fetch();
+
+        user.value.username = me.username;
+        user.value.email = me.email;
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error when fetch me action in account profile');
     } finally {
@@ -35,8 +39,8 @@ const handleAccountProfileSave = async () => {
 
     try {
         const formData = validator.form('account.profile.update').validate({
-            username: user.value.username,
-            email: user.value.email,
+            username: user.value?.username,
+            email: user.value?.email,
         });
 
         const { data, error } = await api.account.profile.update(formData as AccountProfileUpdatePayload).json<AccountProfileResponse>();
@@ -65,30 +69,36 @@ const handleAccountProfileSave = async () => {
 </script>
 
 <template>
-    <Card>
-        <CardHeader>
-            <CardTitle>Profile</CardTitle>
-            <CardDescription>Make changes to your profile here. After saving, you'll be logged out.</CardDescription>
-        </CardHeader>
-        <CardContent class="grid gap-6">
-            <div class="grid gap-3">
-                <Label for="tabs-name">Username</Label>
-                <Input id="tabs-name" placeholder="meow" v-model="user.username" />
-            </div>
-            <div class="grid gap-3">
-                <Label for="tabs-username">Email</Label>
-                <Input id="tabs-username" placeholder="meow@home.local" v-model="user.email" />
-            </div>
-            <div class="grid gap-3">
-                <Label for="tabs-avatar">Avatar</Label>
-                <AvatarUpload />
-            </div>
-        </CardContent>
-        <CardFooter>
-            <Button @click="handleAccountProfileSave">
-                <Loader class="animate-spin" v-if="isLoading" />
-                <template v-else>Save</template>
-            </Button>
-        </CardFooter>
-    </Card>
+    <div class="flex flex-col gap-2">
+        <Card>
+            <CardHeader>
+                <CardTitle>Profile</CardTitle>
+                <CardDescription>Make changes to your profile here. After saving, you'll be logged out.</CardDescription>
+            </CardHeader>
+            <CardContent class="grid gap-6">
+                <div class="grid gap-3">
+                    <Label for="tabs-avatar">Avatar</Label>
+                    <AvatarUpload />
+                </div>
+            </CardContent>
+        </Card>
+        <Card v-if="user">
+            <CardContent class="grid gap-6">
+                <div class="grid gap-3">
+                    <Label for="tabs-name">Username</Label>
+                    <Input id="tabs-name" placeholder="meow" v-model="user.username" />
+                </div>
+                <div class="grid gap-3">
+                    <Label for="tabs-username">Email</Label>
+                    <Input id="tabs-username" placeholder="meow@home.local" v-model="user.email" />
+                </div>
+            </CardContent>
+            <CardFooter>
+                <Button @click="handleAccountProfileSave">
+                    <Loader class="animate-spin" v-if="isLoading" />
+                    <template v-else>Save</template>
+                </Button>
+            </CardFooter>
+        </Card>
+    </div>
 </template>
