@@ -2,25 +2,18 @@
 import { Separator } from '@/components/base/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/base/sidebar';
 import { AppBar, AppearanceSwitcher, ThemeSwitcher } from '@/components/sidebar';
-import { useAuthUser } from '@/composables';
+import { useUserStore } from '@/stores';
 import { WhoopsHandler } from '@/utils';
 import { onMounted, ref } from 'vue';
 
-const user = ref<User>({
-    username: '',
-    email: '',
-    avatar: '',
-});
+const user = useUserStore();
 const isLoading = ref(false);
 
 onMounted(async () => {
     try {
         isLoading.value = true;
 
-        const authUser = await useAuthUser();
-
-        user.value = authUser.user.value;
-        isLoading.value = isLoading.value;
+        await user.fetch();
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error when fetch me action in app sidebar');
     } finally {

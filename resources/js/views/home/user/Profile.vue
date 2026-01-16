@@ -5,8 +5,7 @@ import { Button } from '@/components/base/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/base/card';
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
-import { useAuthUser } from '@/composables';
-import { useAuthStore } from '@/stores';
+import { useAuthStore, useUserStore } from '@/stores';
 import { WhoopsHandler } from '@/utils';
 import validator from '@/validators';
 import { Loader } from 'lucide-vue-next';
@@ -14,10 +13,7 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
-const user = ref<User>({
-    username: '',
-    email: '',
-});
+const user = useUserStore();
 const isLoading = ref(false);
 
 const router = useRouter();
@@ -26,10 +22,7 @@ onMounted(async () => {
     try {
         isLoading.value = true;
 
-        const authUser = await useAuthUser();
-
-        user.value = authUser.user.value;
-        isLoading.value = isLoading.value;
+        await user.fetch();
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error when fetch me action in account profile');
     } finally {
