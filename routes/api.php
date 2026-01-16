@@ -24,6 +24,7 @@ Route::prefix('v1')->group(function() {
         // api.account.*
         Route::prefix('account')->group(function() {
             Route::prefix('profile')->group(function() {
+                Route::post('/upload/avatar', [Account\ProfileController::class, 'uploadAvatar'])->name('api.account.profile.upload_avatar');
                 Route::post('/update', [Account\ProfileController::class, 'update'])->name('api.account.profile.update');
             });
             Route::prefix('security')->group(function() {
@@ -31,7 +32,7 @@ Route::prefix('v1')->group(function() {
             });
         });
 
-        // api.pulse.attachment.*
+        // api.pulse.*
         Route::prefix('pulse')->group(function() {
             Route::prefix('memo')->group(function() {
                 Route::post('/store', [Pulse\MemoController::class, 'store'])->name('api.pulse.memo.store');
