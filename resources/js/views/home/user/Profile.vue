@@ -27,12 +27,20 @@ onMounted(async () => {
 
         user.value.username = me.username;
         user.value.email = me.email;
+        user.value.avatar = me.avatar;
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error when fetch me action in account profile');
     } finally {
         isLoading.value = false;
     }
 });
+
+const handleAvatarChange = (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // TODO: upload avatar file
+};
 
 const handleAccountProfileSave = async () => {
     isLoading.value = true;
@@ -69,7 +77,7 @@ const handleAccountProfileSave = async () => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2" v-if="user.avatar">
         <Card>
             <CardHeader>
                 <CardTitle>Profile</CardTitle>
@@ -78,11 +86,11 @@ const handleAccountProfileSave = async () => {
             <CardContent class="grid gap-6">
                 <div class="grid gap-3">
                     <Label for="tabs-avatar">Avatar</Label>
-                    <AvatarUpload />
+                    <AvatarUpload :url="user.avatar" :name="user.username" @change="handleAvatarChange" />
                 </div>
             </CardContent>
         </Card>
-        <Card v-if="user">
+        <Card>
             <CardContent class="grid gap-6">
                 <div class="grid gap-3">
                     <Label for="tabs-name">Username</Label>

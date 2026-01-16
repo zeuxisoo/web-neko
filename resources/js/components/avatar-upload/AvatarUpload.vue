@@ -4,8 +4,17 @@ import { CircleUserRoundIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { Button } from '../base/button';
 
-const previewUrl = ref<string>();
-const fileName = ref<string>();
+const props = defineProps<{
+    url: string;
+    name: string;
+}>();
+
+const emit = defineEmits<{
+    (e: 'change', value: File): void;
+}>();
+
+const previewUrl = ref<string>(props.url);
+const fileName = ref<string>(props.name);
 
 const { open, onChange } = useFileDialog({
     multiple: false,
@@ -17,6 +26,8 @@ onChange((files) => {
     if (files) {
         previewUrl.value = URL.createObjectURL(files[0]);
         fileName.value = files[0].name;
+
+        emit('change', files[0]);
     }
 });
 
