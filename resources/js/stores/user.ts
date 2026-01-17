@@ -17,6 +17,8 @@ const useUserStore = defineStore('user', {
                     const result = data.value;
                     const me = result.data;
 
+                    me.avatar = '/storage/avatar/' + me.avatar;
+
                     this.$patch(me);
 
                     return me;
