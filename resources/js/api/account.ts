@@ -4,6 +4,10 @@ class Profile {
     update(payload: AccountProfileUpdatePayload) {
         return useAgent<AccountProfileResponse>('account/profile/update').post(payload);
     }
+
+    updateAvatar(payload: AccountProfileUpdateAvatarPayload) {
+        return useAgent<MeResponse>('account/profile/upload/avatar').post(payload);
+    }
 }
 
 class Security {

@@ -35,11 +35,31 @@ onMounted(async () => {
     }
 });
 
-const handleAvatarChange = (file: File) => {
+const handleAccountAvatarSave = async (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
 
-    // TODO: upload avatar file
+    try {
+        isLoading.value = true;
+
+        const { data, error } = await api.account.profile.updateAvatar(formData).json<MeResponse>();
+
+        if (data && data.value) {
+            const result = data.value.data;
+            const avatar = result.avatar;
+
+            userStore.setAvatar(avatar);
+            user.value.avatar = userStore.avatar;
+
+            toast.info('Avatar updated');
+        } else {
+            throw error;
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error on handle account avatar save action');
+    } finally {
+        isLoading.value = false;
+    }
 };
 
 const handleAccountProfileSave = async () => {
@@ -86,7 +106,8 @@ const handleAccountProfileSave = async () => {
             <CardContent class="grid gap-6">
                 <div class="grid gap-3">
                     <Label for="tabs-avatar">Avatar</Label>
-                    <AvatarUpload :url="user.avatar" :name="user.username" @change="handleAvatarChange" />
+                    <Loader class="animate-spin" v-if="isLoading" />
+                    <AvatarUpload :url="user.avatar" :name="user.username" @change="handleAccountAvatarSave" v-else />
                 </div>
             </CardContent>
         </Card>

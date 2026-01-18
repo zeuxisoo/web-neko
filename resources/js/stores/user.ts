@@ -1,6 +1,8 @@
 import api from '@/api';
 import { defineStore } from 'pinia';
 
+const avatarUrlPrefix = '/storage/avatar/';
+
 const useUserStore = defineStore('user', {
     state: () => ({
         id: 0,
@@ -17,7 +19,7 @@ const useUserStore = defineStore('user', {
                     const result = data.value;
                     const me = result.data;
 
-                    me.avatar = '/storage/avatar/' + me.avatar;
+                    me.avatar = avatarUrlPrefix + me.avatar;
 
                     this.$patch(me);
 
@@ -29,8 +31,8 @@ const useUserStore = defineStore('user', {
                 throw e;
             }
         },
-        setAvatar(url: string) {
-            this.avatar = url;
+        setAvatar(filename: string) {
+            this.avatar = avatarUrlPrefix + filename;
         },
     },
 });

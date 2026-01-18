@@ -41,6 +41,8 @@ interface AccountProfileResponse extends ApiResponse {
     data: string[];
 }
 
+type AccountProfileUpdateAvatarPayload = FormData;
+
 type AccountSecurityUpdatePasswordPayload = {
     old_password: string;
     new_password: string;
