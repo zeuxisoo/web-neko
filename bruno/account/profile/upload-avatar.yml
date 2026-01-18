@@ -1,21 +1,18 @@
 info:
-  name: upload
+  name: upload-avatar
   type: http
-  seq: 1
+  seq: 2
 
 http:
   method: POST
-  url: "{{baseUrl}}/pulse/attachment/upload"
+  url: "{{baseUrl}}/account/profile/upload/avatar"
   headers:
     - name: Authorization
       value: Bearer {{accessToken}}
   body:
     type: multipart-form
     data:
-      - name: files[]
-        type: text
-        value: ""
-      - name: files[]
+      - name: file
         type: text
         value: ""
   auth: inherit
