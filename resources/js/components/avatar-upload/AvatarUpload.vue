@@ -4,10 +4,16 @@ import { CircleUserRoundIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { Button } from '../base/button';
 
-const props = defineProps<{
-    url: string;
-    name: string;
-}>();
+const props = withDefaults(
+    defineProps<{
+        url: string;
+        name: string;
+        enableRemove?: boolean;
+    }>(),
+    {
+        enableRemove: false,
+    },
+);
 
 const emit = defineEmits<{
     (e: 'change', value: File): void;
@@ -62,7 +68,7 @@ const removeFile = () => {
             <p class="truncate text-muted-foreground">
                 {{ fileName }}
             </p>
-            <button @click="removeFile" class="cursor-pointer font-medium text-destructive hover:underline">Remove</button>
+            <button v-if="props.enableRemove" @click="removeFile" class="cursor-pointer font-medium text-destructive hover:underline">Remove</button>
         </div>
         <div class="inline-flex gap-2 text-xs" v-else>
             <p class="truncate text-muted-foreground">No image attached</p>
