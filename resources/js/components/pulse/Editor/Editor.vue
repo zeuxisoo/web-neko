@@ -5,6 +5,7 @@ import { Textarea } from '@/components/base/textarea';
 import { ImageDialog } from '@/components/upload-dialog';
 import { SendHorizontal } from 'lucide-vue-next';
 import { ref, useTemplateRef } from 'vue';
+import TagsSuggestion from './TagsSuggestion.vue';
 
 const editorRef = useTemplateRef<HTMLTextAreaElement>('editor-ref');
 const editor = ref('');
@@ -25,6 +26,47 @@ const handleEditorInput = (_: InputEvent) => {
 const handleSubmit = () => {
     console.log(editor.value);
 };
+
+const editorMethods = {
+    removeText: (start: number, length: number) => {
+        if (!editorRef.value) {
+            return;
+        }
+
+        // capture exists content without `trigger key+start char`
+        const oldValue = editorRef.value.value;
+        const value = oldValue.slice(0, start) + oldValue.slice(start + length);
+
+        editorRef.value.value = value;
+        editorRef.value.focus();
+        editorRef.value.selectionEnd = start;
+
+        updateEditorHeight();
+    },
+
+    insertText: (content: string = '', prefix: string = '', suffix: string = '') => {
+        if (!editorRef.value) {
+            return;
+        }
+
+        const cursorPosition = editorRef.value.selectionStart;
+        const endPosition = editorRef.value.selectionEnd;
+        const oldValue = editorRef.value.value;
+
+        const value =
+            oldValue.slice(0, cursorPosition) +
+            prefix +
+            (content || oldValue.slice(cursorPosition, endPosition)) +
+            suffix +
+            oldValue.slice(endPosition);
+
+        editorRef.value.value = value;
+        editorRef.value.focus();
+        editorRef.value.selectionEnd = endPosition + prefix.length + content.length;
+
+        updateEditorHeight();
+    },
+};
 </script>
 
 <template>
@@ -37,12 +79,13 @@ const handleSubmit = () => {
                         ref="editor-ref"
                         rows="1"
                         name="editor"
-                        class="w-full resize-none rounded-md border-2 p-1"
+                        class="w-full resize-none rounded-md border-2 p-2"
                         placeholder="Place whatever you want"
                         @input="handleEditorInput($event)"
                         autofocus
                     >
                     </Textarea>
+                    <TagsSuggestion :editor-ref="editorRef" :editor-methods="editorMethods" />
                 </div>
                 <div class="flex gap-2">
                     <div class="flex-1">
