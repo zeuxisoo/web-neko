@@ -1,7 +1,7 @@
-import Gallery from '@/views/home/park/Gallery.vue';
-import Pulse from '@/views/home/park/Pulse.vue';
-import Account from '@/views/home/user/Account.vue';
 import NotFound from '@/views/misc/NotFound.vue';
+import Gallery from '@/views/park/Gallery.vue';
+import Pulse from '@/views/park/Pulse.vue';
+import Account from '@/views/user/Account.vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
