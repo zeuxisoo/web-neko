@@ -4,6 +4,7 @@ import { Badge } from '@/components/base/badge';
 import { Card, CardHeader } from '@/components/base/card';
 import { Skeleton } from '@/components/base/skeleton';
 import { Bookmark, Ellipsis, MessageSquareMore } from 'lucide-vue-next';
+import PreviewImage from './PreviewImage.vue';
 
 const remoteImages = [
     { src: 'https://placecats.com/512/512', title: 'cat1' },
@@ -35,15 +36,9 @@ const placeHolderImages = new Array(totalRemoteImages).fill(0);
                     enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </div>
                 <div class="grid grid-cols-2 gap-2 md:grid-cols-6">
-                    <div class="flex justify-center" v-for="(image, i) in remoteImages" :key="i">
-                        <img
-                            :src="image.src"
-                            :title="image.title"
-                            class="max-h-48 cursor-pointer rounded-lg border object-cover"
-                            decoding="async"
-                            loading="lazy"
-                        />
-                    </div>
+                    <template v-for="(image, i) in remoteImages" :key="i">
+                        <PreviewImage :image="image" />
+                    </template>
                     <template v-for="i in placeHolderImages" :key="i">
                         <div class="flex justify-center">
                             <Skeleton class="aspect-square max-h-48 w-48 cursor-pointer rounded-lg border" />
