@@ -5,6 +5,7 @@ namespace App\Api\Version1\Controllers\Pulse;
 use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Requests\Pulse\Memo\StoreRequest;
 use App\Api\Version1\Resources\Pulse\MemoResource;
+use App\Enums\TagKind;
 use App\Models\Attachment;
 use App\Models\Memo;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -27,7 +28,7 @@ class MemoController extends ApiController
             // create tags and prepend default tag `beat` ensure distinct
             array_unshift($input['tags'], 'beat');
             $tags = array_values(array_unique($input['tags']));
-            $memo->attachTags($tags, type: 'memo');
+            $memo->attachTags($tags, type: TagKind::MEMO->value);
 
             // update previous uploaded attachment relationship
             $attachmentIds = array_column($input['attachments'], 'id');

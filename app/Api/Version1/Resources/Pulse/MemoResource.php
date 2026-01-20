@@ -11,7 +11,7 @@ class MemoResource extends ApiResource
         return [
             'id' => $this->id,
             'content' => $this->content,
-            'tags' => new MemoTagResourceCollection($this->tags),
+            'tags' => new TagResourceCollection($this->tags),
             'attachments' => new AttachmentResourceCollection($this->whenLoaded('attachments')),
         ];
     }
