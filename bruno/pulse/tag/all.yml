@@ -1,0 +1,21 @@
+info:
+  name: all
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/pulse/tag/all"
+  headers:
+    - name: Authorization
+      value: Bearer {{accessToken}}
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
