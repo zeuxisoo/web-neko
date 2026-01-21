@@ -3,7 +3,7 @@ import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import { ImageDialog } from '@/components/upload-dialog';
 import { SendHorizontal } from 'lucide-vue-next';
-import { ref, useTemplateRef } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import TagsSuggestion from './TagsSuggestion.vue';
 import { TagList } from './types';
 
@@ -13,6 +13,7 @@ const props = defineProps<{
 
 const editorRef = useTemplateRef<HTMLTextAreaElement | null>('editor-ref');
 const editor = ref('');
+const tagList = computed(() => props.tagList);
 
 const updateEditorHeight = () => {
     // add 4px to match `p-1` style when user input
@@ -88,7 +89,7 @@ const editorMethods = {
                         autofocus
                     >
                     </textarea>
-                    <TagsSuggestion :editor-ref="editorRef" :editor-methods="editorMethods" :tag-list="props.tagList" />
+                    <TagsSuggestion :editor-ref="editorRef" :editor-methods="editorMethods" :tag-list="tagList" />
                 </div>
                 <div class="flex gap-2">
                     <div class="flex-1">

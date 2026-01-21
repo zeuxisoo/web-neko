@@ -18,10 +18,12 @@ const selectedElement = ref<HTMLDivElement>();
 const editorRef = computed(() => props.editorRef);
 
 //
-const sortedTags = Object.entries(props.tagList)
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .sort((a, b) => b[1] - a[1])
-    .map(([tag]) => tag);
+const sortedTags = computed(() => {
+    return Object.entries(props.tagList)
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .sort((a, b) => b[1] - a[1])
+        .map(([tag]) => tag);
+});
 
 const { isVisible, position, selectedIndex, suggestionList, fireAutocomplete } = useSuggestions({
     editorRef: editorRef,

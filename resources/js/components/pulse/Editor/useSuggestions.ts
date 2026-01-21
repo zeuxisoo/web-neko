@@ -6,7 +6,7 @@ interface SuggestionOptions {
     editorRef: Ref<HTMLTextAreaElement | null>;
     editorMethods: EditorMethods;
     triggerChar: string;
-    itemList: string[];
+    itemList: Ref<string[]>;
     filterList: (suggestionList: string[], searchWord: string) => string[];
     onSelectedItem: (item: string, word: string, startIndex: number) => void;
 }
@@ -65,7 +65,7 @@ export default function useSuggestions(options: SuggestionOptions) {
             setPosition(caretCordinates);
 
             const searchWord = getCurrentWord()[0].slice(options.triggerChar.length).toLowerCase();
-            suggestionList.value = options.filterList(options.itemList, searchWord);
+            suggestionList.value = options.filterList(options.itemList.value, searchWord);
         } else {
             hide();
         }
