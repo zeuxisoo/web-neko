@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/stores';
 import { createFetch } from '@vueuse/core';
-import ApiError from './error';
+import { ApiError } from './error';
 
 const useAgent = createFetch({
     baseUrl: '/api/v1',

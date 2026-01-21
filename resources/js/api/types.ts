@@ -52,3 +52,12 @@ type AccountSecurityUpdatePasswordPayload = {
 interface AccountSecurityResponse extends ApiResponse {
     data: string[];
 }
+
+// pulse
+interface PulseTagResponse extends ApiResponse {
+    data: {
+        id: number;
+        name: string;
+        order_column: number;
+    }[];
+}
