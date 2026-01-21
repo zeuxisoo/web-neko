@@ -48,6 +48,8 @@ const editorMethods = {
         editorRef.value.focus();
         editorRef.value.selectionEnd = start;
 
+        editorRef.value.dispatchEvent(new Event('input'));
+
         updateEditorHeight();
     },
 
@@ -70,6 +72,8 @@ const editorMethods = {
         editorRef.value.value = value;
         editorRef.value.focus();
         editorRef.value.selectionEnd = endPosition + prefix.length + content.length;
+
+        editorRef.value.dispatchEvent(new Event('input'));
 
         updateEditorHeight();
     },
