@@ -76,7 +76,7 @@ const editorMethods = {
     <Card>
         <CardContent>
             <div class="item-center grid w-full gap-4">
-                <div class="flex flex-col">
+                <div class="relative flex flex-col">
                     <textarea
                         v-model="editor"
                         ref="editor-ref"
