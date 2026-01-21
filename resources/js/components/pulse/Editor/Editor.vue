@@ -83,7 +83,7 @@ const editorMethods = {
                         ref="editor-ref"
                         rows="1"
                         name="editor"
-                        class="w-full resize-none rounded-md border-2 p-2"
+                        class="w-full resize-none rounded-md border-2 bg-transparent p-2 text-base placeholder:opacity-60"
                         placeholder="Place whatever you want"
                         @input="handleEditorInput($event)"
                         autofocus
