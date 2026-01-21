@@ -36,6 +36,7 @@ export default function useSuggestions(options: SuggestionOptions) {
         const editor = options.editorRef;
         editor.value?.addEventListener('input', handleInput);
         editor.value?.addEventListener('keydown', handleKeyDown);
+        editor.value?.addEventListener('blur', hide);
 
         isInstanced.value = true;
     };

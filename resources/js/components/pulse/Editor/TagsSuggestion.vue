@@ -41,8 +41,6 @@ const { isVisible, position, selectedIndex, suggestionList, fireAutocomplete } =
     },
 });
 
-watch(isVisible, () => console.log(`visible: ${isVisible}`));
-
 //
 watch(
     () => selectedIndex.value,
