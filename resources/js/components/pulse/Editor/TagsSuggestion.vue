@@ -75,7 +75,7 @@ const tagsListPosition = computed(() => {
 <template>
     <!--TODO fix position-->
     <div
-        class="absolute z-20 flex max-w-48 flex-col overflow-auto rounded bg-white shadow dark:bg-black"
+        class="absolute z-20 flex max-w-48 min-w-20 flex-col overflow-auto rounded-md bg-white p-1 shadow dark:bg-black"
         :style="tagsListPosition"
         ref="containerElement"
         v-if="isVisible && position"
@@ -90,8 +90,8 @@ const tagsListPosition = computed(() => {
             "
             :class="
                 cn(
-                    'w-full cursor-pointer truncate rounded p-1 text-sm hover:text-amber-600 hover:accent-amber-100',
-                    i === selectedIndex ? 'bg-amber-200 text-accent-foreground' : '',
+                    'my-0.5 w-full cursor-pointer truncate rounded-md p-1 px-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground',
+                    i === selectedIndex ? 'bg-accent text-accent-foreground' : '',
                 )
             "
             @mousedown="fireAutocomplete(tags)"
