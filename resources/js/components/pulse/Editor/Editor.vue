@@ -5,10 +5,11 @@ import { ImageDialog } from '@/components/upload-dialog';
 import { SendHorizontal } from 'lucide-vue-next';
 import { computed, ref, useTemplateRef } from 'vue';
 import TagsSuggestion from './TagsSuggestion.vue';
-import { TagList } from './types';
+import { SubmitData, TagList } from './types';
 
 const props = defineProps<{
     tagList: TagList;
+    onSubmit: (data: SubmitData) => void;
 }>();
 
 const editorRef = useTemplateRef<HTMLTextAreaElement | null>('editor-ref');
@@ -28,7 +29,9 @@ const handleEditorInput = (_: InputEvent) => {
 };
 
 const handleSubmit = () => {
-    console.log(editor.value);
+    props.onSubmit({
+        editor: editor.value,
+    });
 };
 
 const editorMethods = {

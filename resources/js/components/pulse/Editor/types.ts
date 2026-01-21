@@ -10,3 +10,7 @@ export type Position = {
 };
 
 export type TagList = Record<string, number>;
+
+export type SubmitData = {
+    editor: string;
+};

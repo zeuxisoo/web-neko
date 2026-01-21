@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import api from '@/api';
 import { Editor, MessageList, Pagination } from '@/components/pulse';
-import { TagList } from '@/components/pulse/Editor/types';
+import { SubmitData, TagList } from '@/components/pulse/Editor/types';
 import { WhoopsHandler } from '@/utils';
 import { ref } from 'vue';
 
@@ -34,6 +34,10 @@ const tagList = ref<TagList>({});
     }
 })();
 
+const handleSubmit = (data: SubmitData) => {
+    console.log(data);
+};
+
 // convert Tag[] `[{ id, name, order_column }]` to `{ name: order_column }`
 function convertToTagList(tags: Tag[]): Record<string, number> {
     return tags.reduce<Record<string, number>>((acc, tag) => {
@@ -45,7 +49,7 @@ function convertToTagList(tags: Tag[]): Record<string, number> {
 
 <template>
     <div class="pulse grid gap-3">
-        <Editor :tag-list="tagList" />
+        <Editor :tag-list="tagList" @submit="handleSubmit" />
         <MessageList />
         <Pagination />
     </div>
