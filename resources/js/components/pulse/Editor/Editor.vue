@@ -1,19 +1,22 @@
 <script setup lang="ts">
 import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
-import { Textarea } from '@/components/base/textarea';
 import { ImageDialog } from '@/components/upload-dialog';
 import { SendHorizontal } from 'lucide-vue-next';
 import { ref, useTemplateRef } from 'vue';
 import TagsSuggestion from './TagsSuggestion.vue';
+import { TagList } from './types';
 
-const editorRef = useTemplateRef<HTMLTextAreaElement>('editor-ref');
+const props = defineProps<{
+    tagList: TagList;
+}>();
+
+const editorRef = useTemplateRef<HTMLTextAreaElement | null>('editor-ref');
 const editor = ref('');
 
 const updateEditorHeight = () => {
     // add 4px to match `p-1` style when user input
     if (editorRef.value && editorRef.value.style) {
-        console.log(editorRef.value);
         editorRef.value.style.height = 'auto';
         editorRef.value.style.height = (editorRef.value.scrollHeight ?? 0) + 4 + 'px';
     }
@@ -74,7 +77,7 @@ const editorMethods = {
         <CardContent>
             <div class="item-center grid w-full gap-4">
                 <div class="flex flex-col">
-                    <Textarea
+                    <textarea
                         v-model="editor"
                         ref="editor-ref"
                         rows="1"
@@ -84,8 +87,8 @@ const editorMethods = {
                         @input="handleEditorInput($event)"
                         autofocus
                     >
-                    </Textarea>
-                    <TagsSuggestion :editor-ref="editorRef" :editor-methods="editorMethods" />
+                    </textarea>
+                    <TagsSuggestion :editor-ref="editorRef" :editor-methods="editorMethods" :tag-list="props.tagList" />
                 </div>
                 <div class="flex gap-2">
                     <div class="flex-1">
