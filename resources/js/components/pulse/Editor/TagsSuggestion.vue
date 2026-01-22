@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import useSuggestions from '@/components/pulse/editor/composables/useSuggestions';
 import { cn } from '@/lib/utils';
 import Fuse from 'fuse.js';
 import { computed, ref, watch } from 'vue';
+import useSuggestions from './composables/useSuggestions';
 import { EditorMethods, TagList } from './types';
 
 const props = defineProps<{

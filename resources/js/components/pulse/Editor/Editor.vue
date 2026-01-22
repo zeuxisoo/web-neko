@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
-import { ImageDialog } from '@/components/upload-dialog';
-import { SendHorizontal } from 'lucide-vue-next';
 import { computed, ref, useTemplateRef } from 'vue';
+import { ActionButton } from './action-button';
 import TagsSuggestion from './TagsSuggestion.vue';
-import { SubmitData, TagList } from './types';
+import { Attachment, SubmitData, TagList } from './types';
 
 const props = defineProps<{
     tagList: TagList;
@@ -26,6 +24,10 @@ const updateEditorHeight = () => {
 
 const handleEditorInput = (_: InputEvent) => {
     updateEditorHeight();
+};
+
+const handleUploaded = (attachments: Attachment[]) => {
+    console.log(attachments);
 };
 
 const handleSubmit = () => {
@@ -99,10 +101,12 @@ const editorMethods = {
                     <TagsSuggestion :editor-ref="editorRef" :editor-methods="editorMethods" :tag-list="tagList" />
                 </div>
                 <div class="flex gap-2">
+                    <!--
                     <div class="flex-1">
-                        <ImageDialog />
                     </div>
                     <Button @click="handleSubmit"> <SendHorizontal /> Submit </Button>
+                    -->
+                    <ActionButton @uploaded="handleUploaded" @submit="handleSubmit" />
                 </div>
             </div>
         </CardContent>
