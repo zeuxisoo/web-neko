@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import useSuggestions from '@/components/pulse/editor/composables/useSuggestions';
 import { cn } from '@/lib/utils';
 import Fuse from 'fuse.js';
 import { computed, ref, watch } from 'vue';
 import { EditorMethods, TagList } from './types';
-import useSuggestions from './useSuggestions';
 
 const props = defineProps<{
     editorRef: HTMLTextAreaElement | null;

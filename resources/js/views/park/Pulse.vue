@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import api from '@/api';
 import { Editor, MessageList, Pagination } from '@/components/pulse';
-import { SubmitData, TagList } from '@/components/pulse/Editor/types';
+import { SubmitData, TagList } from '@/components/pulse/editor/types';
 import { WhoopsHandler } from '@/utils';
 import { ref } from 'vue';
 
