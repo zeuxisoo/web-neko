@@ -1,7 +1,5 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import 'filepond/dist/filepond.min.css';
-@import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -135,5 +133,4 @@
 }
 
 @import './themes/themes.css';
-@import './filepond.css';
 @import 'vue-sonner/style.css';
