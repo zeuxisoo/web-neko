@@ -54,6 +54,17 @@ interface AccountSecurityResponse extends ApiResponse {
 }
 
 // pulse
+interface PulseAttachmentResponse extends ApiResponse {
+    data: {
+        id: number;
+        filename: string;
+        original_name: string;
+        mime_type: string;
+        size: number;
+        sort_order: number;
+    }[];
+}
+
 interface PulseTagResponse extends ApiResponse {
     data: {
         id: number;

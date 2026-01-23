@@ -44,6 +44,7 @@ class AttachmentController extends ApiController
 
     private function processUpload(UploadedFile $file, string $storeFolder): Attachment {
         $mime = $file->getMimeType();
+        $kind = $this->detectKind($mime);
 
         // generate filename using ulids
         $newFilename = strtolower((string) Str::ulid()).'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
@@ -53,7 +54,7 @@ class AttachmentController extends ApiController
 
         $attachment = Attachment::create([
             'user_id' => $this->user()->id,
-            'kind' => $this->detectKind($mime),
+            'kind' => $kind,
             'filename' => $newFilename,
             'original_name' => $file->getClientOriginalName(),
             'mime_type' => $mime,
