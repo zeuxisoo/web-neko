@@ -62,8 +62,9 @@ return [
 
         'pulse' => [
             'driver' => 'local',
-            'root' => storage_path('app/private/pulse'),
-            'visibility' => 'private',
+            'root' => storage_path('app/public/pulse'),
+            'url' => env('APP_URL').'/storage/pulse',
+            'visibility' => 'public',
             'throw' => false,
             'report' => false,
         ],

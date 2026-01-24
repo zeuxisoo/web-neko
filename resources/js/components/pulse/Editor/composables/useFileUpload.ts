@@ -4,7 +4,6 @@ import { ref } from 'vue';
 import { Attachment } from '../types';
 
 interface FileUploadOptions {
-    previewUrl: string;
     maxFileSize: number;
     allowedTypes: string[];
     onUploadCompleted: (attachments: Attachment[]) => void;
@@ -74,7 +73,7 @@ export default function useFileUpload(options: FileUploadOptions) {
                         filename: attachment.filename,
                         size: attachment.size,
                         type: attachment.mime_type || 'application/octet-stream',
-                        url: rtrimSlash(options.previewUrl) + '/' + addSuffixToFileName(attachment.filename, '_cover'),
+                        url: rtrimSlash(attachment.base_url) + '/' + addSuffixToFileName(attachment.filename, '_cover'),
                     });
                 }
             } else {

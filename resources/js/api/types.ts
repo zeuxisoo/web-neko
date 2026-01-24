@@ -62,6 +62,7 @@ interface PulseAttachmentResponse extends ApiResponse {
         mime_type: string;
         size: number;
         sort_order: number;
+        base_url: string;
     }[];
 }
 

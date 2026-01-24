@@ -9,7 +9,6 @@ const props = defineProps<{
 }>();
 
 const { fileInputRef, isUploading, handleFileInputChange, handleUploadClick } = useFileUpload({
-    previewUrl: '/pulse/attachment/show',
     maxFileSize: 8 * 1024 * 1024, // 8MB
     allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
     onUploadCompleted: (uploadedAttachments: Attachment[]) => {
