@@ -4,20 +4,27 @@ import { ApiError } from './error';
 
 const useAgent = createFetch({
     baseUrl: '/api/v1',
+
     options: {
         updateDataOnError: true,
         beforeFetch: async ({ options }) => {
             const auth = useAuthStore();
-            const accessToken = auth.auth.access_token;
 
             const headers = new Headers(options.headers);
             headers.set('Accept', 'application/json');
 
+            const accessToken = auth.auth.access_token;
             if (accessToken) {
                 headers.set('Authorization', `Bearer ${accessToken}`);
             }
 
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            if (csrfToken) {
+                headers.set('X-CSRF-TOKEN', csrfToken);
+            }
+
             options.headers = headers;
+            options.credentials = 'include';
 
             return { options };
         },
