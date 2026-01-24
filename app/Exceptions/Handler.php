@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends ExceptionHandler
 {
+    #[\Override]
     protected function invalidJson($request, ValidationException $exception): JsonResponse {
         return response()->json([
             'ok' => false,
@@ -18,6 +19,7 @@ class Handler extends ExceptionHandler
         ], $exception->status);
     }
 
+    #[\Override]
     protected function unauthenticated($request, AuthenticationException $exception): Response {
         if ($this->shouldReturnJson($request, $exception)) {
             return response()->json([
@@ -27,5 +29,15 @@ class Handler extends ExceptionHandler
         }
 
         return redirect()->guest($exception->redirectTo($request) ?? route('login'));
+    }
+
+    #[\Override]
+    protected function convertExceptionToArray(\Throwable $e): array {
+        return array_merge(
+            [
+                'ok' => false,
+            ],
+            parent::convertExceptionToArray($e)
+        );
     }
 }

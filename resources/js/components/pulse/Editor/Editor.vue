@@ -101,11 +101,6 @@ const editorMethods = {
                     <TagsSuggestion :editor-ref="editorRef" :editor-methods="editorMethods" :tag-list="tagList" />
                 </div>
                 <div class="flex gap-2">
-                    <!--
-                    <div class="flex-1">
-                    </div>
-                    <Button @click="handleSubmit"> <SendHorizontal /> Submit </Button>
-                    -->
                     <ActionButton @uploaded="handleUploaded" @submit="handleSubmit" />
                 </div>
             </div>
