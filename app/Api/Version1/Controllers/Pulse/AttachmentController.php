@@ -6,7 +6,7 @@ use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Requests\Pulse\Attachment\UploadRequest;
 use App\Api\Version1\Resources\Pulse\AttachmentResourceCollection;
 use App\Enums\AttachmentKind;
-use App\Models\Attachment;
+use App\Models\MemoAttachment;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\UploadedFile;
@@ -42,7 +42,8 @@ class AttachmentController extends ApiController
         return new AttachmentResourceCollection($attachments);
     }
 
-    private function processUpload(UploadedFile $file, string $storeFolder): Attachment {
+    // helpers
+    private function processUpload(UploadedFile $file, string $storeFolder): MemoAttachment {
         $mime = $file->getMimeType();
         $kind = $this->detectKind($mime);
 
@@ -52,7 +53,7 @@ class AttachmentController extends ApiController
         // store to 'pulse' disk
         $file->storeAs($storeFolder, $newFilename, 'pulse');
 
-        $attachment = Attachment::create([
+        $attachment = MemoAttachment::create([
             'user_id' => $this->user()->id,
             'kind' => $kind,
             'filename' => $newFilename,
@@ -80,7 +81,7 @@ class AttachmentController extends ApiController
     }
 
     // @param callable $processCallback Call generate action (cover/scaleDown)
-    private function generateImageVariant(Attachment $attachment, string $storeFolder, string $suffix, callable $processCallback): void {
+    private function generateImageVariant(MemoAttachment $attachment, string $storeFolder, string $suffix, callable $processCallback): void {
         $sourcePath = $storeFolder.'/'.$attachment->filename;
         $fullSourcePath = Storage::disk('pulse')->path($sourcePath);
 
@@ -100,15 +101,15 @@ class AttachmentController extends ApiController
         Storage::disk('pulse')->put($storePath, (string) $image->encode());
     }
 
-    private function generateCover(Attachment $attachment, string $storeFolder): void {
+    private function generateCover(MemoAttachment $attachment, string $storeFolder): void {
         $this->generateImageVariant($attachment, $storeFolder, 'cover', fn($image) => $image->cover(48, 48, 'center'));
     }
 
-    private function generateThumb(Attachment $attachment, string $storeFolder): void {
+    private function generateThumb(MemoAttachment $attachment, string $storeFolder): void {
         $this->generateImageVariant($attachment, $storeFolder, 'thumb', fn($image) => $image->scaleDown(512, 512));
     }
 
-    private function cleanupAttachment(Attachment $attachment, string $storeFolder): void {
+    private function cleanupAttachment(MemoAttachment $attachment, string $storeFolder): void {
         // delete original file
         Storage::disk('pulse')->delete($storeFolder.'/'.$attachment->filename);
 

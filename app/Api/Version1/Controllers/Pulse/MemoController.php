@@ -6,8 +6,8 @@ use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Requests\Pulse\Memo\StoreRequest;
 use App\Api\Version1\Resources\Pulse\MemoResource;
 use App\Enums\TagKind;
-use App\Models\Attachment;
 use App\Models\Memo;
+use App\Models\MemoAttachment;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
@@ -32,7 +32,7 @@ class MemoController extends ApiController
 
             // update previous uploaded attachment relationship
             $attachmentIds = array_column($input['attachments'], 'id');
-            $attachments = Attachment::where('user_id', $userId)
+            $attachments = MemoAttachment::where('user_id', $userId)
                 ->whereIn('id', $attachmentIds)
                 ->update([
                     'memo_id' => $memo->id,

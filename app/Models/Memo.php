@@ -20,6 +20,6 @@ class Memo extends Model
      * @return HasMany<Attachment>
      */
     public function attachments(): HasMany {
-        return $this->hasMany(Attachment::class);
+        return $this->hasMany(MemoAttachment::class);
     }
 }

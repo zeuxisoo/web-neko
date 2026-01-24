@@ -9,7 +9,7 @@ return new class() extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('attachments', function(Blueprint $table) {
+        Schema::create('memo_attachments', function(Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('memo_id')->nullable()->index();
@@ -27,6 +27,6 @@ return new class() extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('attachments');
+        Schema::dropIfExists('memo_attachments');
     }
 };

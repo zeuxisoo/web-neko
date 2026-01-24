@@ -2,7 +2,7 @@
 
 namespace App\Api\Version1\Rules;
 
-use App\Models\Attachment;
+use App\Models\MemoAttachment;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
@@ -25,7 +25,7 @@ class ValidUserAttachments implements ValidationRule
         }
 
         // find valid ids collection from DB with related user id
-        $validDbIds = Attachment::where('user_id', auth()->id())
+        $validDbIds = MemoAttachment::where('user_id', auth()->id())
             ->whereIn('id', $formDataIds)
             ->pluck('id');
 

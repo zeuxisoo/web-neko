@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Number;
 
-class Attachment extends Model
+class MemoAttachment extends Model
 {
     use HasFactory;
 
