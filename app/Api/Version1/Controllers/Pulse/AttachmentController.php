@@ -80,27 +80,6 @@ class AttachmentController extends ApiController
         };
     }
 
-    // @param callable $processCallback Call generate action (cover/scaleDown)
-    private function generateImageVariant(MemoAttachment $attachment, string $storeFolder, string $suffix, callable $processCallback): void {
-        $sourcePath = $storeFolder.'/'.$attachment->filename;
-        $fullSourcePath = Storage::disk('pulse')->path($sourcePath);
-
-        if (!file_exists($fullSourcePath)) {
-            throw new FileNotFoundException("Cannot found source file: {$sourcePath}");
-        }
-
-        $sourceFilename = pathinfo($attachment->filename, PATHINFO_FILENAME);
-        $sourceExtension = pathinfo($attachment->filename, PATHINFO_EXTENSION);
-
-        $storeFilename = $sourceFilename.'_'.$suffix.'.'.$sourceExtension;
-        $storePath = $storeFolder.'/'.$storeFilename;
-
-        $manager = new ImageManager(new Driver());
-        $image = $processCallback($manager->read($fullSourcePath));
-
-        Storage::disk('pulse')->put($storePath, (string) $image->encode());
-    }
-
     private function generateCover(MemoAttachment $attachment, string $storeFolder): void {
         $this->generateImageVariant($attachment, $storeFolder, 'cover', fn($image) => $image->cover(48, 48, 'center'));
     }
@@ -109,20 +88,32 @@ class AttachmentController extends ApiController
         $this->generateImageVariant($attachment, $storeFolder, 'thumb', fn($image) => $image->scaleDown(512, 512));
     }
 
+    // @param callable $processCallback Call generate action (cover/scaleDown)
+    private function generateImageVariant(MemoAttachment $attachment, string $storeFolder, string $ownFolder, callable $processCallback): void {
+        $sourcePath = $storeFolder.'/'.$attachment->filename;
+        $fullSourcePath = Storage::disk('pulse')->path($sourcePath);
+
+        if (!file_exists($fullSourcePath)) {
+            throw new FileNotFoundException("Cannot found source file: {$sourcePath}");
+        }
+
+        // store path for generated file (cover/thumb)
+        $storePath = $storeFolder.'/'.$ownFolder.'/'.$attachment->filename;
+
+        $manager = new ImageManager(new Driver());
+        $image = $processCallback($manager->read($fullSourcePath));
+
+        Storage::disk('pulse')->put($storePath, (string) $image->encode());
+    }
+
     private function cleanupAttachment(MemoAttachment $attachment, string $storeFolder): void {
         // delete original file
         Storage::disk('pulse')->delete($storeFolder.'/'.$attachment->filename);
 
-        // find source filename and extension
-        $sourceFilename = pathinfo($attachment->filename, PATHINFO_FILENAME);
-        $sourceExtension = pathinfo($attachment->filename, PATHINFO_EXTENSION);
-
         // delete cover if exists
-        $coverFilename = $sourceFilename.'_cover.'.$sourceExtension;
-        Storage::disk('pulse')->delete($storeFolder.'/'.$coverFilename);
+        Storage::disk('pulse')->delete($storeFolder.'/cover/'.$attachment->filename);
 
         // delete thumb if exists
-        $thumbFilename = $sourceFilename.'_thumb.'.$sourceExtension;
-        Storage::disk('pulse')->delete($storeFolder.'/'.$thumbFilename);
+        Storage::disk('pulse')->delete($storeFolder.'/thumb/'.$attachment->filename);
     }
 }
