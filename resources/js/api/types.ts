@@ -24,6 +24,7 @@ interface MeResponse extends ApiResponse {
         username: string;
         email: string;
         avatar: string;
+        link: string;
     };
 }
 

@@ -4,6 +4,7 @@ namespace App\Api\Version1\Resources\Auth;
 
 use App\Api\Version1\Bases\ApiResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserResource extends ApiResource
 {
@@ -13,6 +14,7 @@ class UserResource extends ApiResource
             'username' => $this->username,
             'email' => $this->email,
             'avatar' => $this->avatar,
+            'link' => Storage::disk('avatar')->url($this->avatar),
         ];
     }
 }

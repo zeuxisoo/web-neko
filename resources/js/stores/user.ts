@@ -1,14 +1,13 @@
 import api from '@/api';
 import { defineStore } from 'pinia';
 
-const avatarUrlPrefix = '/storage/avatar/';
-
 const useUserStore = defineStore('user', {
     state: () => ({
         id: 0,
         username: '',
         email: '',
         avatar: '',
+        link: '',
     }),
     actions: {
         async fetch() {
@@ -18,8 +17,6 @@ const useUserStore = defineStore('user', {
                 if (data && data.value) {
                     const result = data.value;
                     const me = result.data;
-
-                    me.avatar = avatarUrlPrefix + me.avatar;
 
                     this.$patch(me);
 
@@ -31,8 +28,9 @@ const useUserStore = defineStore('user', {
                 throw e;
             }
         },
-        setAvatar(filename: string) {
-            this.avatar = avatarUrlPrefix + filename;
+        setAvatar(filename: string, link: string) {
+            this.avatar = filename;
+            this.link = link;
         },
     },
 });

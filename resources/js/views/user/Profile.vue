@@ -28,6 +28,7 @@ onMounted(async () => {
         user.value.username = me.username;
         user.value.email = me.email;
         user.value.avatar = me.avatar;
+        user.value.link = me.link;
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error when fetch me action in account profile');
     } finally {
@@ -47,9 +48,11 @@ const handleAccountAvatarSave = async (file: File) => {
         if (data && data.value) {
             const result = data.value.data;
             const avatar = result.avatar;
+            const link = result.link;
 
-            userStore.setAvatar(avatar);
+            userStore.setAvatar(avatar, link);
             user.value.avatar = userStore.avatar;
+            user.value.link = userStore.link;
 
             toast.info('Avatar updated');
         } else {
@@ -97,7 +100,7 @@ const handleAccountProfileSave = async () => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-2" v-if="user.avatar">
+    <div class="flex flex-col gap-2" v-if="user.link">
         <Card>
             <CardHeader>
                 <CardTitle>Profile</CardTitle>
@@ -107,7 +110,7 @@ const handleAccountProfileSave = async () => {
                 <div class="grid gap-3">
                     <Label for="tabs-avatar">Avatar</Label>
                     <Loader class="animate-spin" v-if="isLoading" />
-                    <AvatarUpload :url="user.avatar" :name="user.username" @change="handleAccountAvatarSave" v-else />
+                    <AvatarUpload :url="user.link" :name="user.username" @change="handleAccountAvatarSave" v-else />
                 </div>
             </CardContent>
         </Card>
