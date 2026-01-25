@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Route;
 //     return view('index');
 // });
 
+Route::middleware(['auth:web'])->group(function() {
+    Route::prefix('auth')->group(function() {
+        Route::get('/verify/{token}', function(string $filename) {
+            return "test ok --> {$filename}";
+        });
+    });
+});
+
 Route::get('{path}', function() {
     return view('index');
 })->where('path', '(.*)')->name('web.index');
