@@ -19,5 +19,5 @@ export interface Attachment {
     filename: string;
     size: number;
     type: string;
-    url: string;
+    links: Record<'cover' | 'thumb', string>;
 }

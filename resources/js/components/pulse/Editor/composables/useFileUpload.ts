@@ -20,19 +20,6 @@ function humanSize(bytes: number) {
     return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + units[i];
 }
 
-function addSuffixToFileName(filename: string, suffix: string) {
-    const dotIndex = filename.lastIndexOf('.');
-
-    // if no dot is found or it's the first character (hidden file), append to end
-    if (dotIndex <= 0) return filename + suffix;
-
-    return filename.slice(0, dotIndex) + suffix + filename.slice(dotIndex);
-}
-
-function rtrimSlash(path: string) {
-    return path.endsWith('/') ? path.slice(0, -1) : path;
-}
-
 export default function useFileUpload(options: FileUploadOptions) {
     const fileInputRef = ref<HTMLInputElement>();
     const isUploading = ref<boolean>(false);
@@ -73,7 +60,7 @@ export default function useFileUpload(options: FileUploadOptions) {
                         filename: attachment.filename,
                         size: attachment.size,
                         type: attachment.mime_type || 'application/octet-stream',
-                        url: rtrimSlash(attachment.base_url) + '/' + addSuffixToFileName(attachment.filename, '_cover'),
+                        links: attachment.links,
                     });
                 }
             } else {
