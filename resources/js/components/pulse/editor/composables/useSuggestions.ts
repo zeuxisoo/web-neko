@@ -3,7 +3,7 @@ import { computed, ref, watch, type Ref } from 'vue';
 import type { EditorMethods, Position } from '../types';
 
 interface SuggestionOptions {
-    editorRef: Ref<HTMLTextAreaElement | null>;
+    editorRef: Ref<HTMLTextAreaElement | null | undefined>;
     editorMethods: EditorMethods;
     triggerChar: string;
     itemList: Ref<string[]>;

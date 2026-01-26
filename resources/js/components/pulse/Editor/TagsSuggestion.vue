@@ -6,7 +6,7 @@ import useSuggestions from './composables/useSuggestions';
 import { EditorMethods, TagList } from './types';
 
 const props = defineProps<{
-    editorRef: HTMLTextAreaElement | null;
+    editorRef: HTMLTextAreaElement | null | undefined;
     editorMethods: EditorMethods;
     tagList: TagList;
 }>();

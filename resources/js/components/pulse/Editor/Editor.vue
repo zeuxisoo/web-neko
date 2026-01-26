@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Card, CardContent } from '@/components/base/card';
-import { computed, ref, useTemplateRef } from 'vue';
+import { useTextareaAutosize } from '@vueuse/core';
+import { computed } from 'vue';
 import { ActionButton } from './action-button';
 import TagsSuggestion from './TagsSuggestion.vue';
 import { Attachment, SubmitData, TagList } from './types';
@@ -10,21 +11,9 @@ const props = defineProps<{
     onSubmit: (data: SubmitData) => void;
 }>();
 
-const editorRef = useTemplateRef<HTMLTextAreaElement | null>('editor-ref');
-const editor = ref('');
+const { textarea: editorRef, input: editor, triggerResize: updateEditorHeight } = useTextareaAutosize();
+
 const tagList = computed(() => props.tagList);
-
-const updateEditorHeight = () => {
-    // add 0px to match `p-2` style when user input
-    if (editorRef.value && editorRef.value.style) {
-        editorRef.value.style.height = 'auto';
-        editorRef.value.style.height = (editorRef.value.scrollHeight ?? 0) + 0 + 'px';
-    }
-};
-
-const handleEditorInput = (_: InputEvent) => {
-    updateEditorHeight();
-};
 
 const handleUploaded = (attachments: Attachment[]) => {
     console.log(attachments);
@@ -89,12 +78,11 @@ const editorMethods = {
                 <div class="relative flex flex-col">
                     <textarea
                         v-model="editor"
-                        ref="editor-ref"
+                        ref="editorRef"
                         rows="1"
                         name="editor"
                         class="w-full resize-none rounded-md border-0 bg-transparent p-2 text-base outline-none placeholder:opacity-60"
                         placeholder="Place whatever you want"
-                        @input="handleEditorInput($event)"
                         autofocus
                     >
                     </textarea>
