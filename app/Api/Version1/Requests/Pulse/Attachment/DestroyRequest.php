@@ -23,6 +23,7 @@ class DestroyRequest extends ApiFormRequest
         return [
             'id' => [
                 'required',
+                'integer',
                 new ValidAttachmentExists(),
             ],
         ];
