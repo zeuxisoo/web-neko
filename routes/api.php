@@ -42,6 +42,7 @@ Route::prefix('v1')->group(function() {
             });
             Route::prefix('attachment')->group(function() {
                 Route::post('/upload', [Pulse\AttachmentController::class, 'upload'])->name('api.pulse.attachment.upload');
+                Route::get('/destroy/{id}', [Pulse\AttachmentController::class, 'destroy'])->name('api.pulse.attachment.destroy');
             });
         });
     });

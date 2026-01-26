@@ -3,11 +3,13 @@
 namespace App\Api\Version1\Controllers\Pulse;
 
 use App\Api\Version1\Bases\ApiController;
+use App\Api\Version1\Requests\Pulse\Attachment\DestroyRequest;
 use App\Api\Version1\Requests\Pulse\Attachment\UploadRequest;
 use App\Api\Version1\Resources\Pulse\AttachmentResourceCollection;
 use App\Enums\AttachmentKind;
 use App\Models\MemoAttachment;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +42,19 @@ class AttachmentController extends ApiController
         }
 
         return new AttachmentResourceCollection($attachments);
+    }
+
+    public function destroy(DestroyRequest $request): JsonResponse {
+        $input = $request->validated();
+
+        $attachment = MemoAttachment::where('id', $input['id'])
+            ->where('user_id', $this->user()->id)
+            ->first();
+
+        $this->cleanupAttachment($attachment, $attachment->created_at->format('Y/m'));
+        $attachment->delete();
+
+        return $this->respondJsonMessage("Attachment deleted: {$attachment->original_name}");
     }
 
     // helpers
