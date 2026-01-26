@@ -1,5 +1,5 @@
 import api from '@/api';
-import { WhoopsHandler } from '@/utils';
+import { humanSize, WhoopsHandler } from '@/utils';
 import { ref } from 'vue';
 import { Attachment } from '../types';
 
@@ -7,17 +7,6 @@ interface FileUploadOptions {
     maxFileSize: number;
     allowedTypes: string[];
     onUploadCompleted: (attachments: Attachment[]) => void;
-}
-
-function humanSize(bytes: number) {
-    if (bytes === 0) {
-        return '0 Bytes';
-    }
-
-    const units = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(1024));
-
-    return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + units[i];
 }
 
 export default function useFileUpload(options: FileUploadOptions) {
