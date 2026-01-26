@@ -3,6 +3,7 @@
 namespace App\Api\Version1\Requests\Pulse\Attachment;
 
 use App\Api\Version1\Bases\ApiFormRequest;
+use App\Api\Version1\Rules\MaxMemoAttachment;
 
 class UploadRequest extends ApiFormRequest
 {
@@ -31,6 +32,7 @@ class UploadRequest extends ApiFormRequest
                 'file',
                 'mimes:jpeg,png,jpg,webp,mp4,mov',
                 'max:8192', // 8MB limit
+                new MaxMemoAttachment(6),
             ],
         ];
     }
