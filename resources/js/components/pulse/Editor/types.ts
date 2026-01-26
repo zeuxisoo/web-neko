@@ -16,7 +16,9 @@ export type SubmitData = {
 };
 
 export interface Attachment {
+    id: number;
     filename: string;
+    original_name: string;
     size: number;
     type: string;
     links: Record<'cover' | 'thumb', string>;

@@ -46,7 +46,9 @@ export default function useFileUpload(options: FileUploadOptions) {
 
                 for (const attachment of attachments) {
                     attachmentList.push({
+                        id: attachment.id,
                         filename: attachment.filename,
+                        original_name: attachment.original_name,
                         size: attachment.size,
                         type: attachment.mime_type || 'application/octet-stream',
                         links: attachment.links,
