@@ -13,6 +13,7 @@ export type TagList = Record<string, number>;
 
 export type SubmitData = {
     editor: string;
+    attachments: Attachment[];
 };
 
 export interface Attachment {

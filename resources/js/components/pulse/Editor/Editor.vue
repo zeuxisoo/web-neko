@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Card, CardContent } from '@/components/base/card';
 import { useTextareaAutosize } from '@vueuse/core';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { ActionButton } from './action-button';
+import { AttachmentList } from './attachment';
 import TagsSuggestion from './TagsSuggestion.vue';
 import { Attachment, SubmitData, TagList } from './types';
 
@@ -14,14 +15,84 @@ const props = defineProps<{
 const { textarea: editorRef, input: editor, triggerResize: updateEditorHeight } = useTextareaAutosize();
 
 const tagList = computed(() => props.tagList);
+const attachments = ref<Attachment[]>([
+    {
+        id: 1,
+        filename: '300.jpeg',
+        original_name: '300.jpeg',
+        size: 3000,
+        type: 'image/jpg',
+        links: {
+            cover: 'http://localhost:8000/storage/pulse/2026/01/cover/01kftkfrvanp2qprzfcsqdprsk_obpKBYJT.png',
+            thumb: 'http://localhost:8000/storage/pulse/2026/01/thumb/01kftkfrvanp2qprzfcsqdprsk_obpKBYJT.png',
+        },
+    },
+    {
+        id: 2,
+        filename: '300a.jpeg',
+        original_name: '300a.jpeg',
+        size: 3000,
+        type: 'image/jpg',
+        links: {
+            cover: 'http://localhost:8000/storage/pulse/2026/01/cover/01kftkfrvs9tky93wrfv09mpfx_ElImBUr1.webp',
+            thumb: 'http://localhost:8000/storage/pulse/2026/01/thumb/01kftkfrvs9tky93wrfv09mpfx_ElImBUr1.webp',
+        },
+    },
+    {
+        id: 3,
+        filename: '300b.jpeg',
+        original_name: '300b.jpeg',
+        size: 3000,
+        type: 'image/jpg',
+        links: {
+            cover: 'http://localhost:8000/storage/pulse/2026/01/cover/01kftkkc6zrqbhbs8q3zcy8ddj_XL7FMsND.png',
+            thumb: 'http://localhost:8000/storage/pulse/2026/01/thumb/01kftkkc6zrqbhbs8q3zcy8ddj_XL7FMsND.png',
+        },
+    },
+    {
+        id: 4,
+        filename: '300c.jpeg',
+        original_name: '300c.jpeg',
+        size: 3000,
+        type: 'image/jpg',
+        links: {
+            cover: 'http://localhost:8000/storage/pulse/2026/01/cover/01kftkkc89t25h7t5nv6r1q3f2_XNFjKH8w.png',
+            thumb: 'http://localhost:8000/storage/pulse/2026/01/thumb/01kftkkc89t25h7t5nv6r1q3f2_XNFjKH8w.png',
+        },
+    },
+]);
 
-const handleUploaded = (attachments: Attachment[]) => {
-    console.log(attachments);
+const handleUploaded = (files: Attachment[]) => {
+    attachments.value = files;
+};
+
+const handleAttachmentUp = (index: number) => {
+    if (index <= 0) return;
+
+    const item = attachments.value[index];
+
+    attachments.value[index] = attachments.value[index - 1];
+    attachments.value[index - 1] = item;
+};
+
+const handleAttachmentDown = (index: number) => {
+    if (index >= attachments.value.length - 1) return;
+
+    const item = attachments.value[index];
+
+    attachments.value[index] = attachments.value[index + 1];
+    attachments.value[index + 1] = item;
+};
+
+const handleAttachmentRemove = (index: number) => {
+    // TODO: remove remote file via api (need impl)
+    attachments.value.splice(index, 1);
 };
 
 const handleSubmit = () => {
     props.onSubmit({
         editor: editor.value,
+        attachments: attachments.value,
     });
 };
 
@@ -81,12 +152,20 @@ const editorMethods = {
                         ref="editorRef"
                         rows="1"
                         name="editor"
-                        class="w-full resize-none rounded-md border-0 bg-transparent p-2 text-base outline-none placeholder:opacity-60"
+                        class="w-full resize-none rounded-md border-0 bg-transparent p-0.5 text-base outline-none placeholder:opacity-60"
                         placeholder="Place whatever you want"
                         autofocus
                     >
                     </textarea>
                     <TagsSuggestion :editor-ref="editorRef" :editor-methods="editorMethods" :tag-list="tagList" />
+                </div>
+                <div class="flex w-full flex-col gap-2">
+                    <AttachmentList
+                        :attachments="attachments"
+                        @up="handleAttachmentUp"
+                        @down="handleAttachmentDown"
+                        @remove="handleAttachmentRemove"
+                    />
                 </div>
                 <div class="flex gap-2">
                     <ActionButton @uploaded="handleUploaded" @submit="handleSubmit" />

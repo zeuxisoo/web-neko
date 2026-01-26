@@ -11,4 +11,14 @@ const humanSize = (bytes: number) => {
     return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + units[i];
 };
 
-export { humanSize };
+const fileSubType = (mimeType: string, upperCase: boolean = true) => {
+    const [kind, subType] = mimeType.split('/', 2);
+
+    if (upperCase) {
+        return subType.toUpperCase();
+    }
+
+    return subType;
+};
+
+export { fileSubType, humanSize };
