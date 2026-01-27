@@ -3,7 +3,7 @@
 namespace App\Api\Version1\Requests\Pulse\Attachment;
 
 use App\Api\Version1\Bases\ApiFormRequest;
-use App\Api\Version1\Rules\ValidAttachmentExists;
+use App\Api\Version1\Rules\MustMemoAttachmentExists;
 
 class DestroyRequest extends ApiFormRequest
 {
@@ -24,7 +24,7 @@ class DestroyRequest extends ApiFormRequest
             'id' => [
                 'required',
                 'integer',
-                new ValidAttachmentExists(),
+                new MustMemoAttachmentExists(),
             ],
         ];
     }

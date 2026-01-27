@@ -6,7 +6,7 @@ use App\Models\MemoAttachment;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class ValidUserAttachments implements ValidationRule
+class MustUserMemoAttachments implements ValidationRule
 {
     /**
      * @param  array  $value  This will be the array of attachments

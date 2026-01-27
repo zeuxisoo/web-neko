@@ -3,7 +3,7 @@
 namespace App\Api\Version1\Requests\Pulse\Memo;
 
 use App\Api\Version1\Bases\ApiFormRequest;
-use App\Api\Version1\Rules\ValidUserAttachments;
+use App\Api\Version1\Rules\MustUserMemoAttachments;
 
 class StoreRequest extends ApiFormRequest
 {
@@ -40,7 +40,7 @@ class StoreRequest extends ApiFormRequest
                 'nullable',
                 'array',
                 'max:8', // limit for attachments same as Attachment\UploadRequest
-                new ValidUserAttachments(),
+                new MustUserMemoAttachments(),
             ],
             // keep check basic structure for the id in children
             'attachments.*.id' => [

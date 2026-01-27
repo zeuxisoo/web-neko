@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class ValidAttachmentExists implements ValidationRule
+class MustMemoAttachmentExists implements ValidationRule
 {
     /**
      * @param  array  $value  This will be the array of attachments
