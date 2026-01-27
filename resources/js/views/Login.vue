@@ -27,6 +27,10 @@ const handleLogin = async () => {
 
         const { data, error } = await api.auth.login(formData as LoginPayload).json<LoginResponse>();
 
+        if (error.value) {
+            throw error.value;
+        }
+
         if (data.value && data.value.ok) {
             const result = data.value;
 

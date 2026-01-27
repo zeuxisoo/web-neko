@@ -33,6 +33,10 @@ const handleAccountSecuritySave = async () => {
             .updatePassword(formData as AccountSecurityUpdatePasswordPayload)
             .json<AccountSecurityResponse>();
 
+        if (error.value) {
+            throw error.value;
+        }
+
         if (data.value && data.value.ok) {
             const result = data.value;
 

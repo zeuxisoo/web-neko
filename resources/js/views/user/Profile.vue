@@ -45,6 +45,10 @@ const handleAccountAvatarSave = async (file: File) => {
 
         const { data, error } = await api.account.profile.updateAvatar(formData).json<MeResponse>();
 
+        if (error.value) {
+            throw error.value;
+        }
+
         if (data && data.value) {
             const result = data.value.data;
             const avatar = result.avatar;
@@ -56,7 +60,7 @@ const handleAccountAvatarSave = async (file: File) => {
 
             toast.info('Avatar updated');
         } else {
-            throw error;
+            throw error.value;
         }
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error on handle account avatar save action');
@@ -75,6 +79,10 @@ const handleAccountProfileSave = async () => {
         });
 
         const { data, error } = await api.account.profile.update(formData as AccountProfileUpdatePayload).json<AccountProfileResponse>();
+
+        if (error.value) {
+            throw error.value;
+        }
 
         if (data.value && data.value.ok) {
             const result = data.value;

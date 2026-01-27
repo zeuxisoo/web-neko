@@ -20,12 +20,16 @@ const tagList = ref<TagList>({});
 
         const { data, error } = await api.pulse.tag.all().json<PulseTagResponse>();
 
+        if (error.value) {
+            throw error.value;
+        }
+
         if (data && data.value) {
             const resultTags = data.value.data;
 
             tagList.value = convertToTagList(resultTags);
         } else {
-            throw error;
+            throw error.value;
         }
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error when fetch tag action in park pulse');

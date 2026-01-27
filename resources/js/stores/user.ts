@@ -14,6 +14,10 @@ const useUserStore = defineStore('user', {
             try {
                 const { data, error } = await api.auth.me().json<MeResponse>();
 
+                if (error.value) {
+                    throw error.value;
+                }
+
                 if (data && data.value) {
                     const result = data.value;
                     const me = result.data;

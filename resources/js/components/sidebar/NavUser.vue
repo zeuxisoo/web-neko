@@ -35,6 +35,10 @@ const handleLogout = async () => {
     try {
         const { data, error } = await api.auth.logout().json<LogoutResponse>();
 
+        if (error.value) {
+            throw error.value;
+        }
+
         if (data.value && data.value.ok) {
             const authStore = useAuthStore();
             authStore.deactivateAuth();
