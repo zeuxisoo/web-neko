@@ -2,7 +2,10 @@ import useAgent from './useAgent';
 
 class Attachment {
     upload(formData: FormData) {
-        return useAgent<PulseAttachmentResponse>('pulse/attachment/upload').post(formData);
+        return useAgent<PulseAttachmentUploadResponse>('pulse/attachment/upload').post(formData);
+    }
+    destroy(id: number) {
+        return useAgent<PulseAttachmentDestroyResponse>('pulse/attachment/destroy/' + id).get();
     }
 }
 

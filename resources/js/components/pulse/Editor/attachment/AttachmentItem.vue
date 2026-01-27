@@ -53,7 +53,7 @@ const props = defineProps<{
                         <AlertDialogTitle>Note!</AlertDialogTitle>
                         <AlertDialogDescription>
                             Are you sure delete the attachment: <span class="text-primary">{{ attachment.original_name }}</span> ?<br /><br />
-                            Note: This action cannot be undone. This will permanently delete this attachment and remove record from our servers.
+                            Note: This action cannot be undone. This will permanently remove this attachment and delete record from our servers.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

@@ -55,7 +55,7 @@ interface AccountSecurityResponse extends ApiResponse {
 }
 
 // pulse
-interface PulseAttachmentResponse extends ApiResponse {
+interface PulseAttachmentUploadResponse extends ApiResponse {
     data: {
         id: number;
         filename: string;
@@ -65,6 +65,10 @@ interface PulseAttachmentResponse extends ApiResponse {
         sort_order: number;
         links: Record<'cover' | 'thumb', string>;
     }[];
+}
+
+interface PulseAttachmentDestroyResponse extends ApiResponse {
+    data: string[];
 }
 
 interface PulseTagResponse extends ApiResponse {

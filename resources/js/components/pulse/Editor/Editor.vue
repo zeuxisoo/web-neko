@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import api from '@/api';
 import { Card, CardContent } from '@/components/base/card';
+import { WhoopsHandler } from '@/utils';
 import { useTextareaAutosize } from '@vueuse/core';
 import { computed, ref } from 'vue';
+import { toast } from 'vue-sonner';
 import { ActionButton } from './action-button';
 import { AttachmentList } from './attachment';
 import TagsSuggestion from './TagsSuggestion.vue';
@@ -39,9 +42,31 @@ const handleAttachmentDown = (index: number) => {
     attachments.value[index + 1] = item;
 };
 
-const handleAttachmentRemove = (index: number) => {
-    // TODO: remove remote file via api (need impl)
-    attachments.value.splice(index, 1);
+const handleAttachmentRemove = async (index: number) => {
+    try {
+        const attachment = attachments.value[index];
+
+        const { data, error } = await api.pulse.attachment.destroy(attachment.id).json<PulseAttachmentDestroyResponse>();
+
+        if (error.value) {
+            console.log('1');
+            throw error.value;
+        }
+
+        if (data && data.value) {
+            const result = data.value;
+            const message = result.message;
+
+            toast.info(message);
+
+            attachments.value.splice(index, 1);
+        } else {
+            throw error.value;
+        }
+    } catch (e: unknown) {
+        console.log(e);
+        WhoopsHandler.handleError(e, 'Unknown error when remove attachment action in park pulse');
+    }
 };
 
 const handleSubmit = () => {
