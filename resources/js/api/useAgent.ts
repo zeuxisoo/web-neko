@@ -21,6 +21,12 @@ const useAgent = createFetch({
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
             if (csrfToken) {
                 headers.set('X-CSRF-TOKEN', csrfToken);
+
+                if (options.body) {
+                    if (options.body instanceof FormData) {
+                        options.body.append('csrf-token', csrfToken);
+                    }
+                }
             }
 
             options.headers = headers;

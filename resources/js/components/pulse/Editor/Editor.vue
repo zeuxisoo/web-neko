@@ -18,7 +18,7 @@ const tagList = computed(() => props.tagList);
 const attachments = ref<Attachment[]>([]);
 
 const handleUploaded = (files: Attachment[]) => {
-    attachments.value = files;
+    attachments.value = attachments.value.concat(files);
 };
 
 const handleAttachmentUp = (index: number) => {

@@ -40,7 +40,7 @@ export default function useFileUpload(options: FileUploadOptions) {
 
             const { data, error } = await api.pulse.attachment.upload(formData).json<PulseAttachmentResponse>();
 
-            if (error) {
+            if (error.value) {
                 throw error.value;
             }
 
