@@ -1,4 +1,15 @@
 <script setup lang="ts">
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/base/alert-dialog';
 import { fileSubType, humanSize } from '@/utils';
 import { ChevronDownIcon, ChevronUpIcon, XIcon } from 'lucide-vue-next';
 import { Attachment } from '../types';
@@ -25,15 +36,32 @@ const props = defineProps<{
             </div>
         </div>
         <div className="flex items-center gap-1.5">
-            <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="Up" @click="onUp(index)" v-if="onUp">
+            <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="Up" @click="props.onUp(index)" v-if="props.onUp">
                 <ChevronUpIcon class="text-muted-foreground" :size="14" />
             </button>
-            <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="Down" @click="onDown(index)" v-if="onDown">
+            <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="Down" @click="props.onDown(index)" v-if="props.onDown">
                 <ChevronDownIcon class="text-muted-foreground" :size="14" />
             </button>
-            <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="remove" @click="onRemove(index)" v-if="onRemove">
-                <XIcon class="text-muted-foreground hover:text-destructive" :size="14" />
-            </button>
+            <AlertDialog v-if="props.onRemove">
+                <AlertDialogTrigger>
+                    <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="remove">
+                        <XIcon class="text-muted-foreground hover:text-destructive" :size="14" />
+                    </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Note!</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Are you sure delete the attachment: <span class="text-primary">{{ attachment.original_name }}</span> ?<br /><br />
+                            Note: This action cannot be undone. This will permanently delete this attachment and remove record from our servers.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cannel</AlertDialogCancel>
+                        <AlertDialogAction @click="props.onRemove(index)">Yes</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     </div>
 </template>
