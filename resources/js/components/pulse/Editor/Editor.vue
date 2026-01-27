@@ -1,79 +1,46 @@
 <script setup lang="ts">
-import api from '@/api';
 import { Card, CardContent } from '@/components/base/card';
-import { WhoopsHandler } from '@/utils';
 import { useTextareaAutosize } from '@vueuse/core';
-import { computed, ref } from 'vue';
-import { toast } from 'vue-sonner';
+import { computed } from 'vue';
 import { ActionButton } from './action-button';
 import { AttachmentList } from './attachment';
 import TagsSuggestion from './TagsSuggestion.vue';
-import { Attachment, SubmitData, TagList } from './types';
+import { Attachment, SubmitData, TagOrderedList } from './types';
+
+// experimental: for Parent.v-model
+const modelValue = defineModel({
+    type: String,
+    default: '',
+});
+
+const emit = defineEmits(['update:modelValue']);
 
 const props = defineProps<{
-    tagList: TagList;
+    tags: TagOrderedList;
+    attachments: Attachment[];
+    onUploaded: (files: Attachment[]) => void;
+    onAttachmentUp: (index: number) => void;
+    onAttachmentDown: (index: number) => void;
+    onAttachmentRemove: (index: number) => void;
     onSubmit: (data: SubmitData) => void;
 }>();
 
 const { textarea: editorRef, input: editor, triggerResize: updateEditorHeight } = useTextareaAutosize();
 
-const tagList = computed(() => props.tagList);
-const attachments = ref<Attachment[]>([]);
-
-const handleUploaded = (files: Attachment[]) => {
-    attachments.value = attachments.value.concat(files);
-};
-
-const handleAttachmentUp = (index: number) => {
-    if (index <= 0) return;
-
-    const item = attachments.value[index];
-
-    attachments.value[index] = attachments.value[index - 1];
-    attachments.value[index - 1] = item;
-};
-
-const handleAttachmentDown = (index: number) => {
-    if (index >= attachments.value.length - 1) return;
-
-    const item = attachments.value[index];
-
-    attachments.value[index] = attachments.value[index + 1];
-    attachments.value[index + 1] = item;
-};
-
-const handleAttachmentRemove = async (index: number) => {
-    try {
-        const attachment = attachments.value[index];
-
-        const { data, error } = await api.pulse.attachment.destroy(attachment.id).json<PulseAttachmentDestroyResponse>();
-
-        if (error.value) {
-            console.log('1');
-            throw error.value;
-        }
-
-        if (data && data.value) {
-            const result = data.value;
-            const message = result.message;
-
-            toast.info(message);
-
-            attachments.value.splice(index, 1);
-        } else {
-            throw error.value;
-        }
-    } catch (e: unknown) {
-        console.log(e);
-        WhoopsHandler.handleError(e, 'Unknown error when remove attachment action in park pulse');
-    }
-};
+const tags = computed(() => props.tags);
+const attachments = computed(() => props.attachments);
 
 const handleSubmit = () => {
     props.onSubmit({
+        // model: Self.editor
         editor: editor.value,
         attachments: attachments.value,
     });
+};
+
+const handleTextareaInput = (e: any) => {
+    // model: Parent.v-model
+    emit('update:modelValue', e.target.value);
 };
 
 const editorMethods = {
@@ -135,20 +102,21 @@ const editorMethods = {
                         class="w-full resize-none rounded-md border-0 bg-transparent p-0.5 text-base outline-none placeholder:opacity-60"
                         placeholder="Place whatever you want"
                         autofocus
+                        @input="handleTextareaInput($event)"
                     >
                     </textarea>
-                    <TagsSuggestion :editor-ref="editorRef" :editor-methods="editorMethods" :tag-list="tagList" />
+                    <TagsSuggestion :editor-ref="editorRef" :editor-methods="editorMethods" :tag-list="tags" />
                 </div>
                 <div class="flex w-full flex-col gap-2">
                     <AttachmentList
                         :attachments="attachments"
-                        @up="handleAttachmentUp"
-                        @down="handleAttachmentDown"
-                        @remove="handleAttachmentRemove"
+                        @up="props.onAttachmentUp"
+                        @down="props.onAttachmentDown"
+                        @remove="props.onAttachmentRemove"
                     />
                 </div>
                 <div class="flex gap-2">
-                    <ActionButton @uploaded="handleUploaded" @submit="handleSubmit" />
+                    <ActionButton @uploaded="props.onUploaded" @submit="handleSubmit" />
                 </div>
             </div>
         </CardContent>

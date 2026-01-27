@@ -9,7 +9,7 @@ export type Position = {
     height: number;
 };
 
-export type TagList = Record<string, number>;
+export type TagOrderedList = Record<string, number>;
 
 export type SubmitData = {
     editor: string;
