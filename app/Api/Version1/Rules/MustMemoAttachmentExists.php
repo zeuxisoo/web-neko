@@ -14,31 +14,20 @@ class MustMemoAttachmentExists implements ValidationRule
      * @param  array  $value  This will be the array of attachments
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void {
-        $builder = MemoAttachment::where('id', $value);
+        $attachment = MemoAttachment::where('id', $value)->where('user_id', Auth::id())->first();
 
-        if (!$builder->exists()) {
-            $fail('The attachment file does not exist in the server record');
-
-            return;
-        }
-
-        $builder = $builder->where('user_id', Auth::id());
-        if (!$builder->exists()) {
-            $fail('The attachment file is not owned by you');
+        if (!$attachment) {
+            $fail('The attachment file does not exist or is not owned by you');
 
             return;
         }
 
-        $attachment = $builder->first();
         $storePath = $attachment->created_at->format('Y/m');
-        $filename = $builder->first()->filename;
 
-        if (!Storage::disk('pulse')->exists($storePath.'/'.$filename)) {
+        if (!Storage::disk('pulse')->exists($storePath.'/'.$attachment->filename)) {
             $fail('The attachment file [:value] does not exist on the server filesytem')->translate([
-                'value' => $filename,
+                'value' => $attachment->filename,
             ]);
-
-            return;
         }
     }
 }
