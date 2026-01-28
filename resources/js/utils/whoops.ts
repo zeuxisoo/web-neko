@@ -20,5 +20,6 @@ export default class WhoopsHandler {
         }
 
         toast.error(fallbackMessage);
+        console.log(error);
     }
 }

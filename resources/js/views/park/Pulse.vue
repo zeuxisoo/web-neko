@@ -6,21 +6,12 @@ import { fillAttachments, WhoopsHandler } from '@/utils';
 import { onMounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
-type Tag = {
-    id: number;
-    name: string;
-    order_column: number;
-};
-
 const isLoading = ref(false);
 const editor = ref('');
 const tags = ref<TagOrderedList>({});
 const attachments = ref<Attachment[]>([]);
 
-onMounted(async () => {
-    await fetchTags();
-    await fetchUnsavedAttachments();
-});
+onMounted(() => Promise.all([fetchTags(), fetchUnsavedAttachments()]));
 
 const fetchTags = async () => {
     try {
@@ -35,7 +26,11 @@ const fetchTags = async () => {
         if (data && data.value) {
             const resultTags = data.value.data;
 
-            tags.value = convertToTagList(resultTags);
+            // convert Tag[] `[{ id, name, order_column }]` to TagOrderedList `{ name: order_column }`
+            tags.value = resultTags.reduce<Record<string, number>>((acc, tag) => {
+                acc[tag.name] = tag.id;
+                return acc;
+            }, {} as TagOrderedList);
         } else {
             throw error.value;
         }
@@ -102,7 +97,6 @@ const handleAttachmentRemove = async (index: number) => {
         const { data, error } = await api.pulse.attachment.destroy(attachment.id).json<PulseAttachmentDestroyResponse>();
 
         if (error.value) {
-            console.log('1');
             throw error.value;
         }
 
@@ -125,14 +119,6 @@ const handleSubmit = (data: SubmitData) => {
     console.log(data);
     console.log(editor.value);
 };
-
-// convert Tag[] `[{ id, name, order_column }]` to `{ name: order_column }`
-function convertToTagList(tags: Tag[]): TagOrderedList {
-    return tags.reduce<Record<string, number>>((acc, tag) => {
-        acc[tag.name] = tag.id;
-        return acc;
-    }, {});
-}
 </script>
 
 <template>
