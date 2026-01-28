@@ -2,7 +2,7 @@
 import api from '@/api';
 import { Editor, MessageList, Pagination } from '@/components/pulse';
 import { Attachment, SubmitData, TagOrderedList } from '@/components/pulse/editor/types';
-import { WhoopsHandler } from '@/utils';
+import { fillAttachments, WhoopsHandler } from '@/utils';
 import { onMounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
@@ -61,14 +61,7 @@ const fetchUnsavedAttachments = async () => {
             const attachmentList = result.data;
 
             for (const attachment of attachmentList) {
-                attachments.value.push({
-                    id: attachment.id,
-                    filename: attachment.filename,
-                    original_name: attachment.original_name,
-                    size: attachment.size,
-                    type: attachment.mime_type || 'application/octet-stream',
-                    links: attachment.links,
-                });
+                fillAttachments(attachments.value, attachment);
             }
         } else {
             throw error.value;

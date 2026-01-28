@@ -1,5 +1,5 @@
 import api from '@/api';
-import { humanSize, WhoopsHandler } from '@/utils';
+import { fillAttachments, humanSize, WhoopsHandler } from '@/utils';
 import { ref } from 'vue';
 import { Attachment } from '../types';
 
@@ -49,14 +49,7 @@ export default function useFileUpload(options: FileUploadOptions) {
                 const attachments = result.data;
 
                 for (const attachment of attachments) {
-                    attachmentList.push({
-                        id: attachment.id,
-                        filename: attachment.filename,
-                        original_name: attachment.original_name,
-                        size: attachment.size,
-                        type: attachment.mime_type || 'application/octet-stream',
-                        links: attachment.links,
-                    });
+                    fillAttachments(attachmentList, attachment);
                 }
             } else {
                 throw error;

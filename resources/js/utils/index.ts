@@ -1,3 +1,5 @@
+import { Attachment } from '@/components/pulse/editor/types';
+
 export { default as WhoopsHandler } from './whoops';
 
 const humanSize = (bytes: number) => {
@@ -21,4 +23,15 @@ const fileSubType = (mimeType: string, upperCase: boolean = true) => {
     return subType;
 };
 
-export { fileSubType, humanSize };
+const fillAttachments = (attachments: Attachment[], attachment: PulseAttachmentUploadResponse['data'][number]) => {
+    attachments.push({
+        id: attachment.id,
+        filename: attachment.filename,
+        original_name: attachment.original_name,
+        size: attachment.size,
+        type: attachment.mime_type || 'application/octet-stream',
+        links: attachment.links,
+    });
+};
+
+export { fileSubType, fillAttachments, humanSize };
