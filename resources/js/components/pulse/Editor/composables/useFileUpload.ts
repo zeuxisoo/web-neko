@@ -46,7 +46,6 @@ export default function useFileUpload(options: FileUploadOptions) {
 
             if (data && data.value) {
                 const result = data.value;
-
                 const attachments = result.data;
 
                 for (const attachment of attachments) {

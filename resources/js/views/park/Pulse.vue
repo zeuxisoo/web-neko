@@ -3,7 +3,7 @@ import api from '@/api';
 import { Editor, MessageList, Pagination } from '@/components/pulse';
 import { Attachment, SubmitData, TagOrderedList } from '@/components/pulse/editor/types';
 import { WhoopsHandler } from '@/utils';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
 type Tag = {
@@ -17,7 +17,12 @@ const editor = ref('');
 const tags = ref<TagOrderedList>({});
 const attachments = ref<Attachment[]>([]);
 
-(async () => {
+onMounted(async () => {
+    await fetchTags();
+    await fetchUnsavedAttachments();
+});
+
+const fetchTags = async () => {
     try {
         isLoading.value = true;
 
@@ -35,11 +40,45 @@ const attachments = ref<Attachment[]>([]);
             throw error.value;
         }
     } catch (e: unknown) {
-        WhoopsHandler.handleError(e, 'Unknown error when fetch tag action in park pulse');
+        WhoopsHandler.handleError(e, 'Unknown error when fetch tag list action in park pulse');
     } finally {
         isLoading.value = false;
     }
-})();
+};
+
+const fetchUnsavedAttachments = async () => {
+    try {
+        isLoading.value = true;
+
+        const { data, error } = await api.pulse.attachment.unsaved().json<PulseAttachmentUploadResponse>();
+
+        if (error.value) {
+            throw error.value;
+        }
+
+        if (data && data.value) {
+            const result = data.value;
+            const attachmentList = result.data;
+
+            for (const attachment of attachmentList) {
+                attachments.value.push({
+                    id: attachment.id,
+                    filename: attachment.filename,
+                    original_name: attachment.original_name,
+                    size: attachment.size,
+                    type: attachment.mime_type || 'application/octet-stream',
+                    links: attachment.links,
+                });
+            }
+        } else {
+            throw error.value;
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error when fetch unsaved attachment list action in park pulse');
+    } finally {
+        isLoading.value = false;
+    }
+};
 
 const handleUploaded = (files: Attachment[]) => {
     attachments.value = attachments.value.concat(files);

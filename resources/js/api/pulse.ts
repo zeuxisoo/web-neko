@@ -7,6 +7,9 @@ class Attachment {
     destroy(id: number) {
         return useAgent<PulseAttachmentDestroyResponse>('pulse/attachment/destroy/' + id).get();
     }
+    unsaved() {
+        return useAgent<PulseAttachmentUploadResponse>('pulse/attachment/unsaved').get();
+    }
 }
 
 class Tag {
