@@ -57,6 +57,14 @@ class AttachmentController extends ApiController
         return $this->respondJsonMessage("Attachment deleted: {$attachment->original_name}");
     }
 
+    public function unsaved(): JsonResource {
+        $attachments = MemoAttachment::where('user_id', $this->user()->id)
+            ->whereNull('memo_id')
+            ->get();
+
+        return new AttachmentResourceCollection($attachments);
+    }
+
     // helpers
     private function processUpload(UploadedFile $file, string $storeFolder): MemoAttachment {
         $mime = $file->getMimeType();
