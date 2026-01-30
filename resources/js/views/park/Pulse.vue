@@ -3,6 +3,7 @@ import api from '@/api';
 import { Editor, MessageList, Pagination } from '@/components/pulse';
 import { Attachment, SubmitData, TagOrderedList } from '@/components/pulse/editor/types';
 import { fillAttachments, WhoopsHandler } from '@/utils';
+import validator from '@/validators';
 import { onMounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
@@ -120,11 +121,46 @@ const handleAttachmentRemove = async (index: number) => {
     }
 };
 
-const handleSubmit = (data: SubmitData) => {
+const handleSubmit = async (data: SubmitData) => {
     console.log(data);
     console.log(editor.value);
     console.log(attachments.value);
     console.log(extractedTags.value);
+
+    const attachmentList = attachments.value.map((attachment: Attachment) => {
+        return { id: attachment.id, filename: attachment.filename };
+    });
+
+    try {
+        isLoading.value = true;
+
+        const formData = validator.form('pulse.memo.store').validate({
+            content: editor.value,
+            tags: extractedTags.value,
+            attachments: attachmentList,
+        });
+
+        const { data, error } = await api.pulse.memo.store(formData as PulseMemoStorePayload).json<PulseMemoStoreResponse>();
+
+        if (error.value) {
+            throw error.value;
+        }
+
+        if (data && data.value) {
+            editor.value = '';
+            tags.value = {};
+            extractedTags.value = [];
+            attachments.value = [];
+
+            toast.info('Memo created');
+        } else {
+            throw error.value;
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error on handle account avatar save action');
+    } finally {
+        setTimeout(() => (isLoading.value = false), 1000);
+    }
 };
 </script>
 
@@ -132,6 +168,7 @@ const handleSubmit = (data: SubmitData) => {
     <div class="pulse grid gap-3">
         <Editor
             v-model="editor"
+            :isLoading="isLoading"
             :tags="tags"
             :attachments="attachments"
             @uploaded="handleUploaded"

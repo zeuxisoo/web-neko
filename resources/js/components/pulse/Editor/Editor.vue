@@ -17,6 +17,7 @@ const modelValue = defineModel({
 const emit = defineEmits(['update:modelValue']);
 
 const props = defineProps<{
+    isLoading: boolean;
     tags: TagOrderedList;
     attachments: Attachment[];
     onUploaded: (files: Attachment[]) => void;
@@ -129,7 +130,7 @@ const editorMethods = {
                     />
                 </div>
                 <div class="flex gap-2">
-                    <ActionButton @uploaded="props.onUploaded" @submit="handleSubmit" />
+                    <ActionButton :isLoading="isLoading" @uploaded="props.onUploaded" @submit="handleSubmit" />
                 </div>
             </div>
         </CardContent>
