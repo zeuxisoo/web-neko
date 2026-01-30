@@ -7,6 +7,7 @@ use App\Models\UserAccessToken;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\TransientToken;
 
 class LogoutController extends ApiController
 {
@@ -16,8 +17,10 @@ class LogoutController extends ApiController
 
         if (method_exists($currentToken, 'delete')) {
             $currentToken->delete();
-        } else {
+        } elseif (!($currentToken instanceof TransientToken)) {
             UserAccessToken::find($currentToken->id)->delete();
+        } else {
+            UserAccessToken::findToken(request()->bearerToken())->delete();
         }
 
         Auth::guard('web')->logout();
