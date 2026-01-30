@@ -43,14 +43,9 @@ class StoreRequest extends ApiFormRequest
                 new MustUserMemoAttachments(),
             ],
             // keep check basic structure for the id in children
-            'attachments.*.id' => [
-                'required',
-                'integer',
-            ],
-            'attachments.*.filename' => [
-                'required',
-                'string',
-            ],
+            'attachments.*.id' => ['required', 'integer'],
+            'attachments.*.filename' => ['required', 'string'],
+            'attachments.*.sort_order' => ['required', 'integer'],
         ];
     }
 }

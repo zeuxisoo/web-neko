@@ -121,14 +121,13 @@ const handleAttachmentRemove = async (index: number) => {
     }
 };
 
-const handleSubmit = async (data: SubmitData) => {
-    console.log(data);
-    console.log(editor.value);
-    console.log(attachments.value);
-    console.log(extractedTags.value);
-
-    const attachmentList = attachments.value.map((attachment: Attachment) => {
-        return { id: attachment.id, filename: attachment.filename };
+const handleSubmit = async (_: SubmitData) => {
+    const attachmentList = Object.entries(attachments.value).map(([k, attachment]: [string, Attachment], index: number) => {
+        return {
+            id: attachment.id,
+            filename: attachment.filename,
+            sort_order: index,
+        };
     });
 
     try {

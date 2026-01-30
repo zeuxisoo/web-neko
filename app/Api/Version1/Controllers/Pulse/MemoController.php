@@ -41,11 +41,7 @@ class MemoController extends ApiController
 
             // update sort_order column
             // set related index, update sort_order to db record, bulk update sort_order column
-            $sortedAttachmentsIds = [];
-            foreach ($input['attachments'] as $index => $attachment) {
-                $sortedAttachmentsIds[$attachment['id']] = $index;
-            }
-
+            $sortedAttachmentsIds = collect($input['attachments'])->pluck('sort_order', key: 'id')->toArray();
             $dbAttachments = MemoAttachment::where('user_id', $userId)->whereIn('id', $attachmentIds)->get();
             foreach ($dbAttachments as $attachment) {
                 $attachment->sort_order = $sortedAttachmentsIds[$attachment->id];
