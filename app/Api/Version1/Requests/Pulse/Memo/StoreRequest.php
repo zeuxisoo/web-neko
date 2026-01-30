@@ -47,6 +47,10 @@ class StoreRequest extends ApiFormRequest
                 'required',
                 'integer',
             ],
+            'attachments.*.filename' => [
+                'required',
+                'string',
+            ],
         ];
     }
 }

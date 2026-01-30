@@ -27,7 +27,7 @@ class MemoController extends ApiController
 
             // create tags and prepend default tag `beat` ensure distinct
             array_unshift($input['tags'], 'beat');
-            $tags = array_values(array_unique($input['tags']));
+            $tags = array_map('strtolower', array_values(array_unique($input['tags'])));
             $memo->attachTags($tags, type: TagKind::MEMO->value);
 
             // update previous uploaded attachment relationship
@@ -38,6 +38,21 @@ class MemoController extends ApiController
                     'memo_id' => $memo->id,
                     'user_id' => $this->user()->id,
                 ]);
+
+            // update sort_order column
+            // set related index, update sort_order to db record, bulk update sort_order column
+            $sortedAttachmentsIds = [];
+            foreach ($input['attachments'] as $index => $attachment) {
+                $sortedAttachmentsIds[$attachment['id']] = $index;
+            }
+
+            $dbAttachments = MemoAttachment::where('user_id', $userId)->whereIn('id', $attachmentIds)->get();
+            foreach ($dbAttachments as $attachment) {
+                $attachment->sort_order = $sortedAttachmentsIds[$attachment->id];
+            }
+
+            MemoAttachment::where('user_id', $userId)
+                ->upsert($dbAttachments->toArray(), ['id'], ['sort_order']);
 
             // load attachment
             $memo->load('attachments');
