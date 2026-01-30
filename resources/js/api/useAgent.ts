@@ -18,15 +18,13 @@ const useAgent = createFetch({
                 headers.set('Authorization', `Bearer ${accessToken}`);
             }
 
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            // use cookie auto refresh token for stateful spa
+            const csrfToken = document.cookie
+                .split('; ')
+                .find((row) => row.startsWith('XSRF-TOKEN='))
+                ?.split('=')[1];
             if (csrfToken) {
-                headers.set('X-CSRF-TOKEN', csrfToken);
-
-                if (options.body) {
-                    if (options.body instanceof FormData) {
-                        options.body.append('csrf-token', csrfToken);
-                    }
-                }
+                headers.set('X-XSRF-TOKEN', decodeURIComponent(csrfToken));
             }
 
             options.headers = headers;
