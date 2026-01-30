@@ -1,6 +1,7 @@
 import { AccountProfileUpdate, AccountSecurityUpdate } from './account';
 import AuthLogin from './auth/login';
 import { ValidateError } from './error';
+import { PulseMemoStore } from './pulse';
 import Validator from './validator';
 
 /*
@@ -25,6 +26,7 @@ const validators: Record<string, typeof Validator> = {
     'auth.login': AuthLogin,
     'account.profile.update': AccountProfileUpdate,
     'account.security.update': AccountSecurityUpdate,
+    'pulse.memo.store': PulseMemoStore,
 };
 
 const validator = {

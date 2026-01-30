@@ -23,6 +23,11 @@ const checkers: Record<string, CheckerFunction> = {
 
         return value === confirmationValue;
     },
+
+    present: ({ data, attribute }) => {
+        // check key exsts in data object
+        return Object.hasOwn(data, attribute);
+    },
 };
 
 class Rule {
