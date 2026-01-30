@@ -12,6 +12,12 @@ class Attachment {
     }
 }
 
+class Memo {
+    store(payload: PulseMemoStorePayload) {
+        return useAgent<PulseMemoStoreResponse>('pulse/memo/store').post(payload);
+    }
+}
+
 class Tag {
     all() {
         return useAgent<PulseTagResponse>('pulse/tag/all').get();
@@ -21,6 +27,9 @@ class Tag {
 export default {
     get attachment() {
         return new Attachment();
+    },
+    get memo() {
+        return new Memo();
     },
     get tag() {
         return new Tag();

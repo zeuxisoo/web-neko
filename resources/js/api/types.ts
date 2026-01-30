@@ -55,6 +55,15 @@ interface AccountSecurityResponse extends ApiResponse {
 }
 
 // pulse
+type PulseMemoStorePayload = {
+    content: string;
+    tag: string[];
+    attachments: {
+        id: number;
+        filename: string;
+    }[];
+};
+
 interface PulseAttachmentUploadResponse extends ApiResponse {
     data: {
         id: number;
@@ -69,6 +78,27 @@ interface PulseAttachmentUploadResponse extends ApiResponse {
 
 interface PulseAttachmentDestroyResponse extends ApiResponse {
     data: string[];
+}
+
+interface PulseMemoStoreResponse extends ApiResponse {
+    data: {
+        id: number;
+        content: string;
+        tags: {
+            id: number;
+            name: string;
+            sort_order: number;
+        };
+        attachments: {
+            id: number;
+            filename: string;
+            original_name: string;
+            mime_type: string;
+            size: number;
+            sort_order: number;
+            links: Record<'cover' | 'thumb', string>;
+        };
+    };
 }
 
 interface PulseTagResponse extends ApiResponse {
