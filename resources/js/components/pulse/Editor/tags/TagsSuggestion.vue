@@ -2,13 +2,13 @@
 import { cn } from '@/lib/utils';
 import Fuse from 'fuse.js';
 import { computed, ref, watch } from 'vue';
-import useSuggestions from './composables/useSuggestions';
-import { EditorMethods, TagList } from './types';
+import useSuggestions from '../composables/useSuggestions';
+import { EditorMethods, TagOrderedList } from '../types';
 
 const props = defineProps<{
     editorRef: HTMLTextAreaElement | null | undefined;
     editorMethods: EditorMethods;
-    tagList: TagList;
+    tagList: TagOrderedList;
 }>();
 
 //

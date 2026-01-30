@@ -4,8 +4,8 @@ import { useTextareaAutosize } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { ActionButton } from './action-button';
 import { AttachmentList } from './attachment';
-import TagList from './TagList.vue';
-import TagsSuggestion from './TagsSuggestion.vue';
+import TagList from './tags/TagList.vue';
+import TagsSuggestion from './tags/TagsSuggestion.vue';
 import { Attachment, SubmitData, TagOrderedList } from './types';
 
 // experimental: for Parent.v-model
