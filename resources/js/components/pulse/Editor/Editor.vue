@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Card, CardContent } from '@/components/base/card';
 import { useTextareaAutosize } from '@vueuse/core';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { ActionButton } from './action-button';
 import { AttachmentList } from './attachment';
+import TagList from './TagList.vue';
 import TagsSuggestion from './TagsSuggestion.vue';
 import { Attachment, SubmitData, TagOrderedList } from './types';
 
@@ -22,6 +23,7 @@ const props = defineProps<{
     onAttachmentUp: (index: number) => void;
     onAttachmentDown: (index: number) => void;
     onAttachmentRemove: (index: number) => void;
+    onExtractedTags: (tags: string[]) => void;
     onSubmit: (data: SubmitData) => void;
 }>();
 
@@ -29,18 +31,28 @@ const { textarea: editorRef, input: editor, triggerResize: updateEditorHeight } 
 
 const tags = computed(() => props.tags);
 const attachments = computed(() => props.attachments);
+const extractedTags = ref<string[]>([]);
 
 const handleSubmit = () => {
     props.onSubmit({
         // model: Self.editor
         editor: editor.value,
         attachments: attachments.value,
+        tags: extractedTags.value,
     });
 };
 
 const handleTextareaInput = (e: any) => {
     // model: Parent.v-model
     emit('update:modelValue', e.target.value);
+};
+
+const handleExtractedTags = (tags: string[]) => {
+    extractedTags.value = tags.map((tag: string) => {
+        return tag.slice(1);
+    });
+
+    props.onExtractedTags(extractedTags.value);
 };
 
 const editorMethods = {
@@ -108,6 +120,7 @@ const editorMethods = {
                     <TagsSuggestion :editor-ref="editorRef" :editor-methods="editorMethods" :tag-list="tags" />
                 </div>
                 <div class="flex w-full flex-col gap-2">
+                    <TagList :editor="editor" @extracted="handleExtractedTags" />
                     <AttachmentList
                         :attachments="attachments"
                         @up="props.onAttachmentUp"

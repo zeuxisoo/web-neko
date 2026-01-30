@@ -1,5 +1,6 @@
 import { Attachment } from '@/components/pulse/editor/types';
 
+export { default as extractHashTags } from './hashtags';
 export { default as WhoopsHandler } from './whoops';
 
 const humanSize = (bytes: number) => {

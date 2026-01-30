@@ -10,6 +10,7 @@ const isLoading = ref(false);
 const editor = ref('');
 const tags = ref<TagOrderedList>({});
 const attachments = ref<Attachment[]>([]);
+const extractedTags = ref<string[]>([]);
 
 onMounted(() => Promise.all([fetchTags(), fetchUnsavedAttachments()]));
 
@@ -72,6 +73,10 @@ const handleUploaded = (files: Attachment[]) => {
     attachments.value = attachments.value.concat(files);
 };
 
+const handleExtractedTags = (tags: string[]) => {
+    extractedTags.value = tags;
+};
+
 const handleAttachmentUp = (index: number) => {
     if (index <= 0) return;
 
@@ -118,6 +123,8 @@ const handleAttachmentRemove = async (index: number) => {
 const handleSubmit = (data: SubmitData) => {
     console.log(data);
     console.log(editor.value);
+    console.log(attachments.value);
+    console.log(extractedTags.value);
 };
 </script>
 
@@ -128,6 +135,7 @@ const handleSubmit = (data: SubmitData) => {
             :tags="tags"
             :attachments="attachments"
             @uploaded="handleUploaded"
+            @extractedTags="handleExtractedTags"
             @attachmentUp="handleAttachmentUp"
             @attachmentDown="handleAttachmentDown"
             @attachmentRemove="handleAttachmentRemove"

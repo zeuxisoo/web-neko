@@ -14,6 +14,7 @@ export type TagOrderedList = Record<string, number>;
 export type SubmitData = {
     editor: string;
     attachments: Attachment[];
+    tags: string[];
 };
 
 export interface Attachment {
