@@ -26,6 +26,8 @@ class UpdateRequest extends ApiFormRequest
             'username' => [
                 'required',
                 'string',
+                'regex:/^[a-zA-Z0-9_]*$/',
+                'max:20',
                 Rule::unique('users')->ignore($userId),
             ],
             'email' => [
