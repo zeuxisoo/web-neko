@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import api from '@/api';
-import { Editor, MessageList, Pagination } from '@/components/pulse';
+import { Editor, MemoList } from '@/components/pulse';
 import { Attachment, SubmitData, TagOrderedList } from '@/components/pulse/editor/types';
 import { fillAttachments, WhoopsHandler } from '@/utils';
 import validator from '@/validators';
@@ -12,6 +12,7 @@ const editor = ref('');
 const tags = ref<TagOrderedList>({});
 const attachments = ref<Attachment[]>([]);
 const extractedTags = ref<string[]>([]);
+const memos = ref<PulseMemoIndexResponse['data']>([]);
 
 onMounted(() => Promise.all([fetchTags(), fetchUnsavedAttachments()]));
 
@@ -161,6 +162,30 @@ const handleSubmit = async (_: SubmitData) => {
         setTimeout(() => (isLoading.value = false), 1000);
     }
 };
+
+onMounted(async () => {
+    try {
+        isLoading.value = true;
+
+        const { data, error } = await api.pulse.memo.index().json<PulseMemoIndexResponse>();
+
+        if (error.value) {
+            throw error.value;
+        }
+
+        if (data && data.value) {
+            const result = data.value;
+
+            memos.value = result.data;
+        } else {
+            throw error.value;
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error when fetch memo list action in park pulse');
+    } finally {
+        isLoading.value = false;
+    }
+});
 </script>
 
 <template>
@@ -177,7 +202,6 @@ const handleSubmit = async (_: SubmitData) => {
             @attachmentRemove="handleAttachmentRemove"
             @submit="handleSubmit"
         />
-        <MessageList />
-        <Pagination />
+        <MemoList :memos="memos" />
     </div>
 </template>

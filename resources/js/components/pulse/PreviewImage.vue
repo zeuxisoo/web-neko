@@ -16,12 +16,12 @@ const handleLoad = () => {
 
 <template>
     <div class="flex justify-center" v-if="!isLoaded">
-        <Skeleton class="aspect-square max-h-48 w-48 cursor-pointer rounded-lg border" />
+        <Skeleton class="aspect-square max-h-36 min-h-36 cursor-pointer rounded-md border" />
     </div>
     <img
         :src="props.image.src"
         :title="props.image.title"
-        :class="cn('hidden max-h-48 cursor-pointer rounded-lg border object-cover', { block: isLoaded })"
+        :class="cn('hidden max-h-36 min-h-36 cursor-pointer rounded-md border object-cover', { block: isLoaded })"
         decoding="async"
         loading="lazy"
         @load="handleLoad"
