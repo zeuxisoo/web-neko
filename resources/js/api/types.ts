@@ -88,7 +88,7 @@ interface PulseMemoStoreResponse extends ApiResponse {
             id: number;
             name: string;
             sort_order: number;
-        };
+        }[];
         attachments: {
             id: number;
             filename: string;
@@ -97,8 +97,15 @@ interface PulseMemoStoreResponse extends ApiResponse {
             size: number;
             sort_order: number;
             links: Record<'cover' | 'thumb', string>;
-        };
+        }[];
+        created_at: string;
     };
+}
+
+interface PulseMemoIndexResponse extends ApiResponse {
+    data: (PulseMemoStoreResponse['data'] & {
+        user: MeResponse['data'];
+    })[];
 }
 
 interface PulseTagResponse extends ApiResponse {

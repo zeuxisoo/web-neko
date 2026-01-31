@@ -16,6 +16,9 @@ class Memo {
     store(payload: PulseMemoStorePayload) {
         return useAgent<PulseMemoStoreResponse>('pulse/memo/store').post(payload);
     }
+    index() {
+        return useAgent<PulseMemoIndexResponse>('pulse/memo/index').get();
+    }
 }
 
 class Tag {
