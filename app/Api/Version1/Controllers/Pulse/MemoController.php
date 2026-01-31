@@ -54,7 +54,7 @@ class MemoController extends ApiController
                 ->upsert($dbAttachments->toArray(), ['id'], ['sort_order']);
 
             // load attachment
-            $memo->load('attachments');
+            $memo->load(['user', 'attachments']);
 
             return $memo;
         });
@@ -65,6 +65,7 @@ class MemoController extends ApiController
     public function index(): JsonResource {
         $memos = Memo::query()
             ->with([
+                'user',
                 'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
                 'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
             ])
