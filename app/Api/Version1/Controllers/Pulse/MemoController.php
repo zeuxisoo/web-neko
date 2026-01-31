@@ -5,9 +5,12 @@ namespace App\Api\Version1\Controllers\Pulse;
 use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Requests\Pulse\Memo\StoreRequest;
 use App\Api\Version1\Resources\Pulse\MemoResource;
+use App\Api\Version1\Resources\Pulse\MemoResourceCollection;
 use App\Enums\TagKind;
 use App\Models\Memo;
 use App\Models\MemoAttachment;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
@@ -57,5 +60,18 @@ class MemoController extends ApiController
         });
 
         return new MemoResource($memo);
+    }
+
+    public function index(): JsonResource {
+        $memos = Memo::query()
+            ->with([
+                'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
+                'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
+            ])
+            ->withAnyTagsOfType(TagKind::MEMO->value)
+            ->latest()
+            ->paginate(8);
+
+        return new MemoResourceCollection($memos);
     }
 }

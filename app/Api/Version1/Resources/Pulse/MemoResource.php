@@ -13,6 +13,7 @@ class MemoResource extends ApiResource
             'content' => $this->content,
             'tags' => new TagResourceCollection($this->tags),
             'attachments' => new AttachmentResourceCollection($this->whenLoaded('attachments')),
+            'created_at' => $this->created_at,
         ];
     }
 }
