@@ -83,6 +83,7 @@ interface PulseAttachmentDestroyResponse extends ApiResponse {
 interface PulseMemoStoreResponse extends ApiResponse {
     data: {
         id: number;
+        user: MeResponse['data'];
         content: string;
         tags: {
             id: number;

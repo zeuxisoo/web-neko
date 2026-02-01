@@ -147,6 +147,11 @@ const handleSubmit = async (_: SubmitData) => {
         }
 
         if (data && data.value) {
+            const result = data.value;
+            const memo = result.data;
+
+            memos.value = [memo, ...memos.value];
+
             editor.value = '';
             tags.value = {};
             extractedTags.value = [];
