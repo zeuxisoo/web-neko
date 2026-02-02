@@ -7,23 +7,24 @@ const props = defineProps<{
     image: { src: string; title: string };
 }>();
 
-const isLoaded = ref(false);
+const isLoading = ref(true);
 
 const handleLoad = () => {
-    isLoaded.value = true;
+    isLoading.value = false;
 };
 </script>
 
 <template>
-    <div class="flex justify-center" v-if="!isLoaded">
-        <Skeleton class="aspect-square max-h-36 min-h-36 cursor-pointer rounded-md border" />
+    <div :class="'relative aspect-square overflow-hidden rounded-md'">
+        <Skeleton class="absolute inset-0 z-10 h-full w-full" />
+
+        <img
+            :src="props.image.src"
+            :title="props.image.title"
+            :class="cn('h-full w-full cursor-pointer object-cover transition-opacity duration-300', isLoading ? 'opacity-0' : 'opacity-100')"
+            decoding="async"
+            loading="lazy"
+            @load="handleLoad"
+        />
     </div>
-    <img
-        :src="props.image.src"
-        :title="props.image.title"
-        :class="cn('hidden max-h-36 min-h-36 cursor-pointer rounded-md border object-cover', { block: isLoaded })"
-        decoding="async"
-        loading="lazy"
-        @load="handleLoad"
-    />
 </template>

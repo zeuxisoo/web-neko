@@ -2,7 +2,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { Badge } from '@/components/base/badge';
 import { Card, CardHeader } from '@/components/base/card';
-import { Bookmark, Ellipsis, MessageSquareMore } from 'lucide-vue-next';
+import { Bookmark, Ellipsis, MessageSquareMore, PaperclipIcon } from 'lucide-vue-next';
 import PreviewImage from './PreviewImage.vue';
 
 const props = defineProps<{
@@ -22,16 +22,22 @@ const props = defineProps<{
                     <span class="truncate text-xs">{{ props.memo.created_at }}</span>
                 </div>
             </div>
-            <div class="grid gap-2">
-                <div class="font-light whitespace-pre">
+            <div class="flex flex-col gap-2">
+                <div class="font-light whitespace-pre-wrap">
                     {{ props.memo.content }}
                 </div>
-                <div class="grid grid-cols-2 justify-items-center gap-2 md:grid-cols-6">
-                    <PreviewImage
-                        v-for="(attachment, i) in props.memo.attachments"
-                        :key="i"
-                        :image="{ src: attachment.links.thumb, title: attachment.original_name }"
-                    />
+                <div class="boder-boder flex flex-col gap-1 rounded-sm border" v-if="props.memo.attachments.length > 0">
+                    <div className="flex items-center gap-1 p-2 border-b border-border bg-muted/30 text-muted-foreground">
+                        <PaperclipIcon :size="12" />
+                        <span class="text-xs">Attachments ({{ props.memo.attachments.length }})</span>
+                    </div>
+                    <div class="grid grid-cols-2 justify-items-center gap-2 p-1 md:grid-cols-6">
+                        <PreviewImage
+                            v-for="(attachment, i) in props.memo.attachments"
+                            :key="i"
+                            :image="{ src: attachment.links.thumb, title: attachment.original_name }"
+                        />
+                    </div>
                 </div>
                 <div class="gap-2">
                     <Badge variant="secondary" v-for="(tag, i) in props.memo.tags" :key="i"> #{{ tag.name }} </Badge>
