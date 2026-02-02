@@ -2,6 +2,7 @@ export { default as extractHashTags } from './hashtags';
 export { default as WhoopsHandler } from './whoops';
 
 import { Attachment } from '@/components/pulse/editor/types';
+import { format, formatDistanceToNow, parseISO } from 'date-fns';
 
 const humanSize = (bytes: number) => {
     if (bytes === 0) {
@@ -35,4 +36,15 @@ const fillAttachments = (attachments: Attachment[], attachment: PulseAttachmentU
     });
 };
 
-export { fileSubType, fillAttachments, humanSize };
+const humanDateTime = (datetime: string, raw: boolean = false) => {
+    if (raw) {
+        return format(datetime, 'yyyy/MM/dd HH:mm:ss a');
+    }
+
+    const parsedDate = parseISO(datetime);
+    const distance = formatDistanceToNow(parsedDate);
+
+    return distance;
+};
+
+export { fileSubType, fillAttachments, humanDateTime, humanSize };

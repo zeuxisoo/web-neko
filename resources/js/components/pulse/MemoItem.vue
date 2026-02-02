@@ -2,12 +2,16 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { Badge } from '@/components/base/badge';
 import { Card, CardHeader } from '@/components/base/card';
+import { humanDateTime } from '@/utils';
 import { Bookmark, Ellipsis, MessageSquareMore, PaperclipIcon } from 'lucide-vue-next';
+import { ref } from 'vue';
 import PreviewImage from './PreviewImage.vue';
 
 const props = defineProps<{
     memo: PulseMemoIndexResponse['data'][number];
 }>();
+
+const showRawDateTime = ref(false);
 </script>
 <template>
     <Card>
@@ -17,9 +21,11 @@ const props = defineProps<{
                     <AvatarImage :src="props.memo.user.link" />
                     <AvatarFallback class="rounded-lg"> AV </AvatarFallback>
                 </Avatar>
-                <div class="grid flex-1 text-left text-sm leading-tight">
+                <div class="grid flex-1 text-left text-sm leading-6">
                     <span class="truncate font-semibold">{{ props.memo.user.username }}</span>
-                    <span class="truncate text-xs">{{ props.memo.created_at }}</span>
+                    <span class="flex items-center text-xs text-accent-foreground/80" @click="showRawDateTime = !showRawDateTime">
+                        {{ humanDateTime(props.memo.created_at, showRawDateTime) }}
+                    </span>
                 </div>
             </div>
             <div class="flex flex-col gap-2">
