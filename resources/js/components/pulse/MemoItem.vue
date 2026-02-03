@@ -5,6 +5,7 @@ import { Card, CardHeader } from '@/components/base/card';
 import { humanDateTime } from '@/utils';
 import { Bookmark, Ellipsis, MessageSquareMore, PaperclipIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
+import MemoContent from './MemoContent.vue';
 import PreviewImage from './PreviewImage.vue';
 
 const props = defineProps<{
@@ -29,9 +30,7 @@ const showRawDateTime = ref(false);
                 </div>
             </div>
             <div class="flex flex-col gap-2">
-                <div class="font-light whitespace-pre-wrap">
-                    {{ props.memo.content }}
-                </div>
+                <MemoContent :content="props.memo.content" />
                 <div class="boder-boder flex flex-col gap-1 rounded-sm border" v-if="props.memo.attachments.length > 0">
                     <div className="flex items-center gap-1 p-2 border-b border-border bg-muted/30 text-muted-foreground">
                         <PaperclipIcon :size="12" />
