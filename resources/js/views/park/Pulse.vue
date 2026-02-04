@@ -13,9 +13,7 @@ const editor = ref('');
 const tags = ref<TagOrderedList>({});
 const attachments = ref<Attachment[]>([]);
 const extractedTags = ref<string[]>([]);
-const memos = ref<PulseMemoIndexResponse['data']>([]);
-const memoLinks = ref<PulseMemoIndexResponse['links']>();
-const memoMeta = ref<PulseMemoIndexResponse['meta']>();
+const memos = ref<PulseMemoIndexResponse>();
 
 const route = useRoute();
 
@@ -90,9 +88,7 @@ const fetchMemoList = async () => {
         if (data && data.value) {
             const result = data.value;
 
-            memos.value = result.data;
-            memoLinks.value = result.links;
-            memoMeta.value = result.meta;
+            memos.value = result;
         } else {
             throw error.value;
         }
@@ -182,7 +178,9 @@ const handleSubmit = async (_: SubmitData) => {
             const result = data.value;
             const memo = result.data;
 
-            memos.value = [memo, ...memos.value];
+            if (memos.value) {
+                memos.value.data = [memo, ...memos.value.data];
+            }
 
             editor.value = '';
             tags.value = {};
@@ -196,7 +194,7 @@ const handleSubmit = async (_: SubmitData) => {
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error on handle account avatar save action');
     } finally {
-        setTimeout(() => (isLoading.value = false), 1000);
+        isLoading.value = false;
     }
 };
 
@@ -223,6 +221,6 @@ watch(
             @attachmentRemove="handleAttachmentRemove"
             @submit="handleSubmit"
         />
-        <MemoList :memos="memos" :links="memoLinks" :meta="memoMeta" />
+        <MemoList :memos="memos" />
     </div>
 </template>

@@ -1,17 +1,29 @@
 <script setup lang="ts">
+import { Alert, AlertDescription, AlertTitle } from '@/components/base/alert';
+import { Card, CardContent } from '@/components/base/card';
+import { Info } from 'lucide-vue-next';
 import MemoItem from './MemoItem.vue';
 import MemoPagination from './MemoPagination.vue';
 
 const props = defineProps<{
-    memos: PulseMemoIndexResponse['data'];
-    links: PulseMemoIndexResponse['links'] | undefined;
-    meta: PulseMemoIndexResponse['meta'] | undefined;
+    memos: PulseMemoIndexResponse | undefined;
 }>();
 </script>
 
 <template>
-    <div class="grid grid-cols-1 gap-2">
-        <MemoItem :memo="memo" v-for="memo in props.memos" />
-        <MemoPagination :links="props.links" :meta="props.meta" />
+    <div class="grid grid-cols-1 gap-2" v-if="props.memos">
+        <MemoItem :memo="memo" v-for="memo in props.memos.data" />
+        <MemoPagination :links="props.memos.links" :meta="props.memos.meta" />
+    </div>
+    <div class="grid grid-cols-1 gap-2" v-else>
+        <Card>
+            <CardContent>
+                <Alert>
+                    <Info />
+                    <AlertTitle>Oops!</AlertTitle>
+                    <AlertDescription>Do you want to create first memo?</AlertDescription>
+                </Alert>
+            </CardContent>
+        </Card>
     </div>
 </template>
