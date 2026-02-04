@@ -46,7 +46,7 @@ const extractHashTags = (text: string) => {
             return token.image;
         });
 
-    return tokens;
+    return [...new Set(tokens)]; // distinct
 };
 
 export default extractHashTags;
