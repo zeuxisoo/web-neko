@@ -4,7 +4,8 @@ import { Editor, MemoList } from '@/components/pulse';
 import { Attachment, SubmitData, TagOrderedList } from '@/components/pulse/editor/types';
 import { fillAttachments, WhoopsHandler } from '@/utils';
 import validator from '@/validators';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { toast } from 'vue-sonner';
 
 const isLoading = ref(false);
@@ -13,6 +14,10 @@ const tags = ref<TagOrderedList>({});
 const attachments = ref<Attachment[]>([]);
 const extractedTags = ref<string[]>([]);
 const memos = ref<PulseMemoIndexResponse['data']>([]);
+const memoLinks = ref<PulseMemoIndexResponse['links']>();
+const memoMeta = ref<PulseMemoIndexResponse['meta']>();
+
+const route = useRoute();
 
 onMounted(() => Promise.all([fetchTags(), fetchUnsavedAttachments()]));
 
@@ -66,6 +71,33 @@ const fetchUnsavedAttachments = async () => {
         }
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error when fetch unsaved attachment list action in park pulse');
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+const fetchMemoList = async () => {
+    try {
+        isLoading.value = true;
+
+        const page = route.query.page ? Number(route.query.page) : 1;
+        const { data, error } = await api.pulse.memo.index(page).json<PulseMemoIndexResponse>();
+
+        if (error.value) {
+            throw error.value;
+        }
+
+        if (data && data.value) {
+            const result = data.value;
+
+            memos.value = result.data;
+            memoLinks.value = result.links;
+            memoMeta.value = result.meta;
+        } else {
+            throw error.value;
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error when fetch memo list action in park pulse');
     } finally {
         isLoading.value = false;
     }
@@ -168,29 +200,13 @@ const handleSubmit = async (_: SubmitData) => {
     }
 };
 
-onMounted(async () => {
-    try {
-        isLoading.value = true;
-
-        const { data, error } = await api.pulse.memo.index().json<PulseMemoIndexResponse>();
-
-        if (error.value) {
-            throw error.value;
-        }
-
-        if (data && data.value) {
-            const result = data.value;
-
-            memos.value = result.data;
-        } else {
-            throw error.value;
-        }
-    } catch (e: unknown) {
-        WhoopsHandler.handleError(e, 'Unknown error when fetch memo list action in park pulse');
-    } finally {
-        isLoading.value = false;
-    }
-});
+watch(
+    () => route.query.page,
+    () => {
+        fetchMemoList();
+    },
+    { immediate: true },
+);
 </script>
 
 <template>
@@ -207,6 +223,6 @@ onMounted(async () => {
             @attachmentRemove="handleAttachmentRemove"
             @submit="handleSubmit"
         />
-        <MemoList :memos="memos" />
+        <MemoList :memos="memos" :links="memoLinks" :meta="memoMeta" />
     </div>
 </template>

@@ -71,7 +71,7 @@ class MemoController extends ApiController
             ])
             ->withAnyTagsOfType(TagKind::MEMO->value)
             ->latest()
-            ->paginate(8);
+            ->simplePaginate(8);
 
         return new MemoResourceCollection($memos);
     }

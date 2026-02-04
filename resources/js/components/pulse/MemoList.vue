@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import MemoItem from './MemoItem.vue';
-import Pagination from './Pagination.vue';
+import MemoPagination from './MemoPagination.vue';
 
 const props = defineProps<{
     memos: PulseMemoIndexResponse['data'];
+    links: PulseMemoIndexResponse['links'] | undefined;
+    meta: PulseMemoIndexResponse['meta'] | undefined;
 }>();
 </script>
 
 <template>
     <div class="grid grid-cols-1 gap-2">
         <MemoItem :memo="memo" v-for="memo in props.memos" />
-        <Pagination />
+        <MemoPagination :links="props.links" :meta="props.meta" />
     </div>
 </template>

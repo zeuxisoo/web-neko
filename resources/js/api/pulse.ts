@@ -16,8 +16,15 @@ class Memo {
     store(payload: PulseMemoStorePayload) {
         return useAgent<PulseMemoStoreResponse>('pulse/memo/store').post(payload);
     }
-    index() {
-        return useAgent<PulseMemoIndexResponse>('pulse/memo/index').get();
+    index(page: number = 1) {
+        const entrypoint = 'pulse/memo/index';
+
+        const params = new URLSearchParams();
+        params.append('page', page.toString());
+
+        const url = entrypoint + '?' + params.toString();
+
+        return useAgent<PulseMemoIndexResponse>(url).get();
     }
 }
 
