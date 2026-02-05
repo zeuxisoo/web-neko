@@ -21,7 +21,10 @@ const handlePrev = () => {
 
     router.push({
         name: 'park.pulse',
-        query: { page: prevPage },
+        query: {
+            ...router.currentRoute.value.query,
+            page: prevPage,
+        },
     });
 };
 
@@ -31,6 +34,7 @@ const handleNext = () => {
     router.push({
         name: 'park.pulse',
         query: {
+            ...router.currentRoute.value.query,
             page: props.meta.current_page + 1,
         },
     });
