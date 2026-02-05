@@ -30,7 +30,7 @@ class UploadRequest extends ApiFormRequest
             'files.*' => [
                 'required',
                 'file',
-                'mimes:jpeg,png,jpg,webp,mp4,mov',
+                'mimes:jpeg,jpg,png,webp,gif',
                 'max:8192', // 8MB limit
                 new MaxMemoAttachment(6),
             ],
