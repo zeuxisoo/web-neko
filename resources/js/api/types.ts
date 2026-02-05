@@ -64,6 +64,11 @@ type PulseMemoStorePayload = {
     }[];
 };
 
+type PulseMemoIndexPayload = {
+    page: number;
+    tag?: string;
+};
+
 interface PulseAttachmentUploadResponse extends ApiResponse {
     data: {
         id: number;

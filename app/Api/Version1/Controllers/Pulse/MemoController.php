@@ -3,6 +3,7 @@
 namespace App\Api\Version1\Controllers\Pulse;
 
 use App\Api\Version1\Bases\ApiController;
+use App\Api\Version1\Requests\Pulse\Memo\IndexRequest;
 use App\Api\Version1\Requests\Pulse\Memo\StoreRequest;
 use App\Api\Version1\Resources\Pulse\MemoResource;
 use App\Api\Version1\Resources\Pulse\MemoResourceCollection;
@@ -62,15 +63,23 @@ class MemoController extends ApiController
         return new MemoResource($memo);
     }
 
-    public function index(): JsonResource {
-        $memos = Memo::query()
+    public function index(IndexRequest $request): JsonResource {
+        $input = $request->validated();
+
+        $builder = Memo::query()
             ->with([
                 'user',
                 'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
                 'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
-            ])
-            ->withAnyTagsOfType(TagKind::MEMO->value)
-            ->latest()
+            ]);
+
+        if (empty($input['tag'])) {
+            $builder = $builder->withAnyTagsOfType(TagKind::MEMO->value);
+        } else {
+            $builder = $builder->withAnyTags($input['tag'], TagKind::MEMO->value);
+        }
+
+        $memos = $builder->latest()
             ->simplePaginate(8);
 
         return new MemoResourceCollection($memos);

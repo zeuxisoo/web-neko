@@ -16,11 +16,15 @@ class Memo {
     store(payload: PulseMemoStorePayload) {
         return useAgent<PulseMemoStoreResponse>('pulse/memo/store').post(payload);
     }
-    index(page: number = 1) {
+    index(payload: PulseMemoIndexPayload) {
         const entrypoint = 'pulse/memo/index';
 
         const params = new URLSearchParams();
-        params.append('page', page.toString());
+        params.append('page', payload.page.toString());
+
+        if (payload.tag) {
+            params.append('tag', payload.tag);
+        }
 
         const url = entrypoint + '?' + params.toString();
 

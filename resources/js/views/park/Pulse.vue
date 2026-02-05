@@ -79,7 +79,8 @@ const fetchMemoList = async () => {
         isLoading.value = true;
 
         const page = route.query.page ? Number(route.query.page) : 1;
-        const { data, error } = await api.pulse.memo.index(page).json<PulseMemoIndexResponse>();
+        const tag = route.query.tag ? String(route.query.tag) : '';
+        const { data, error } = await api.pulse.memo.index({ page, tag }).json<PulseMemoIndexResponse>();
 
         if (error.value) {
             throw error.value;
@@ -199,8 +200,8 @@ const handleSubmit = async (_: SubmitData) => {
 };
 
 watch(
-    () => route.query.page,
-    () => {
+    [() => route.query.page, () => route.query.tag],
+    ([_pageNewVal, _tagNewVal], [_pageOldVal, _tagOldVal]) => {
         fetchMemoList();
     },
     { immediate: true },
