@@ -14,7 +14,6 @@ class TagController extends ApiController
     public function all(Request $request): JsonResource {
         $tags = Tag::withType(TagKind::MEMO->value)->get();
 
-        // TODO: create resource
         return new TagResourceCollection($tags);
     }
 }

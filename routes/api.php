@@ -46,6 +46,9 @@ Route::prefix('v1')->group(function() {
                 Route::get('/destroy/{id}', [Pulse\AttachmentController::class, 'destroy'])->name('api.pulse.attachment.destroy');
                 Route::get('/unsaved', [Pulse\AttachmentController::class, 'unsaved'])->name('api.pulse.attachment.unsaved');
             });
+            Route::prefix('bookmark')->group(function() {
+                Route::get('/store/{id}', [Pulse\BookmarkController::class, 'store'])->name('api.pulse.bookmark.store');
+            });
         });
     });
 });
