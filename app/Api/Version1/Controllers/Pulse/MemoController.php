@@ -29,8 +29,7 @@ class MemoController extends ApiController
                 'content' => $input['content'],
             ]);
 
-            // create tags and prepend default tag `beat` ensure distinct
-            array_unshift($input['tags'], 'beat');
+            // create tags ensure distinct and lower
             $tags = array_map('strtolower', array_values(array_unique($input['tags'])));
             $memo->attachTags($tags, type: TagKind::MEMO->value);
 
