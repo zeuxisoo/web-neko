@@ -10,6 +10,7 @@ use App\Api\Version1\Resources\Pulse\MemoResourceCollection;
 use App\Enums\TagKind;
 use App\Models\Memo;
 use App\Models\MemoAttachment;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -71,7 +72,9 @@ class MemoController extends ApiController
                 'user',
                 'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
                 'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
-                'bookmarks',
+            ])
+            ->withExists([
+                'bookmarks as is_bookmarked' => fn(Builder $builder) => $builder->where('user_id', $userId),
             ]);
 
         if (empty($input['tag'])) {
@@ -81,13 +84,7 @@ class MemoController extends ApiController
         }
 
         $memos = $builder->latest()
-            ->simplePaginate(8)
-            ->through(function(Memo $memo) use ($userId) {
-                $memo->is_bookmarked = $memo->bookmarks
-                    ->contains('user_id', $userId);
-
-                return $memo;
-            });
+            ->simplePaginate(8);
 
         return new MemoResourceCollection($memos);
     }
