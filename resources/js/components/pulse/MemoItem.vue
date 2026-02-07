@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import api from '@/api';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { Badge } from '@/components/base/badge';
 import { Card, CardHeader } from '@/components/base/card';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/base/dropdown-menu';
-import { humanDateTime, WhoopsHandler } from '@/utils';
-import { Bookmark, Ellipsis, Loader, MessageSquareMore, PaperclipIcon } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
-import { toast } from 'vue-sonner';
+import { humanDateTime } from '@/utils';
+import { MessageSquareMore, PaperclipIcon } from 'lucide-vue-next';
+import { ref } from 'vue';
+import MemoActionBookmark from './MemoActionBookmark.vue';
+import MemoActionMore from './MemoActionMore.vue';
 import MemoContent from './MemoContent.vue';
 import PreviewImage from './PreviewImage.vue';
 
@@ -15,73 +14,7 @@ const props = defineProps<{
     memo: PulseMemoIndexResponse['data'][number];
 }>();
 
-const isLoading = ref(false);
 const showRawDateTime = ref(false);
-
-// fill icon bg to default `currentColor` when memo bookmarked
-const bookmarkIconBg = computed(() => {
-    return props.memo.is_bookmarked ? 'currentColor' : 'none';
-});
-
-const handleBookmark = () => {
-    if (!props.memo.is_bookmarked) {
-        addBookmark();
-    } else {
-        removeBookmark();
-    }
-};
-
-const addBookmark = async () => {
-    try {
-        isLoading.value = true;
-
-        const { data, error } = await api.pulse.bookmark.add(props.memo.id).json<PulseBookmarkAddResponse>();
-
-        if (error.value) {
-            throw error.value;
-        }
-
-        if (data && data.value) {
-            const result = data.value;
-
-            props.memo.is_bookmarked = true;
-
-            toast.info(result.message);
-        } else {
-            throw error.value;
-        }
-    } catch (e: unknown) {
-        WhoopsHandler.handleError(e, 'Unknown error on handle memo bookmark add action');
-    } finally {
-        isLoading.value = false;
-    }
-};
-
-const removeBookmark = async () => {
-    try {
-        isLoading.value = true;
-
-        const { data, error } = await api.pulse.bookmark.remove(props.memo.id).json<PulseBookmarkRemoveResponse>();
-
-        if (error.value) {
-            throw error.value;
-        }
-
-        if (data && data.value) {
-            const result = data.value;
-
-            props.memo.is_bookmarked = false;
-
-            toast.info(result.message);
-        } else {
-            throw error.value;
-        }
-    } catch (e: unknown) {
-        WhoopsHandler.handleError(e, 'Unknown error on handle memo bookmark remove action');
-    } finally {
-        isLoading.value = false;
-    }
-};
 </script>
 <template>
     <Card>
@@ -126,23 +59,10 @@ const removeBookmark = async () => {
                         </RouterLink>
                     </div>
                     <div class="bookmark flex justify-center">
-                        <div class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium">
-                            <Loader :size="16" class="animate-spin" v-if="isLoading" />
-                            <Bookmark :size="16" :fill="bookmarkIconBg" @click="handleBookmark" class="cursor-pointer" v-else />
-                        </div>
+                        <MemoActionBookmark :memo="props.memo" />
                     </div>
                     <div class="action flex justify-end">
-                        <div class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger as-child>
-                                    <Ellipsis :size="16" />
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                                    <DropdownMenuItem>Delete</DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
+                        <MemoActionMore :memo="props.memo" />
                     </div>
                 </div>
             </div>
