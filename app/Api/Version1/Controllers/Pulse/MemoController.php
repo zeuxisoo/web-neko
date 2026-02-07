@@ -64,12 +64,14 @@ class MemoController extends ApiController
 
     public function index(IndexRequest $request): JsonResource {
         $input = $request->validated();
+        $userId = $this->user()->id;
 
         $builder = Memo::query()
             ->with([
                 'user',
                 'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
                 'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
+                'bookmarks',
             ]);
 
         if (empty($input['tag'])) {
@@ -79,7 +81,13 @@ class MemoController extends ApiController
         }
 
         $memos = $builder->latest()
-            ->simplePaginate(8);
+            ->simplePaginate(8)
+            ->through(function(Memo $memo) use ($userId) {
+                $memo->is_bookmarked = $memo->bookmarks
+                    ->contains('user_id', $userId);
+
+                return $memo;
+            });
 
         return new MemoResourceCollection($memos);
     }

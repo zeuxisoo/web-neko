@@ -15,6 +15,7 @@ class MemoResource extends ApiResource
             'content' => $this->content,
             'tags' => new TagResourceCollection($this->tags),
             'attachments' => new AttachmentResourceCollection($this->whenLoaded('attachments')),
+            'is_bookmarked' => $this->is_bookmarked ?? false,
             'created_at' => $this->created_at,
         ];
     }
