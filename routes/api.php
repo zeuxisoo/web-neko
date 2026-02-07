@@ -48,6 +48,7 @@ Route::prefix('v1')->group(function() {
             });
             Route::prefix('bookmark')->group(function() {
                 Route::get('/store/{id}', [Pulse\BookmarkController::class, 'store'])->name('api.pulse.bookmark.store');
+                Route::get('/destroy/{id}', [Pulse\BookmarkController::class, 'destroy'])->name('api.pulse.bookmark.destroy');
             });
         });
     });
