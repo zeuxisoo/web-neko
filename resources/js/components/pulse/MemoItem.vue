@@ -4,7 +4,7 @@ import { Badge } from '@/components/base/badge';
 import { Card, CardHeader } from '@/components/base/card';
 import { humanDateTime } from '@/utils';
 import { Bookmark, Ellipsis, MessageSquareMore, PaperclipIcon } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import MemoContent from './MemoContent.vue';
 import PreviewImage from './PreviewImage.vue';
 
@@ -13,6 +13,11 @@ const props = defineProps<{
 }>();
 
 const showRawDateTime = ref(false);
+
+// fill icon bg to default `currentColor` when memo bookmarked
+const bookmarkIconBg = computed(() => {
+    return props.memo.is_bookmarked ? 'currentColor' : 'none';
+});
 </script>
 <template>
     <Card>
@@ -53,7 +58,7 @@ const showRawDateTime = ref(false);
                     </div>
                     <div class="bookmark flex justify-center">
                         <div class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium">
-                            <Bookmark :size="16" />
+                            <Bookmark :size="16" :fill="bookmarkIconBg" />
                         </div>
                     </div>
                     <div class="action flex justify-end">

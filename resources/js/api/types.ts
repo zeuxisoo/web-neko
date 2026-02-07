@@ -104,6 +104,7 @@ interface PulseMemoStoreResponse extends ApiResponse {
             sort_order: number;
             links: Record<'cover' | 'thumb', string>;
         }[];
+        is_bookmarked: boolean;
         created_at: string;
     };
 }
