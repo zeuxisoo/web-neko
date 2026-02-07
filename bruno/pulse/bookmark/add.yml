@@ -1,11 +1,11 @@
 info:
-  name: store
+  name: add
   type: http
   seq: 1
 
 http:
   method: GET
-  url: "{{baseUrl}}/pulse/bookmark/store/3"
+  url: "{{baseUrl}}/pulse/bookmark/add/3"
   headers:
     - name: Authorization
       value: Bearer {{accessToken}}

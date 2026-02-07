@@ -6,7 +6,7 @@ use App\Api\Version1\Bases\ApiFormRequest;
 use App\Models\MemoBookmark;
 use Illuminate\Validation\Rule;
 
-class DestroyRequest extends ApiFormRequest
+class RemoveRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

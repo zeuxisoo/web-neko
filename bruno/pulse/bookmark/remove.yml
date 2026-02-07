@@ -1,11 +1,11 @@
 info:
-  name: destroy
+  name: remove
   type: http
   seq: 2
 
 http:
   method: GET
-  url: "{{baseUrl}}/pulse/bookmark/destroy/1"
+  url: "{{baseUrl}}/pulse/bookmark/remove/3"
   headers:
     - name: Authorization
       value: Bearer {{accessToken}}
