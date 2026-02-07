@@ -47,8 +47,8 @@ Route::prefix('v1')->group(function() {
                 Route::get('/unsaved', [Pulse\AttachmentController::class, 'unsaved'])->name('api.pulse.attachment.unsaved');
             });
             Route::prefix('bookmark')->group(function() {
-                Route::get('/store/{id}', [Pulse\BookmarkController::class, 'store'])->name('api.pulse.bookmark.store');
-                Route::get('/destroy/{id}', [Pulse\BookmarkController::class, 'destroy'])->name('api.pulse.bookmark.destroy');
+                Route::get('/store/{memo_id}', [Pulse\BookmarkController::class, 'store'])->name('api.pulse.bookmark.store');
+                Route::get('/destroy/{memo_id}', [Pulse\BookmarkController::class, 'destroy'])->name('api.pulse.bookmark.destroy');
             });
         });
     });

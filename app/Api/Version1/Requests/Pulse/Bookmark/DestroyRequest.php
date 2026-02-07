@@ -22,10 +22,10 @@ class DestroyRequest extends ApiFormRequest
      */
     public function rules(): array {
         return [
-            'id' => [
+            'memo_id' => [
                 'required',
                 'exists:memos,id',
-                Rule::exists(MemoBookmark::class, 'memo_id')->where(function($query) {
+                Rule::exists(MemoBookmark::class)->where(function($query) {
                     return $query->where('user_id', auth()->id());
                 }),
             ],
@@ -34,7 +34,7 @@ class DestroyRequest extends ApiFormRequest
 
     public function prepareForValidation(): void {
         $this->merge([
-            'id' => $this->route('id'),
+            'memo_id' => $this->route('memo_id'),
         ]);
     }
 }

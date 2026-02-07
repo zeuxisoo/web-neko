@@ -15,7 +15,7 @@ class BookmarkController extends ApiController
 
         MemoBookmark::create([
             'user_id' => $this->user()->id,
-            'memo_id' => $input['id'],
+            'memo_id' => $input['memo_id'],
         ]);
 
         return $this->respondJsonMessage('Memo bookmarked');
@@ -25,7 +25,7 @@ class BookmarkController extends ApiController
         $input = $request->validated();
 
         MemoBookmark::where('user_id', $this->user()->id)
-            ->where('memo_id', $input['id'])
+            ->where('memo_id', $input['memo_id'])
             ->delete();
 
         return $this->respondJsonMessage('Memo bookmark deleted');

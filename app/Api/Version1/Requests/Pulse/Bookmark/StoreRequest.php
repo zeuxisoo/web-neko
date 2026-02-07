@@ -22,7 +22,7 @@ class StoreRequest extends ApiFormRequest
      */
     public function rules(): array {
         return [
-            'id' => [
+            'memo_id' => [
                 'required',
                 'exists:memos,id',
                 Rule::unique(MemoBookmark::class)->where(function($query) {
@@ -34,7 +34,7 @@ class StoreRequest extends ApiFormRequest
 
     public function prepareForValidation(): void {
         $this->merge([
-            'id' => $this->route('id'),
+            'memo_id' => $this->route('memo_id'),
         ]);
     }
 }
