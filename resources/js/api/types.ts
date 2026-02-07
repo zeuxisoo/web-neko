@@ -129,6 +129,14 @@ interface PulseMemoIndexResponse extends ApiResponse {
     };
 }
 
+interface PulseBookmarkAddResponse extends ApiResponse {
+    data: string[];
+}
+
+interface PulseBookmarkRemoveResponse extends ApiResponse {
+    data: string[];
+}
+
 interface PulseTagResponse extends ApiResponse {
     data: {
         id: number;

@@ -32,6 +32,15 @@ class Memo {
     }
 }
 
+class Bookmark {
+    add(memoId: number) {
+        return useAgent<PulseBookmarkAddResponse>('pulse/bookmark/add/' + memoId).get();
+    }
+    remove(memoId: number) {
+        return useAgent<PulseBookmarkRemoveResponse>('pulse/bookmark/remove/' + memoId).get();
+    }
+}
+
 class Tag {
     all() {
         return useAgent<PulseTagResponse>('pulse/tag/all').get();
@@ -44,6 +53,9 @@ export default {
     },
     get memo() {
         return new Memo();
+    },
+    get bookmark() {
+        return new Bookmark();
     },
     get tag() {
         return new Tag();
