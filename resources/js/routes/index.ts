@@ -1,6 +1,7 @@
 import NotFound from '@/views/misc/NotFound.vue';
 import Gallery from '@/views/park/Gallery.vue';
 import Pulse from '@/views/park/Pulse.vue';
+import PulseComment from '@/views/park/PulseComment.vue';
 import Account from '@/views/user/Account.vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
@@ -19,6 +20,11 @@ const routes: RouteRecordRaw[] = [
                 path: 'pulse',
                 name: 'park.pulse',
                 component: Pulse,
+            },
+            {
+                path: 'pulse/comment/:id',
+                name: 'park.pulse.comment',
+                component: PulseComment,
             },
             {
                 path: 'gallery',

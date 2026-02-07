@@ -3,6 +3,7 @@ import api from '@/api';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { Badge } from '@/components/base/badge';
 import { Card, CardHeader } from '@/components/base/card';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/base/dropdown-menu';
 import { humanDateTime, WhoopsHandler } from '@/utils';
 import { Bookmark, Ellipsis, Loader, MessageSquareMore, PaperclipIcon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
@@ -117,7 +118,12 @@ const removeBookmark = async () => {
                 </div>
                 <div class="grid grid-cols-3 gap-2">
                     <div class="comment">
-                        <div class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium"><MessageSquareMore :size="16" /> 0</div>
+                        <RouterLink
+                            :to="{ name: 'park.pulse.comment', params: { id: props.memo.id } }"
+                            class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium"
+                        >
+                            <MessageSquareMore :size="16" /> 0
+                        </RouterLink>
                     </div>
                     <div class="bookmark flex justify-center">
                         <div class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium">
@@ -127,7 +133,15 @@ const removeBookmark = async () => {
                     </div>
                     <div class="action flex justify-end">
                         <div class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium">
-                            <Ellipsis :size="16" />
+                            <DropdownMenu>
+                                <DropdownMenuTrigger as-child>
+                                    <Ellipsis :size="16" />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                                    <DropdownMenuItem>Delete</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
                     </div>
                 </div>
