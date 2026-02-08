@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AlertDialog from '@/components/alert-dialog/AlertDialog.vue';
 import { Toaster } from '@/components/base/sonner';
 import { useAuthStore } from '@/stores';
 import Home from '@/views/Home.vue';
@@ -15,5 +16,6 @@ const authStore = useAuthStore();
 <template>
     <Login v-if="!authStore.isAuthenticated" />
     <Home v-else />
+    <AlertDialog />
     <Toaster position="bottom-center" :close-button="true" close-button-position="top-right" />
 </template>
