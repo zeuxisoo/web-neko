@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import { useAlertDialog } from '@/components/alert-dialog/useAlertDialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/base/dropdown-menu';
+import { useUserStore } from '@/stores';
 import { Ellipsis } from 'lucide-vue-next';
+import { computed } from 'vue';
 
 const props = defineProps<{
     memo: PulseMemoIndexResponse['data'][number];
 }>();
 
+const userStore = useUserStore();
 const dialog = useAlertDialog();
+
+const isAuthor = computed(() => {
+    return userStore.id === props.memo.user.id;
+});
 
 const handleDelete = async () => {
     const dialogResult = await dialog.start({
@@ -31,8 +38,8 @@ const handleDelete = async () => {
                 <Ellipsis :size="16" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem @click="handleDelete">Delete</DropdownMenuItem>
+                <DropdownMenuItem :disabled="!isAuthor">Edit</DropdownMenuItem>
+                <DropdownMenuItem :disabled="!isAuthor" @click="handleDelete">Delete</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     </div>
