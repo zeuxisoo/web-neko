@@ -10,14 +10,14 @@ const props = defineProps<{
 }>();
 
 const userStore = useUserStore();
-const dialog = useAlertDialog();
+const alertDialog = useAlertDialog();
 
 const isAuthor = computed(() => {
     return userStore.id === props.memo.user.id;
 });
 
 const handleDelete = async () => {
-    const dialogResult = await dialog.start({
+    const dialogResult = await alertDialog.start({
         title: 'Are you sure delete this memo?',
         description:
             'Note: This action cannot be undone. This will permanently remove this memo, attachment and related data record from our servers.',

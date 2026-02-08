@@ -11,10 +11,10 @@ const props = defineProps<{
     onRemove?: (index: number) => void;
 }>();
 
-const dialog = useAlertDialog();
+const alertDialog = useAlertDialog();
 
 const handleDelete = async (attachment: Attachment, index: number) => {
-    const dialogResult = await dialog.start({
+    const dialogResult = await alertDialog.start({
         title: `Delete ${attachment.original_name} ?`,
         description: 'Note: This action cannot be undone. This will permanently remove this attachment and delete record from our servers.',
     });
