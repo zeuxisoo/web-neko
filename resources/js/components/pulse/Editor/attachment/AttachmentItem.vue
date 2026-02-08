@@ -1,15 +1,5 @@
 <script setup lang="ts">
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/base/alert-dialog';
+import { useAlertDialog } from '@/components/alert-dialog';
 import { fileSubType, humanSize } from '@/utils';
 import { ChevronDownIcon, ChevronUpIcon, XIcon } from 'lucide-vue-next';
 import { Attachment } from '../types';
@@ -20,6 +10,19 @@ const props = defineProps<{
     onDown?: (index: number) => void;
     onRemove?: (index: number) => void;
 }>();
+
+const dialog = useAlertDialog();
+
+const handleDelete = async (attachment: Attachment, index: number) => {
+    const dialogResult = await dialog.start({
+        title: `Delete ${attachment.original_name} ?`,
+        description: 'Note: This action cannot be undone. This will permanently remove this attachment and delete record from our servers.',
+    });
+
+    if (dialogResult === 'ok' && props.onRemove) {
+        props.onRemove(index);
+    }
+};
 </script>
 
 <template>
@@ -42,26 +45,9 @@ const props = defineProps<{
             <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="Down" @click="props.onDown(index)" v-if="props.onDown">
                 <ChevronDownIcon class="text-muted-foreground" :size="14" />
             </button>
-            <AlertDialog v-if="props.onRemove">
-                <AlertDialogTrigger>
-                    <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="remove">
-                        <XIcon class="text-muted-foreground hover:text-destructive" :size="14" />
-                    </button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>Note!</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            Are you sure delete the attachment: <span class="text-primary">{{ attachment.original_name }}</span> ?<br /><br />
-                            Note: This action cannot be undone. This will permanently remove this attachment and delete record from our servers.
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel>Cannel</AlertDialogCancel>
-                        <AlertDialogAction @click="props.onRemove(index)">Yes</AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+            <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="remove">
+                <XIcon class="text-muted-foreground hover:text-destructive" :size="14" @click="handleDelete(attachment, index)" />
+            </button>
         </div>
     </div>
 </template>
