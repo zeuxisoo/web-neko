@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import api from '@/api';
 import { Editor, MemoList } from '@/components/pulse';
-import { Attachment, SubmitData, TagOrderedList } from '@/components/pulse/editor/types';
+import { Attachment, SubmitData } from '@/components/pulse/editor/types';
+import { useTagStore } from '@/stores';
 import { fillAttachments, WhoopsHandler } from '@/utils';
 import validator from '@/validators';
 import { onMounted, ref, watch } from 'vue';
@@ -10,42 +11,14 @@ import { toast } from 'vue-sonner';
 
 const isLoading = ref(false);
 const editor = ref('');
-const tags = ref<TagOrderedList>({});
 const attachments = ref<Attachment[]>([]);
 const extractedTags = ref<string[]>([]);
 const memos = ref<PulseMemoIndexResponse>();
 
 const route = useRoute();
+const tagStore = useTagStore();
 
-onMounted(() => Promise.all([fetchTags(), fetchUnsavedAttachments()]));
-
-const fetchTags = async () => {
-    try {
-        isLoading.value = true;
-
-        const { data, error } = await api.pulse.tag.all().json<PulseTagResponse>();
-
-        if (error.value) {
-            throw error.value;
-        }
-
-        if (data && data.value) {
-            const resultTags = data.value.data;
-
-            // convert Tag[] `[{ id, name, order_column }]` to TagOrderedList `{ name: order_column }`
-            tags.value = resultTags.reduce<Record<string, number>>((acc, tag) => {
-                acc[tag.name] = tag.id;
-                return acc;
-            }, {} as TagOrderedList);
-        } else {
-            throw error.value;
-        }
-    } catch (e: unknown) {
-        WhoopsHandler.handleError(e, 'Unknown error when fetch tag list action in park pulse');
-    } finally {
-        isLoading.value = false;
-    }
-};
+onMounted(() => Promise.all([tagStore.fetch(), fetchUnsavedAttachments()]));
 
 const fetchUnsavedAttachments = async () => {
     try {
@@ -184,7 +157,7 @@ const handleSubmit = async (_: SubmitData) => {
             }
 
             editor.value = '';
-            tags.value = {};
+            tagStore.tags = {};
             extractedTags.value = [];
             attachments.value = [];
 
@@ -213,7 +186,7 @@ watch(
         <Editor
             v-model="editor"
             :isLoading="isLoading"
-            :tags="tags"
+            :tags="tagStore.tags"
             :attachments="attachments"
             @uploaded="handleUploaded"
             @extractedTags="handleExtractedTags"
