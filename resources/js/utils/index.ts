@@ -29,8 +29,9 @@ const fillAttachments = (attachments: Attachment[], attachment: PulseAttachmentU
         id: attachment.id,
         filename: attachment.filename,
         original_name: attachment.original_name,
+        mime_type: attachment.mime_type || 'application/octet-stream',
         size: attachment.size,
-        type: attachment.mime_type || 'application/octet-stream',
+        sort_order: attachment.sort_order,
         links: attachment.links,
     });
 };

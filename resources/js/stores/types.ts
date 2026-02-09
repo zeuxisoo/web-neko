@@ -3,3 +3,5 @@ type AuthStorageValue = {
     token_type: string;
     expires_in: number;
 };
+
+type Attachment = PulseAttachmentUploadResponse['data'][number];

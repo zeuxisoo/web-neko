@@ -33,7 +33,7 @@ const handleDelete = async (attachment: Attachment, index: number) => {
         <div class="flex flex-1 flex-col gap-1.5 text-xs md:flex-row">
             <span class="truncate">{{ attachment.original_name }}</span>
             <div class="flex shrink-0 text-muted-foreground">
-                <span class="hidden md:block">{{ fileSubType(attachment.type) }}</span>
+                <span class="hidden md:block">{{ fileSubType(attachment.mime_type) }}</span>
                 <span class="hidden md:block">&nbsp;•&nbsp;</span>
                 <span class="hidden md:block">{{ humanSize(attachment.size) }}</span>
             </div>

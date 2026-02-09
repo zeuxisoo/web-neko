@@ -1,5 +1,4 @@
 import api from '@/api';
-import { Attachment } from '@/components/pulse/editor/types';
 import { fillAttachments, WhoopsHandler } from '@/utils';
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
