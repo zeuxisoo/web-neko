@@ -55,7 +55,10 @@ class MemoController extends ApiController
                 ->upsert($dbAttachments->toArray(), ['id'], ['sort_order']);
 
             // load attachment
-            $memo->load(['user', 'attachments']);
+            $memo->load([
+                'user',
+                'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
+            ]);
 
             return $memo;
         });
