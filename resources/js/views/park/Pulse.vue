@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import api from '@/api';
 import { Editor, MemoList } from '@/components/pulse';
-import { Attachment, SubmitData } from '@/components/pulse/editor/types';
-import { useTagStore } from '@/stores';
-import { fillAttachments, WhoopsHandler } from '@/utils';
+import { SubmitData } from '@/components/pulse/editor/types';
+import { useAttachmentStore, useTagStore } from '@/stores';
+import { WhoopsHandler } from '@/utils';
 import validator from '@/validators';
 import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -11,41 +11,14 @@ import { toast } from 'vue-sonner';
 
 const isLoading = ref(false);
 const editor = ref('');
-const attachments = ref<Attachment[]>([]);
 const extractedTags = ref<string[]>([]);
 const memos = ref<PulseMemoIndexResponse>();
 
 const route = useRoute();
 const tagStore = useTagStore();
+const attachmentStore = useAttachmentStore();
 
-onMounted(() => Promise.all([tagStore.fetch(), fetchUnsavedAttachments()]));
-
-const fetchUnsavedAttachments = async () => {
-    try {
-        isLoading.value = true;
-
-        const { data, error } = await api.pulse.attachment.unsaved().json<PulseAttachmentUploadResponse>();
-
-        if (error.value) {
-            throw error.value;
-        }
-
-        if (data && data.value) {
-            const result = data.value;
-            const attachmentList = result.data;
-
-            for (const attachment of attachmentList) {
-                fillAttachments(attachments.value, attachment);
-            }
-        } else {
-            throw error.value;
-        }
-    } catch (e: unknown) {
-        WhoopsHandler.handleError(e, 'Unknown error when fetch unsaved attachment list action in park pulse');
-    } finally {
-        isLoading.value = false;
-    }
-};
+onMounted(() => Promise.all([tagStore.fetch(), attachmentStore.fetchUnsaved()]));
 
 const fetchMemoList = async () => {
     try {
@@ -73,59 +46,12 @@ const fetchMemoList = async () => {
     }
 };
 
-const handleUploaded = (files: Attachment[]) => {
-    attachments.value = attachments.value.concat(files);
-};
-
 const handleExtractedTags = (tags: string[]) => {
     extractedTags.value = tags;
 };
 
-const handleAttachmentUp = (index: number) => {
-    if (index <= 0) return;
-
-    const item = attachments.value[index];
-
-    attachments.value[index] = attachments.value[index - 1];
-    attachments.value[index - 1] = item;
-};
-
-const handleAttachmentDown = (index: number) => {
-    if (index >= attachments.value.length - 1) return;
-
-    const item = attachments.value[index];
-
-    attachments.value[index] = attachments.value[index + 1];
-    attachments.value[index + 1] = item;
-};
-
-const handleAttachmentRemove = async (index: number) => {
-    try {
-        const attachment = attachments.value[index];
-
-        const { data, error } = await api.pulse.attachment.destroy(attachment.id).json<PulseAttachmentDestroyResponse>();
-
-        if (error.value) {
-            throw error.value;
-        }
-
-        if (data && data.value) {
-            const result = data.value;
-            const message = result.message;
-
-            toast.info(message);
-
-            attachments.value.splice(index, 1);
-        } else {
-            throw error.value;
-        }
-    } catch (e: unknown) {
-        WhoopsHandler.handleError(e, 'Unknown error when remove attachment action in park pulse');
-    }
-};
-
 const handleSubmit = async (_: SubmitData) => {
-    const attachmentList = Object.entries(attachments.value).map(([k, attachment]: [string, Attachment], index: number) => {
+    const attachmentList = attachmentStore.attachments.map((attachment, index) => {
         return {
             id: attachment.id,
             filename: attachment.filename,
@@ -159,7 +85,7 @@ const handleSubmit = async (_: SubmitData) => {
             editor.value = '';
             tagStore.tags = {};
             extractedTags.value = [];
-            attachments.value = [];
+            attachmentStore.attachments = [];
 
             toast.info('Memo created');
         } else {
@@ -187,12 +113,12 @@ watch(
             v-model="editor"
             :isLoading="isLoading"
             :tags="tagStore.tags"
-            :attachments="attachments"
-            @uploaded="handleUploaded"
+            :attachments="attachmentStore.attachments"
+            @uploaded="attachmentStore.onUploaded"
+            @attachmentUp="attachmentStore.onAttachmentUp"
+            @attachmentDown="attachmentStore.handleAttachmentDown"
+            @attachmentRemove="attachmentStore.removeAttachment"
             @extractedTags="handleExtractedTags"
-            @attachmentUp="handleAttachmentUp"
-            @attachmentDown="handleAttachmentDown"
-            @attachmentRemove="handleAttachmentRemove"
             @submit="handleSubmit"
         />
         <MemoList :memos="memos" />

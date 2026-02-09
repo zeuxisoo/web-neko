@@ -1,6 +1,5 @@
 export { default as extractHashTags } from './hashtags';
 export { default as WhoopsHandler } from './whoops';
-
 import { Attachment } from '@/components/pulse/editor/types';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 
