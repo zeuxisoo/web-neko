@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 
 type TagOrderedList = Record<string, number>;
 
-const useTagStore = defineStore('tag', {
+const useTagsStore = defineStore('tags', {
     state: () => ({
         tags: {} as TagOrderedList,
     }),
@@ -35,4 +35,4 @@ const useTagStore = defineStore('tag', {
     },
 });
 
-export default useTagStore;
+export default useTagsStore;

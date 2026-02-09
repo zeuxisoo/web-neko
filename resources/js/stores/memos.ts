@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 
 type Memo = PulseMemoIndexResponse['data'][number];
 
-const useMemoStore = defineStore('memo', {
+const useMemosStore = defineStore('memos', {
     state: () => ({
         memos: null as PulseMemoIndexResponse | null,
     }),
@@ -34,4 +34,4 @@ const useMemoStore = defineStore('memo', {
     },
 });
 
-export default useMemoStore;
+export default useMemosStore;

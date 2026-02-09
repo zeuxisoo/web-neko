@@ -4,7 +4,7 @@ import { fillAttachments, WhoopsHandler } from '@/utils';
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
 
-const useAttachmentStore = defineStore('attachment', {
+const useAttachmentsStore = defineStore('attachments', {
     state: () => ({
         attachments: [] as Attachment[],
     }),
@@ -77,4 +77,4 @@ const useAttachmentStore = defineStore('attachment', {
     },
 });
 
-export default useAttachmentStore;
+export default useAttachmentsStore;

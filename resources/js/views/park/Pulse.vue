@@ -2,7 +2,9 @@
 import api from '@/api';
 import { Editor, MemoList } from '@/components/pulse';
 import { SubmitData } from '@/components/pulse/editor/types';
-import { useAttachmentStore, useMemoStore, useTagStore } from '@/stores';
+import useAttachmentsStore from '@/stores/attachments';
+import useMemosStore from '@/stores/memos';
+import useTagsStore from '@/stores/tags';
 import { WhoopsHandler } from '@/utils';
 import validator from '@/validators';
 import { onMounted, ref, watch } from 'vue';
@@ -14,18 +16,18 @@ const editor = ref('');
 const extractedTags = ref<string[]>([]);
 
 const route = useRoute();
-const tagStore = useTagStore();
-const attachmentStore = useAttachmentStore();
-const memoStore = useMemoStore();
+const tagsStore = useTagsStore();
+const attachmentsStore = useAttachmentsStore();
+const memosStore = useMemosStore();
 
-onMounted(() => Promise.all([tagStore.fetch(), attachmentStore.fetchUnsaved()]));
+onMounted(() => Promise.all([tagsStore.fetch(), attachmentsStore.fetchUnsaved()]));
 
 const handleExtractedTags = (tags: string[]) => {
     extractedTags.value = tags;
 };
 
 const handleSubmit = async (_: SubmitData) => {
-    const attachmentList = attachmentStore.attachments.map((attachment, index) => {
+    const attachmentList = attachmentsStore.attachments.map((attachment, index) => {
         return {
             id: attachment.id,
             filename: attachment.filename,
@@ -52,12 +54,12 @@ const handleSubmit = async (_: SubmitData) => {
             const result = data.value;
             const memo = result.data;
 
-            memoStore.prepend(memo);
+            memosStore.prepend(memo);
 
             editor.value = '';
-            tagStore.tags = {};
+            tagsStore.tags = {};
             extractedTags.value = [];
-            attachmentStore.attachments = [];
+            attachmentsStore.attachments = [];
 
             toast.info('Memo created');
         } else {
@@ -75,7 +77,7 @@ watch(
     ([pageNewVal, tagNewVal]) => {
         const page = pageNewVal ? Number(pageNewVal) : 1;
         const tag = tagNewVal ? String(tagNewVal) : '';
-        memoStore.fetchList(page, tag);
+        memosStore.fetchList(page, tag);
     },
     { immediate: true },
 );
@@ -86,15 +88,15 @@ watch(
         <Editor
             v-model="editor"
             :isLoading="isLoading"
-            :tags="tagStore.tags"
-            :attachments="attachmentStore.attachments"
-            @uploaded="attachmentStore.onUploaded"
-            @attachmentUp="attachmentStore.onAttachmentUp"
-            @attachmentDown="attachmentStore.onAttachmentDown"
-            @attachmentRemove="attachmentStore.removeAttachment"
+            :tags="tagsStore.tags"
+            :attachments="attachmentsStore.attachments"
+            @uploaded="attachmentsStore.onUploaded"
+            @attachmentUp="attachmentsStore.onAttachmentUp"
+            @attachmentDown="attachmentsStore.onAttachmentDown"
+            @attachmentRemove="attachmentsStore.removeAttachment"
             @extractedTags="handleExtractedTags"
             @submit="handleSubmit"
         />
-        <MemoList :memos="memoStore.memos" />
+        <MemoList :memos="memosStore.memos" />
     </div>
 </template>
