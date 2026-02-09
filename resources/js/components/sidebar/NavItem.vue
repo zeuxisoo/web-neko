@@ -20,7 +20,7 @@ import {
     SidebarMenuSubItem,
     useSidebar,
 } from '@/components/base/sidebar';
-import { type NavItem as NavItemType } from '@/types/dashboard';
+import { type NavItem as NavItemType } from '@/components/sidebar/types';
 import { ChevronRight } from 'lucide-vue-next';
 
 const props = defineProps<{

@@ -12,7 +12,7 @@ import {
 } from '@/components/base/sidebar';
 import NavItem from '@/components/sidebar/NavItem.vue';
 import NavUser from '@/components/sidebar/NavUser.vue';
-import { type NavItem as NavItemType } from '@/types/dashboard';
+import { type NavItem as NavItemType } from '@/components/sidebar/types';
 import { Box, Shrub } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
 
