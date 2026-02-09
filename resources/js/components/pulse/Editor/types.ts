@@ -1,3 +1,5 @@
+import { Ref } from 'vue';
+
 export type Attachment = PulseAttachmentUploadResponse['data'][number];
 export type TagOrderedList = Record<string, number>;
 
@@ -13,7 +15,8 @@ export type Position = {
 };
 
 export type SubmitData = {
-    editor: string;
+    editor: Ref<string, string>;
+    content: string;
     attachments: Attachment[];
     tags: string[];
 };

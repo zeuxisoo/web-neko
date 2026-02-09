@@ -56,8 +56,10 @@ const handleSubmit = async (_: SubmitData) => {
 
             memosStore.prepend(memo);
 
+            // cleanup editor content
             editor.value = '';
-            tagsStore.tags = {};
+
+            // cleanup extracted tag in pulse and attachments in store
             extractedTags.value = [];
             attachmentsStore.attachments = [];
 
@@ -77,6 +79,7 @@ watch(
     ([pageNewVal, tagNewVal]) => {
         const page = pageNewVal ? Number(pageNewVal) : 1;
         const tag = tagNewVal ? String(tagNewVal) : '';
+
         memosStore.fetchList(page, tag);
     },
     { immediate: true },

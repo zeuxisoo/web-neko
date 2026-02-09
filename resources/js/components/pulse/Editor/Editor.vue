@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Card, CardContent } from '@/components/base/card';
 import { useTextareaAutosize } from '@vueuse/core';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { ActionButton } from './action-button';
 import { AttachmentList } from './attachment';
 import TagList from './tags/TagList.vue';
@@ -37,7 +37,8 @@ const extractedTags = ref<string[]>([]);
 const handleSubmit = () => {
     props.onSubmit({
         // model: Self.editor
-        editor: editor.value,
+        editor: editor,
+        content: editor.value,
         attachments: attachments.value,
         tags: extractedTags.value,
     });
@@ -55,6 +56,13 @@ const handleExtractedTags = (tags: string[]) => {
 
     props.onExtractedTags(extractedTags.value);
 };
+
+watch(
+    () => modelValue.value,
+    (newModelValue) => {
+        editor.value = newModelValue;
+    },
+);
 
 const editorMethods = {
     removeText: (start: number, length: number) => {
