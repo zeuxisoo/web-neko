@@ -7,7 +7,7 @@ import MemoItem from './MemoItem.vue';
 import MemoPagination from './MemoPagination.vue';
 
 const props = defineProps<{
-    memos: PulseMemoIndexResponse | undefined;
+    memos: PulseMemoIndexResponse | null;
 }>();
 </script>
 

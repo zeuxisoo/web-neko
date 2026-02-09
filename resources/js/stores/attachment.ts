@@ -66,7 +66,7 @@ const useAttachmentStore = defineStore('attachment', {
             this.attachments[index] = this.attachments[index - 1];
             this.attachments[index - 1] = item;
         },
-        handleAttachmentDown(index: number) {
+        onAttachmentDown(index: number) {
             if (index >= this.attachments.length - 1) return;
 
             const item = this.attachments[index];

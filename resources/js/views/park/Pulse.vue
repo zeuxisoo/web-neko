@@ -2,7 +2,7 @@
 import api from '@/api';
 import { Editor, MemoList } from '@/components/pulse';
 import { SubmitData } from '@/components/pulse/editor/types';
-import { useAttachmentStore, useTagStore } from '@/stores';
+import { useAttachmentStore, useMemoStore, useTagStore } from '@/stores';
 import { WhoopsHandler } from '@/utils';
 import validator from '@/validators';
 import { onMounted, ref, watch } from 'vue';
@@ -12,39 +12,13 @@ import { toast } from 'vue-sonner';
 const isLoading = ref(false);
 const editor = ref('');
 const extractedTags = ref<string[]>([]);
-const memos = ref<PulseMemoIndexResponse>();
 
 const route = useRoute();
 const tagStore = useTagStore();
 const attachmentStore = useAttachmentStore();
+const memoStore = useMemoStore();
 
 onMounted(() => Promise.all([tagStore.fetch(), attachmentStore.fetchUnsaved()]));
-
-const fetchMemoList = async () => {
-    try {
-        isLoading.value = true;
-
-        const page = route.query.page ? Number(route.query.page) : 1;
-        const tag = route.query.tag ? String(route.query.tag) : '';
-        const { data, error } = await api.pulse.memo.index({ page, tag }).json<PulseMemoIndexResponse>();
-
-        if (error.value) {
-            throw error.value;
-        }
-
-        if (data && data.value) {
-            const result = data.value;
-
-            memos.value = result;
-        } else {
-            throw error.value;
-        }
-    } catch (e: unknown) {
-        WhoopsHandler.handleError(e, 'Unknown error when fetch memo list action in park pulse');
-    } finally {
-        isLoading.value = false;
-    }
-};
 
 const handleExtractedTags = (tags: string[]) => {
     extractedTags.value = tags;
@@ -78,9 +52,7 @@ const handleSubmit = async (_: SubmitData) => {
             const result = data.value;
             const memo = result.data;
 
-            if (memos.value) {
-                memos.value.data = [memo, ...memos.value.data];
-            }
+            memoStore.prepend(memo);
 
             editor.value = '';
             tagStore.tags = {};
@@ -100,8 +72,10 @@ const handleSubmit = async (_: SubmitData) => {
 
 watch(
     [() => route.query.page, () => route.query.tag],
-    ([_pageNewVal, _tagNewVal], [_pageOldVal, _tagOldVal]) => {
-        fetchMemoList();
+    ([pageNewVal, tagNewVal]) => {
+        const page = pageNewVal ? Number(pageNewVal) : 1;
+        const tag = tagNewVal ? String(tagNewVal) : '';
+        memoStore.fetchList(page, tag);
     },
     { immediate: true },
 );
@@ -116,11 +90,11 @@ watch(
             :attachments="attachmentStore.attachments"
             @uploaded="attachmentStore.onUploaded"
             @attachmentUp="attachmentStore.onAttachmentUp"
-            @attachmentDown="attachmentStore.handleAttachmentDown"
+            @attachmentDown="attachmentStore.onAttachmentDown"
             @attachmentRemove="attachmentStore.removeAttachment"
             @extractedTags="handleExtractedTags"
             @submit="handleSubmit"
         />
-        <MemoList :memos="memos" />
+        <MemoList :memos="memoStore.memos" />
     </div>
 </template>
