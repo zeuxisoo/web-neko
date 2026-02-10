@@ -2,8 +2,6 @@ import api from '@/api';
 import { WhoopsHandler } from '@/utils';
 import { defineStore } from 'pinia';
 
-type TagOrderedList = Record<string, number>;
-
 const useTagsStore = defineStore('tags', {
     state: () => ({
         tags: {} as TagOrderedList,

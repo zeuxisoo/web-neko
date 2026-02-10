@@ -5,3 +5,5 @@ type AuthStorageValue = {
 };
 
 type Attachment = PulseAttachmentUploadResponse['data'][number];
+
+type TagOrderedList = Record<string, number>;
