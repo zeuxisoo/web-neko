@@ -91,6 +91,7 @@ watch(
         <Editor
             v-model="editor"
             :isLoading="isLoading"
+            :enableCancel="false"
             :tags="tagsStore.tags"
             :attachments="attachmentsStore.attachments"
             @uploaded="attachmentsStore.onUploaded"

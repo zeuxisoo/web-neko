@@ -18,6 +18,7 @@ const emit = defineEmits(['update:modelValue']);
 
 const props = defineProps<{
     isLoading: boolean;
+    enableCancel: boolean;
     tags: TagOrderedList;
     attachments: Attachment[];
     onUploaded: (files: Attachment[]) => void;
@@ -26,6 +27,7 @@ const props = defineProps<{
     onAttachmentRemove: (index: number) => void;
     onExtractedTags: (tags: string[]) => void;
     onSubmit: (data: SubmitData) => void;
+    onCancel?: () => void;
 }>();
 
 const { textarea: editorRef, input: editor, triggerResize: updateEditorHeight } = useTextareaAutosize();
@@ -138,7 +140,13 @@ const editorMethods = {
                     />
                 </div>
                 <div class="flex gap-2">
-                    <ActionButton :isLoading="isLoading" @uploaded="props.onUploaded" @submit="handleSubmit" />
+                    <ActionButton
+                        :isLoading="isLoading"
+                        :enableCancel="props.enableCancel"
+                        @uploaded="props.onUploaded"
+                        @submit="handleSubmit"
+                        @cancel="props.onCancel?.()"
+                    />
                 </div>
             </div>
         </CardContent>

@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { Button } from '@/components/base/button';
 import { cn } from '@/lib/utils';
-import { Loader, SendHorizontal } from 'lucide-vue-next';
+import { Loader, SendHorizontal, X } from 'lucide-vue-next';
 import { Attachment } from '../types';
 import UploadButton from './button/UploadButton.vue';
 
 const props = defineProps<{
     isLoading: boolean;
+    enableCancel: boolean;
     onUploaded: (attachments: Attachment[]) => void;
     onSubmit: () => void;
+    onCancel: () => void;
 }>();
 </script>
 
@@ -17,7 +19,15 @@ const props = defineProps<{
         <div class="flex flex-row gap-2">
             <UploadButton :onUploaded="props.onUploaded" />
         </div>
-        <div>
+        <div class="flex gap-0.5">
+            <Button
+                v-if="props.enableCancel"
+                variant="secondary"
+                :class="cn('flex flex-row items-center gap-1 rounded-md', { 'disabled:': isLoading })"
+                @click="props.onCancel"
+            >
+                <X />
+            </Button>
             <Button :class="cn('flex flex-row items-center gap-1 rounded-md', { 'disabled:': isLoading })" @click="props.onSubmit">
                 <SendHorizontal :size="16" v-if="!props.isLoading" />
                 <Loader :size="16" class="animate-spin" v-if="props.isLoading" />
