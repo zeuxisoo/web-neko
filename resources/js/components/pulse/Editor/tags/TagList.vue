@@ -16,6 +16,7 @@ watch(
 
         props.onExtracted(tags.value);
     },
+    { immediate: true },
 );
 </script>
 
