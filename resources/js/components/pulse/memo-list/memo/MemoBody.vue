@@ -9,7 +9,12 @@ import MemoContent from '../memo-body/MemoContent.vue';
 
 const props = defineProps<{
     memo: PulseMemoIndexResponse['data'][number];
+    onEdit: () => void;
 }>();
+
+const handleEdit = () => {
+    props.onEdit();
+};
 </script>
 
 <template>
@@ -32,7 +37,7 @@ const props = defineProps<{
                 <MemoActionBookmark :memo="props.memo" />
             </div>
             <div class="action flex justify-end">
-                <MemoActionMore :memo="props.memo" />
+                <MemoActionMore :memo="props.memo" @edit="handleEdit" />
             </div>
         </div>
     </div>

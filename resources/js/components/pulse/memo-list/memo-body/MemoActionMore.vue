@@ -7,6 +7,7 @@ import { computed } from 'vue';
 
 const props = defineProps<{
     memo: PulseMemoIndexResponse['data'][number];
+    onEdit: () => void;
 }>();
 
 const userStore = useUserStore();
@@ -15,6 +16,10 @@ const alertDialog = useAlertDialog();
 const isAuthor = computed(() => {
     return userStore.id === props.memo.user.id;
 });
+
+const handleEdit = () => {
+    props.onEdit();
+};
 
 const handleDelete = async () => {
     const dialogResult = await alertDialog.start({
@@ -38,7 +43,7 @@ const handleDelete = async () => {
                 <Ellipsis :size="16" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem :disabled="!isAuthor">Edit</DropdownMenuItem>
+                <DropdownMenuItem :disabled="!isAuthor" @click="handleEdit">Edit</DropdownMenuItem>
                 <DropdownMenuItem :disabled="!isAuthor" @click="handleDelete">Delete</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
