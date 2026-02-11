@@ -14,10 +14,20 @@ http:
     data: |-
       {
         "content": "this is a test",
-        "tags": ["tag1", "tag2"],
+        "tags": [
+          "tag1",
+          "tag2"
+        ],
         "attachments": [
-          { "id": 1, "filename": "1.png" },
-          { "id": 2, "filename": "2.png" }
+          {
+            "id": 1,
+            "filename": "1.png", 
+            "sort_order": 1
+          },
+          {
+            "id": 2,
+            "filename": "2.png", "sort_order": 2
+          }
         ]
       }
   auth: inherit

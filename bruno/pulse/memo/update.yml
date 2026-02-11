@@ -1,0 +1,47 @@
+info:
+  name: update
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseUrl}}/pulse/memo/update"
+  headers:
+    - name: Authorization
+      value: Bearer {{accessToken}}
+  body:
+    type: json
+    data: |-
+      {
+        "id": 14,
+        "content": "[edit] #tag1 test edit and #beat update function #test",
+        "tags": [
+          "test",
+          "tag1",
+          "beat"
+        ],
+        "attachments": [
+          {
+            "id": 85,
+            "filename": "1.png",
+            "sort_order": 3
+          },
+          {
+            "id": 86,
+            "filename": "2.png",
+            "sort_order": 1
+          },
+          {
+            "id": 87,
+            "filename": "3.png",
+            "sort_order": 2
+          }
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
