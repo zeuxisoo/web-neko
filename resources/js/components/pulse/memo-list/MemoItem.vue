@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader } from '@/components/base/card';
-import { useMemoStore, useTagStore } from '@/stores';
+import { useMemoStore, useTagsStore } from '@/stores';
 import { ref, watch } from 'vue';
 import Editor from '../editor';
 import { SubmitData } from '../editor/types';
@@ -16,7 +16,7 @@ const isLoading = ref(false);
 const editor = ref('');
 const extractedTags = ref<string[]>([]);
 
-const tagsStore = useTagStore();
+const tagsStore = useTagsStore();
 const memoStore = useMemoStore(props.memo.id);
 
 const handleExtractedTags = (tags: string[]) => {
@@ -40,6 +40,9 @@ watch(
     () => {
         if (isEditing.value) {
             editor.value = props.memo.content;
+
+            extractedTags.value = props.memo.tags.map((tag) => tag.name);
+
             memoStore.setMemo(props.memo);
             memoStore.setAttachments(props.memo.attachments);
         }
@@ -49,9 +52,9 @@ watch(
 
 <template>
     <Editor
+        v-if="isEditing"
         v-model="editor"
         class="border-2 border-accent-foreground/30"
-        v-if="isEditing"
         :isLoading="isLoading"
         :enableCancel="true"
         :tags="tagsStore.tags"

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { onScopeDispose, ref } from 'vue';
 import useAttachmentsStore from './attachments';
 
 const useMemoStore = (id: number) => {
@@ -22,7 +22,14 @@ const useMemoStore = (id: number) => {
         };
     });
 
-    return store();
+    const instance = store();
+
+    onScopeDispose(() => {
+        instance.attachmentsStore.$dispose();
+        instance.$dispose();
+    });
+
+    return instance;
 };
 
 export default useMemoStore;

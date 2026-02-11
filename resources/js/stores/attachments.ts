@@ -1,6 +1,7 @@
 import api from '@/api';
 import { fillAttachments, WhoopsHandler } from '@/utils';
 import { defineStore } from 'pinia';
+import { onScopeDispose } from 'vue';
 import { toast } from 'vue-sonner';
 
 const useAttachmentsStore = (id: string = 'default') => {
@@ -77,7 +78,13 @@ const useAttachmentsStore = (id: string = 'default') => {
         },
     });
 
-    return store();
+    const instance = store();
+
+    onScopeDispose(() => {
+        instance.$dispose();
+    });
+
+    return instance;
 };
 
 export default useAttachmentsStore;
