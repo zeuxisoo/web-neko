@@ -4,6 +4,7 @@ type AuthStorageValue = {
     expires_in: number;
 };
 
+type Memo = PulseMemoIndexResponse['data'][number];
 type Attachment = PulseAttachmentUploadResponse['data'][number];
 
 type TagOrderedList = Record<string, number>;

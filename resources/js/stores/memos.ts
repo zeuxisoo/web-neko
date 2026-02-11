@@ -2,8 +2,6 @@ import api from '@/api';
 import { WhoopsHandler } from '@/utils';
 import { defineStore } from 'pinia';
 
-type Memo = PulseMemoIndexResponse['data'][number];
-
 const useMemosStore = defineStore('memos', {
     state: () => ({
         memos: null as PulseMemoIndexResponse | null,

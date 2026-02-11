@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader } from '@/components/base/card';
-import { useAttachmentsStore, useTagStore } from '@/stores';
-import { ref } from 'vue';
+import { useMemoStore, useTagStore } from '@/stores';
+import { ref, watch } from 'vue';
 import Editor from '../editor';
 import { SubmitData } from '../editor/types';
 import MemoBody from './memo/MemoBody.vue';
@@ -13,11 +13,11 @@ const props = defineProps<{
 
 const isEditing = ref(false);
 const isLoading = ref(false);
-const editor = ref(null);
+const editor = ref('');
 const extractedTags = ref<string[]>([]);
 
 const tagsStore = useTagStore();
-const attachmentsStore = useAttachmentsStore();
+const memoStore = useMemoStore(props.memo.id);
 
 const handleExtractedTags = (tags: string[]) => {
     extractedTags.value = tags;
@@ -34,6 +34,17 @@ const handleCancel = () => {
 const handleSubmit = async (_: SubmitData) => {
     console.log('submit');
 };
+
+watch(
+    () => isEditing.value,
+    () => {
+        if (isEditing.value) {
+            editor.value = props.memo.content;
+            memoStore.setMemo(props.memo);
+            memoStore.setAttachments(props.memo.attachments);
+        }
+    },
+);
 </script>
 
 <template>
@@ -44,11 +55,11 @@ const handleSubmit = async (_: SubmitData) => {
         :isLoading="isLoading"
         :enableCancel="true"
         :tags="tagsStore.tags"
-        :attachments="attachmentsStore.attachments"
-        @uploaded="attachmentsStore.onUploaded"
-        @attachmentUp="attachmentsStore.onAttachmentUp"
-        @attachmentDown="attachmentsStore.onAttachmentDown"
-        @attachmentRemove="attachmentsStore.removeAttachment"
+        :attachments="memoStore.attachmentsStore.attachments"
+        @uploaded="memoStore.attachmentsStore.onUploaded"
+        @attachmentUp="memoStore.attachmentsStore.onAttachmentUp"
+        @attachmentDown="memoStore.attachmentsStore.onAttachmentDown"
+        @attachmentRemove="memoStore.attachmentsStore.removeAttachment"
         @extractedTags="handleExtractedTags"
         @submit="handleSubmit"
         @cancel="handleCancel"

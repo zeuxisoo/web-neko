@@ -64,6 +64,7 @@ watch(
     (newModelValue) => {
         editor.value = newModelValue;
     },
+    { immediate: true },
 );
 
 const editorMethods = {
