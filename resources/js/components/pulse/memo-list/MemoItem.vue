@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader } from '@/components/base/card';
-import { useMemoStore, useTagsStore } from '@/stores';
+import { useAttachmentsStore, useTagsStore } from '@/stores';
 import { ref, watch } from 'vue';
 import Editor from '../editor';
 import { SubmitData } from '../editor/types';
@@ -17,7 +17,7 @@ const editor = ref('');
 const extractedTags = ref<string[]>([]);
 
 const tagsStore = useTagsStore();
-const memoStore = useMemoStore(props.memo.id);
+const attachmentsStore = useAttachmentsStore(String(props.memo.id));
 
 const handleExtractedTags = (tags: string[]) => {
     extractedTags.value = tags;
@@ -41,10 +41,12 @@ watch(
         if (isEditing.value) {
             editor.value = props.memo.content;
 
+            // initialize extractedTags from saved memo tags for consistency
+            // note: TagList will also extract tags from editor content, but this ensures
+            // the initial state matches what was saved (handles edge cases/parsing issues)
             extractedTags.value = props.memo.tags.map((tag) => tag.name);
 
-            memoStore.setMemo(props.memo);
-            memoStore.setAttachments(props.memo.attachments);
+            attachmentsStore.attachments = props.memo.attachments;
         }
     },
 );
@@ -58,11 +60,11 @@ watch(
         :isLoading="isLoading"
         :enableCancel="true"
         :tags="tagsStore.tags"
-        :attachments="memoStore.attachmentsStore.attachments"
-        @uploaded="memoStore.attachmentsStore.onUploaded"
-        @attachmentUp="memoStore.attachmentsStore.onAttachmentUp"
-        @attachmentDown="memoStore.attachmentsStore.onAttachmentDown"
-        @attachmentRemove="memoStore.attachmentsStore.removeAttachment"
+        :attachments="attachmentsStore.attachments"
+        @uploaded="attachmentsStore.onUploaded"
+        @attachmentUp="attachmentsStore.onAttachmentUp"
+        @attachmentDown="attachmentsStore.onAttachmentDown"
+        @attachmentRemove="attachmentsStore.removeAttachment"
         @extractedTags="handleExtractedTags"
         @submit="handleSubmit"
         @cancel="handleCancel"
