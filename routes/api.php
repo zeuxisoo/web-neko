@@ -37,6 +37,7 @@ Route::prefix('v1')->group(function() {
             Route::prefix('memo')->group(function() {
                 Route::post('/store', [Pulse\MemoController::class, 'store'])->name('api.pulse.memo.store');
                 Route::get('/index', [Pulse\MemoController::class, 'index'])->name('api.pulse.memo.index');
+                Route::post('/update', [Pulse\MemoController::class, 'update'])->name('api.pulse.memo.update');
             });
             Route::prefix('tag')->group(function() {
                 Route::get('/all', [Pulse\TagController::class, 'all'])->name('api.pulse.tag.all');

@@ -5,6 +5,7 @@ namespace App\Api\Version1\Controllers\Pulse;
 use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Requests\Pulse\Memo\IndexRequest;
 use App\Api\Version1\Requests\Pulse\Memo\StoreRequest;
+use App\Api\Version1\Requests\Pulse\Memo\UpdateRequest;
 use App\Api\Version1\Resources\Pulse\MemoResource;
 use App\Api\Version1\Resources\Pulse\MemoResourceCollection;
 use App\Enums\TagKind;
@@ -90,5 +91,62 @@ class MemoController extends ApiController
             ->simplePaginate(8);
 
         return new MemoResourceCollection($memos);
+    }
+
+    public function update(UpdateRequest $request): JsonResource {
+        $input = $request->validated();
+
+        $memo = DB::transaction(function() use ($input) {
+            $userId = $this->user()->id;
+
+            // find memo
+            $memo = Memo::findOrFail($input['id']);
+
+            // update memo content
+            $memo->update([
+                'content' => $input['content'],
+            ]);
+
+            // sync tags ensure distinct and lower
+            $tags = array_map('strtolower', array_values(array_unique($input['tags'])));
+            $memo->syncTagsWithType($tags, type: TagKind::MEMO->value);
+
+            // update attachment relationship and sort_order
+            if (!empty($input['attachments'])) {
+                $attachmentIds = array_column($input['attachments'], 'id');
+
+                // update memo_id for new attachments
+                MemoAttachment::where('user_id', $userId)
+                    ->whereIn('id', $attachmentIds)
+                    ->whereNull('memo_id')
+                    ->update([
+                        'memo_id' => $memo->id,
+                    ]);
+
+                // update sort_order column
+                $sortedAttachmentsIds = collect($input['attachments'])->pluck('sort_order', key: 'id')->toArray();
+                $dbAttachments = MemoAttachment::where('user_id', $userId)
+                    ->whereIn('id', $attachmentIds)
+                    ->get();
+                foreach ($dbAttachments as $attachment) {
+                    $attachment->sort_order = $sortedAttachmentsIds[$attachment->id];
+                }
+
+                MemoAttachment::where('user_id', $userId)
+                    ->whereIn('id', $attachmentIds)
+                    ->upsert($dbAttachments->toArray(), ['id'], ['sort_order']);
+            }
+
+            // load relations
+            $memo->load([
+                'user',
+                'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
+                'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
+            ]);
+
+            return $memo;
+        });
+
+        return new MemoResource($memo);
     }
 }
