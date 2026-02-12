@@ -3,6 +3,7 @@
 namespace App\Api\Version1\Controllers\Pulse;
 
 use App\Api\Version1\Bases\ApiController;
+use App\Api\Version1\Requests\Pulse\Memo\DestroyRequest;
 use App\Api\Version1\Requests\Pulse\Memo\IndexRequest;
 use App\Api\Version1\Requests\Pulse\Memo\StoreRequest;
 use App\Api\Version1\Requests\Pulse\Memo\UpdateRequest;
@@ -14,8 +15,10 @@ use App\Models\MemoAttachment;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class MemoController extends ApiController
 {
@@ -148,5 +151,42 @@ class MemoController extends ApiController
         });
 
         return new MemoResource($memo);
+    }
+
+    public function destroy(DestroyRequest $request): JsonResponse {
+        $input = $request->validated();
+
+        DB::transaction(function() use ($input) {
+            $memo = Memo::findOrFail($input['id']);
+
+            // delete attachment files from storage (original, cover, thumb), then database records
+            if ($memo->attachments) {
+                foreach ($memo->attachments as $attachment) {
+                    $storeFolder = $attachment->created_at->format('Y/m');
+
+                    // delete original file
+                    Storage::disk('pulse')->delete($storeFolder.'/'.$attachment->filename);
+
+                    // delete cover variant
+                    Storage::disk('pulse')->delete($storeFolder.'/cover/'.$attachment->filename);
+
+                    // delete thumb variant
+                    Storage::disk('pulse')->delete($storeFolder.'/thumb/'.$attachment->filename);
+                }
+
+                $memo->attachments()->delete();
+            }
+
+            // detach all tags (removes pivot table records only)
+            $memo->tags()->detach();
+
+            // delete bookmark records
+            $memo->bookmarks()->delete();
+
+            // delete memo
+            $memo->delete();
+        });
+
+        return $this->respondJsonMessage('Memo deleted');
     }
 }
