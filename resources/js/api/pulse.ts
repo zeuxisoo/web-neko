@@ -4,9 +4,11 @@ class Attachment {
     upload(formData: FormData) {
         return useAgent<PulseAttachmentUploadResponse>('pulse/attachment/upload').post(formData);
     }
+
     destroy(id: number) {
         return useAgent<PulseAttachmentDestroyResponse>('pulse/attachment/destroy/' + id).get();
     }
+
     unsaved() {
         return useAgent<PulseAttachmentUploadResponse>('pulse/attachment/unsaved').get();
     }
@@ -16,6 +18,11 @@ class Memo {
     store(payload: PulseMemoStorePayload) {
         return useAgent<PulseMemoStoreResponse>('pulse/memo/store').post(payload);
     }
+
+    update(payload: PulseMemoUpdatePayload) {
+        return useAgent<PulseMemoStoreResponse>('pulse/memo/update').post(payload);
+    }
+
     index(payload: PulseMemoIndexPayload) {
         const entrypoint = 'pulse/memo/index';
 
@@ -36,6 +43,7 @@ class Bookmark {
     add(memoId: number) {
         return useAgent<PulseBookmarkAddResponse>('pulse/bookmark/add/' + memoId).get();
     }
+
     remove(memoId: number) {
         return useAgent<PulseBookmarkRemoveResponse>('pulse/bookmark/remove/' + memoId).get();
     }

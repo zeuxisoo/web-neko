@@ -61,6 +61,18 @@ type PulseMemoStorePayload = {
     attachments: {
         id: number;
         filename: string;
+        sort_order: number;
+    }[];
+};
+
+type PulseMemoUpdatePayload = {
+    id: number;
+    content: string;
+    tags: string[];
+    attachments: {
+        id: number;
+        filename: string;
+        sort_order: number;
     }[];
 };
 
