@@ -37,6 +37,10 @@ class Memo {
 
         return useAgent<PulseMemoIndexResponse>(url).get();
     }
+
+    destroy(id: number) {
+        return useAgent<PulseMemoDestroyResponse>('pulse/memo/destroy/' + id).get();
+    }
 }
 
 class Bookmark {
