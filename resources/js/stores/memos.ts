@@ -10,11 +10,9 @@ const useMemosStore = defineStore('memos', {
         async fetchList(page: number = 1, tag: string = '') {
             try {
                 const { data, error } = await api.pulse.memo.index({ page, tag }).json<PulseMemoIndexResponse>();
-
                 if (error.value) {
                     throw error.value;
                 }
-
                 if (data && data.value) {
                     this.memos = data.value;
                 } else {
@@ -27,6 +25,14 @@ const useMemosStore = defineStore('memos', {
         prepend(memo: Memo) {
             if (this.memos) {
                 this.memos.data = [memo, ...this.memos.data];
+            }
+        },
+        update(memo: Memo) {
+            if (this.memos) {
+                const index = this.memos.data.findIndex((m) => m.id === memo.id);
+                if (index !== -1) {
+                    this.memos.data[index] = memo;
+                }
             }
         },
     },

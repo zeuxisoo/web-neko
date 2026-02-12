@@ -16,7 +16,7 @@ const props = defineProps<{
         <MemoFilter />
     </div>
     <div class="grid grid-cols-1 gap-2" v-if="props.memos">
-        <MemoItem :memo="memo" v-for="memo in props.memos.data" />
+        <MemoItem :memo="memo" v-for="memo in props.memos.data" :key="memo.id" />
         <MemoPagination :links="props.memos.links" :meta="props.memos.meta" />
     </div>
     <div class="grid grid-cols-1 gap-2" v-else>

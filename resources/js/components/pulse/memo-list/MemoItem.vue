@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import api from '@/api';
 import { Card, CardContent, CardHeader } from '@/components/base/card';
-import { useAttachmentsStore, useTagsStore } from '@/stores';
+import { useAttachmentsStore, useMemosStore, useTagsStore } from '@/stores';
+import { WhoopsHandler } from '@/utils';
+import validator from '@/validators';
 import { ref, watch } from 'vue';
+import { toast } from 'vue-sonner';
 import Editor from '../editor';
 import { SubmitData } from '../editor/types';
 import MemoBody from './memo/MemoBody.vue';
@@ -16,6 +20,7 @@ const isLoading = ref(false);
 const editor = ref('');
 const extractedTags = ref<string[]>([]);
 
+const memosStore = useMemosStore();
 const tagsStore = useTagsStore();
 const attachmentsStore = useAttachmentsStore(String(props.memo.id));
 
@@ -32,7 +37,47 @@ const handleCancel = () => {
 };
 
 const handleSubmit = async (_: SubmitData) => {
-    console.log('submit');
+    const attachmentList = attachmentsStore.attachments.map((attachment, index) => {
+        return {
+            id: attachment.id,
+            filename: attachment.filename,
+            sort_order: index,
+        };
+    });
+
+    try {
+        isLoading.value = true;
+
+        const formData = validator.form('pulse.memo.update').validate({
+            id: props.memo.id,
+            content: editor.value,
+            tags: extractedTags.value,
+            attachments: attachmentList,
+        });
+
+        const { data, error } = await api.pulse.memo.update(formData as PulseMemoUpdatePayload).json<PulseMemoStoreResponse>();
+
+        if (error.value) {
+            throw error.value;
+        }
+
+        if (data && data.value) {
+            const result = data.value;
+            const updatedMemo = result.data;
+
+            memosStore.update(updatedMemo);
+
+            isEditing.value = false;
+
+            toast.info('Memo updated');
+        } else {
+            throw error.value;
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error when update memo action');
+    } finally {
+        isLoading.value = false;
+    }
 };
 
 watch(
