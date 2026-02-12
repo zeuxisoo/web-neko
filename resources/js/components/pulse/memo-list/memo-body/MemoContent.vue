@@ -38,7 +38,7 @@ const segments = computed(() => {
 </script>
 
 <template>
-    <span>
+    <span class="whitespace-pre-line">
         <template v-for="(segment, i) in segments" :key="i">
             <!-- /search?tag=${segment.text.slice(1)} -->
             <router-link
@@ -49,7 +49,7 @@ const segments = computed(() => {
                 {{ segment.text }}
             </router-link>
 
-            <span v-else>{{ segment.text }}</span>
+            <template v-else>{{ segment.text }}</template>
         </template>
     </span>
 </template>
