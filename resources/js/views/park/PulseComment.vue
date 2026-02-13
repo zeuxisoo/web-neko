@@ -56,7 +56,7 @@ onMounted(() => {
                     <MemoHeader :memo="memo" />
                 </CardHeader>
                 <CardContent>
-                    <MemoBody :memo="memo" :enable-action-more="false" />
+                    <MemoBody :memo="memo" :enable-action-more="false" :enable-action-comment="false" />
                 </CardContent>
             </Card>
 

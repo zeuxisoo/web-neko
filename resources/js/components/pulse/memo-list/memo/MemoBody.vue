@@ -11,10 +11,12 @@ const props = withDefaults(
     defineProps<{
         memo: PulseMemoIndexResponse['data'][number];
         enableActionMore?: boolean;
+        enableActionComment?: boolean;
         onEdit?: () => void;
     }>(),
     {
         enableActionMore: true,
+        enableActionComment: true,
     },
 );
 
@@ -33,11 +35,15 @@ const handleEdit = () => {
         <div class="grid grid-cols-3 gap-2">
             <div class="comment">
                 <RouterLink
+                    v-if="props.enableActionComment"
                     :to="{ name: 'park.pulse.comment', params: { id: props.memo.id } }"
                     class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium"
                 >
                     <MessageSquareMore :size="16" /> 0
                 </RouterLink>
+                <span v-else class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium">
+                    <MessageSquareMore :size="16" /> 0
+                </span>
             </div>
             <div class="bookmark flex justify-center">
                 <MemoActionBookmark :memo="props.memo" />
