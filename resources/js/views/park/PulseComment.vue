@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import api from '@/api';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
-import { Button } from '@/components/base/button';
-import { Card, CardContent, CardHeader } from '@/components/base/card';
-import MemoBody from '@/components/pulse/memo-list/memo/MemoBody.vue';
-import MemoHeader from '@/components/pulse/memo-list/memo/MemoHeader.vue';
-import useUserStore from '@/stores/user';
+import { Card, CardContent } from '@/components/base/card';
+import { CommentInput, MemoItem } from '@/components/pulse';
 import { WhoopsHandler } from '@/utils';
-import { useTextareaAutosize } from '@vueuse/core';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -15,8 +10,6 @@ const memo = ref<PulseMemoStoreResponse['data']>();
 const isLoading = ref(true);
 
 const route = useRoute();
-const userStore = useUserStore();
-const { textarea: commentRef, input: commentInput } = useTextareaAutosize();
 
 const fetchMemo = async () => {
     try {
@@ -57,44 +50,8 @@ onMounted(() => {
         </Card>
 
         <template v-else-if="memo">
-            <Card class="gap-2">
-                <CardHeader>
-                    <MemoHeader :memo="memo" />
-                </CardHeader>
-                <CardContent>
-                    <MemoBody :memo="memo" :enable-action-more="false" :enable-action-comment="false" />
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardContent>
-                    <h3 class="text-lg font-semibold">Comments</h3>
-                    <p class="text-sm text-accent-foreground/60">No comments yet</p>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardContent>
-                    <div class="flex flex-col gap-2">
-                        <div class="grid grid-cols-1 gap-2 md:grid-cols-[auto_1fr]">
-                            <Avatar class="hidden h-10 w-10 rounded-lg md:flex">
-                                <AvatarImage v-if="userStore.link" :src="userStore.link" :alt="userStore.username" />
-                                <AvatarFallback class="rounded-lg">{{ userStore.username.slice(0, 2).toUpperCase() }}</AvatarFallback>
-                            </Avatar>
-                            <textarea
-                                ref="commentRef"
-                                v-model="commentInput"
-                                rows="1"
-                                class="flex min-h-10 w-full resize-none rounded-md border border-input bg-transparent p-2 text-sm outline-none placeholder:opacity-60"
-                                placeholder="Write a comment..."
-                            />
-                        </div>
-                        <div class="flex justify-end">
-                            <Button size="sm">Post</Button>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+            <MemoItem :memo="memo" />
+            <CommentInput />
         </template>
     </div>
 </template>

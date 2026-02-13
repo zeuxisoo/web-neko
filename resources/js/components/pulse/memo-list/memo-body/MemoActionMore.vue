@@ -84,6 +84,6 @@ const handleNoMoreAction = () => {
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
-        <Ellipsis :size="16" v-else @click="handleNoMoreAction"" />
+        <Ellipsis v-else :size="16" @click="handleNoMoreAction"" />
     </div>
 </template>
