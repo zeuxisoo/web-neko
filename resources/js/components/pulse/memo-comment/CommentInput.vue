@@ -1,30 +1,53 @@
 <script setup lang="ts">
+import api from '@/api';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import useUserStore from '@/stores/user';
+import { WhoopsHandler } from '@/utils';
+import validator from '@/validators';
 import { useTextareaAutosize } from '@vueuse/core';
+import { Loader } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
+
+const props = defineProps<{
+    memoId: number;
+}>();
 
 const userStore = useUserStore();
 const { textarea: commentRef, input: commentInput } = useTextareaAutosize();
 
-const isPosting = ref(false);
+const isLoading = ref(false);
 
 const handlePost = async () => {
     if (!commentInput.value.trim()) {
         return;
     }
 
-    isPosting.value = true;
+    isLoading.value = true;
 
     try {
-        // TODO: Implement comment posting logic
-        commentInput.value = '';
-    } catch (e) {
-        // TODO: Handle error
+        const formData = validator.form('pulse.comment.store').validate({
+            memo_id: props.memoId,
+            content: commentInput.value.trim(),
+        });
+
+        const { data, error } = await api.pulse.comment.store(formData as PulseCommentStorePayload).json<PulseCommentStoreResponse>();
+
+        if (error.value) {
+            throw error.value;
+        }
+
+        if (data.value?.ok) {
+            commentInput.value = '';
+
+            toast.info('Comment posted');
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error on handle comment post action');
     } finally {
-        isPosting.value = false;
+        isLoading.value = false;
     }
 };
 </script>
@@ -53,7 +76,10 @@ const handlePost = async () => {
                     />
                 </div>
                 <div class="flex justify-end">
-                    <Button size="sm" :disabled="isPosting" @click="handlePost">Post</Button>
+                    <Button size="sm" :disabled="isLoading" @click="handlePost">
+                        <Loader v-if="isLoading" class="animate-spin" />
+                        <span v-else>Post</span>
+                    </Button>
                 </div>
             </div>
         </CardContent>

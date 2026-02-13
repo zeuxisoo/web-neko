@@ -10,12 +10,12 @@ const memo = ref<PulseMemoStoreResponse['data']>();
 const isLoading = ref(true);
 
 const route = useRoute();
+const memoId = Number(route.params.id);
 
 const fetchMemo = async () => {
     try {
         isLoading.value = true;
 
-        const memoId = Number(route.params.id);
         const { data, error } = await api.pulse.memo.show(memoId).json<PulseMemoShowResponse>();
 
         if (error.value) {
@@ -51,7 +51,7 @@ onMounted(() => {
 
         <template v-else-if="memo">
             <MemoItem :memo="memo" />
-            <CommentInput />
+            <CommentInput :memo-id="memoId" />
         </template>
     </div>
 </template>
