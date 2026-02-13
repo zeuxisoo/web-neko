@@ -7,13 +7,19 @@ import MemoActionMore from '../memo-body/MemoActionMore.vue';
 import MemoAttachment from '../memo-body/MemoAttachment.vue';
 import MemoContent from '../memo-body/MemoContent.vue';
 
-const props = defineProps<{
-    memo: PulseMemoIndexResponse['data'][number];
-    onEdit: () => void;
-}>();
+const props = withDefaults(
+    defineProps<{
+        memo: PulseMemoIndexResponse['data'][number];
+        enableActionMore?: boolean;
+        onEdit?: () => void;
+    }>(),
+    {
+        enableActionMore: true,
+    },
+);
 
 const handleEdit = () => {
-    props.onEdit();
+    props.onEdit?.();
 };
 </script>
 
@@ -37,7 +43,7 @@ const handleEdit = () => {
                 <MemoActionBookmark :memo="props.memo" />
             </div>
             <div class="action flex justify-end">
-                <MemoActionMore :memo="props.memo" @edit="handleEdit" />
+                <MemoActionMore :memo="props.memo" :enable-action-more="props.enableActionMore" @edit="handleEdit" />
             </div>
         </div>
     </div>

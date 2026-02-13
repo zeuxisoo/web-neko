@@ -8,10 +8,16 @@ import { Ellipsis, Loader } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
-const props = defineProps<{
-    memo: PulseMemoIndexResponse['data'][number];
-    onEdit: () => void;
-}>();
+const props = withDefaults(
+    defineProps<{
+        memo: PulseMemoIndexResponse['data'][number];
+        enableActionMore?: boolean;
+        onEdit?: () => void;
+    }>(),
+    {
+        enableActionMore: true,
+    },
+);
 
 const isLoading = ref(false);
 
@@ -24,7 +30,7 @@ const isAuthor = computed(() => {
 });
 
 const handleEdit = () => {
-    props.onEdit();
+    props.onEdit?.();
 };
 
 const handleDelete = async () => {
@@ -58,11 +64,15 @@ const handleDelete = async () => {
         }
     }
 };
+
+const handleNoMoreAction = () => {
+    toast.info("No more action in comment page");
+}
 </script>
 
 <template>
     <div class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium">
-        <DropdownMenu>
+        <DropdownMenu v-if="props.enableActionMore">
             <DropdownMenuTrigger as-child>
                 <Ellipsis :size="16" />
             </DropdownMenuTrigger>
@@ -74,5 +84,6 @@ const handleDelete = async () => {
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
+        <Ellipsis :size="16" v-else @click="handleNoMoreAction"" />
     </div>
 </template>

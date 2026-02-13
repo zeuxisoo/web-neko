@@ -56,7 +56,7 @@ onMounted(() => {
                     <MemoHeader :memo="memo" />
                 </CardHeader>
                 <CardContent>
-                    <MemoBody :memo="memo" @edit="() => {}" />
+                    <MemoBody :memo="memo" :enable-action-more="false" />
                 </CardContent>
             </Card>
 
