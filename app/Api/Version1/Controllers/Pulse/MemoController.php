@@ -5,6 +5,7 @@ namespace App\Api\Version1\Controllers\Pulse;
 use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Requests\Pulse\Memo\DestroyRequest;
 use App\Api\Version1\Requests\Pulse\Memo\IndexRequest;
+use App\Api\Version1\Requests\Pulse\Memo\ShowRequest;
 use App\Api\Version1\Requests\Pulse\Memo\StoreRequest;
 use App\Api\Version1\Requests\Pulse\Memo\UpdateRequest;
 use App\Api\Version1\Resources\Pulse\MemoResource;
@@ -94,6 +95,24 @@ class MemoController extends ApiController
             ->simplePaginate(8);
 
         return new MemoResourceCollection($memos);
+    }
+
+    public function show(ShowRequest $request): JsonResource {
+        $input = $request->validated();
+        $userId = $this->user()->id;
+
+        $memo = Memo::where('id', $input['id'])
+            ->with([
+                'user',
+                'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
+                'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
+            ])
+            ->withExists([
+                'bookmarks as is_bookmarked' => fn(Builder $builder) => $builder->where('user_id', $userId),
+            ])
+            ->firstOrFail();
+
+        return new MemoResource($memo);
     }
 
     public function update(UpdateRequest $request): JsonResource {
