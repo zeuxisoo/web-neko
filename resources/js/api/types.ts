@@ -162,3 +162,21 @@ interface PulseTagResponse extends ApiResponse {
         order_column: number;
     }[];
 }
+
+// pulse comment
+type PulseCommentStorePayload = {
+    memo_id: number;
+    content: string;
+};
+
+interface PulseCommentStoreResponse extends ApiResponse {
+    data: {
+        id: number;
+        user_id: number;
+        memo_id: number;
+        memo_comment_id: number | null;
+        content: string;
+        created_at: string;
+        user: MeResponse['data'];
+    };
+}

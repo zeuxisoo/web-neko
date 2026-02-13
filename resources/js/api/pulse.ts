@@ -63,6 +63,12 @@ class Tag {
     }
 }
 
+class Comment {
+    store(payload: PulseCommentStorePayload) {
+        return useAgent<PulseCommentStoreResponse>('pulse/comment/store').post(payload);
+    }
+}
+
 export default {
     get attachment() {
         return new Attachment();
@@ -75,5 +81,8 @@ export default {
     },
     get tag() {
         return new Tag();
+    },
+    get comment() {
+        return new Comment();
     },
 };
