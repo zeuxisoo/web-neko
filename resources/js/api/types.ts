@@ -122,9 +122,7 @@ interface PulseMemoStoreResponse extends ApiResponse {
 }
 
 interface PulseMemoIndexResponse extends ApiResponse {
-    data: (PulseMemoStoreResponse['data'] & {
-        user: MeResponse['data'];
-    })[];
+    data: PulseMemoStoreResponse['data'][];
     links: {
         first: string;
         last: string;
@@ -143,6 +141,10 @@ interface PulseMemoIndexResponse extends ApiResponse {
 
 interface PulseMemoDestroyResponse extends ApiResponse {
     data: string[];
+}
+
+interface PulseMemoShowResponse extends ApiResponse {
+    data: PulseMemoStoreResponse['data'];
 }
 
 interface PulseBookmarkAddResponse extends ApiResponse {
