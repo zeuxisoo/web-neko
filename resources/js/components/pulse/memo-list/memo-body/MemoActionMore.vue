@@ -1,16 +1,22 @@
 <script setup lang="ts">
+import api from '@/api';
 import { useAlertDialog } from '@/components/alert-dialog/useAlertDialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/base/dropdown-menu';
-import { useUserStore } from '@/stores';
-import { Ellipsis } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { useMemosStore, useUserStore } from '@/stores';
+import { WhoopsHandler } from '@/utils';
+import { Ellipsis, Loader } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
+import { toast } from 'vue-sonner';
 
 const props = defineProps<{
     memo: PulseMemoIndexResponse['data'][number];
     onEdit: () => void;
 }>();
 
+const isLoading = ref(false);
+
 const userStore = useUserStore();
+const memosStore = useMemosStore();
 const alertDialog = useAlertDialog();
 
 const isAuthor = computed(() => {
@@ -29,9 +35,27 @@ const handleDelete = async () => {
     });
 
     if (dialogResult === 'ok') {
-        console.log('deleted');
-    } else {
-        console.log('cancelled');
+        try {
+            isLoading.value = true;
+
+            const { data, error } = await api.pulse.memo.destroy(props.memo.id).json<PulseMemoDestroyResponse>();
+
+            if (error.value) {
+                throw error.value;
+            }
+
+            if (data && data.value) {
+                memosStore.remove(props.memo.id);
+
+                toast.info('Memo destroyed');
+            } else {
+                throw error.value;
+            }
+        } catch (e: unknown) {
+            WhoopsHandler.handleError(e, 'Unknown error on handle delete memo action');
+        } finally {
+            isLoading.value = false;
+        }
     }
 };
 </script>
@@ -43,8 +67,11 @@ const handleDelete = async () => {
                 <Ellipsis :size="16" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem :disabled="!isAuthor" @click="handleEdit">Edit</DropdownMenuItem>
-                <DropdownMenuItem :disabled="!isAuthor" @click="handleDelete">Delete</DropdownMenuItem>
+                <DropdownMenuItem :disabled="!isAuthor || isLoading" @click="handleEdit">Edit</DropdownMenuItem>
+                <DropdownMenuItem :disabled="!isAuthor || isLoading" @click="handleDelete">
+                    <Loader v-if="isLoading" />
+                    <template v-else>Delete</template>
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     </div>

@@ -38,6 +38,15 @@ const useMemosStore = defineStore('memos', {
                 }
             }
         },
+        remove(memoId: number) {
+            if (this.memos) {
+                const index = this.memos.data.findIndex((m) => m.id === memoId);
+
+                if (index !== -1) {
+                    this.memos.data.splice(index, 1);
+                }
+            }
+        },
     },
 });
 
