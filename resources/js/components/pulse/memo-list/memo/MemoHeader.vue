@@ -14,7 +14,7 @@ const showRawDateTime = ref(false);
     <div class="flex items-center gap-2 text-left text-sm">
         <Avatar class="h-12 w-12 rounded-lg">
             <AvatarImage :src="props.memo.user.link" />
-            <AvatarFallback class="rounded-lg"> AV </AvatarFallback>
+            <AvatarFallback class="rounded-lg">{{ props.memo.user.username.slice(0, 2).toUpperCase() }}</AvatarFallback>
         </Avatar>
         <div class="grid flex-1 text-left text-sm leading-6">
             <span class="truncate font-semibold">{{ props.memo.user.username }}</span>
