@@ -54,6 +54,7 @@ Route::prefix('v1')->group(function() {
                 Route::get('/remove/{memo_id}', [Pulse\BookmarkController::class, 'remove'])->name('api.pulse.bookmark.remove');
             });
             Route::prefix('comment')->group(function() {
+                Route::get('/index/{memo_id}', [Pulse\CommentController::class, 'index'])->name('api.pulse.comment.index');
                 Route::post('/store', [Pulse\CommentController::class, 'store'])->name('api.pulse.comment.store');
             });
         });
