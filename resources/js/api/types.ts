@@ -93,6 +93,9 @@ interface PulseAttachmentUploadResponse extends ApiResponse {
     }[];
 }
 
+interface PulseAttachmentUnsavedResponse extends PulseAttachmentUploadResponse {}
+interface PulseAttachmentIndexResponse extends PulseAttachmentUploadResponse {}
+
 interface PulseAttachmentDestroyResponse extends ApiResponse {
     data: string[];
 }

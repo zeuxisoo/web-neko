@@ -1,6 +1,10 @@
 import useAgent from './useAgent';
 
 class Attachment {
+    index() {
+        return useAgent<PulseAttachmentIndexResponse>('pulse/attachment/index').get();
+    }
+
     upload(formData: FormData) {
         return useAgent<PulseAttachmentUploadResponse>('pulse/attachment/upload').post(formData);
     }
@@ -10,7 +14,7 @@ class Attachment {
     }
 
     unsaved() {
-        return useAgent<PulseAttachmentUploadResponse>('pulse/attachment/unsaved').get();
+        return useAgent<PulseAttachmentUnsavedResponse>('pulse/attachment/unsaved').get();
     }
 }
 
