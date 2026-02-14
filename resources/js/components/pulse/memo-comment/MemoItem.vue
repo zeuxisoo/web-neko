@@ -11,7 +11,7 @@ defineProps<{
 <template>
     <Card class="gap-2">
         <CardHeader>
-            <MemoHeader :memo="memo" />
+            <MemoHeader :item="memo" />
         </CardHeader>
         <CardContent>
             <MemoBody :memo="memo" :enable-action-more="false" :enable-action-comment="false" />

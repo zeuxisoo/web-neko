@@ -55,12 +55,6 @@ const handlePost = async () => {
 <template>
     <Card>
         <CardContent>
-            <h3 class="text-lg font-semibold">Comments</h3>
-            <p class="text-sm text-accent-foreground/60">No comments yet</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardContent>
             <div class="flex flex-col gap-2">
                 <div class="grid grid-cols-1 gap-2 md:grid-cols-[auto_1fr]">
                     <Avatar class="hidden h-10 w-10 rounded-lg md:flex">

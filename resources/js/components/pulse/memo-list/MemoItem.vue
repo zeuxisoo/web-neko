@@ -116,7 +116,7 @@ watch(
     />
     <Card class="gap-2" v-else>
         <CardHeader>
-            <MemoHeader :memo="props.memo" />
+            <MemoHeader :item="props.memo" />
         </CardHeader>
         <CardContent>
             <MemoBody :memo="props.memo" @edit="handleEdit" />
