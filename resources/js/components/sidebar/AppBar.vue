@@ -40,8 +40,8 @@ const data = {
                     to: { name: 'park.pulse' },
                 },
                 {
-                    title: 'Gallery',
-                    to: { name: 'park.gallery' },
+                    title: 'Attachment',
+                    to: { name: 'park.attachment' },
                 },
             ],
         },

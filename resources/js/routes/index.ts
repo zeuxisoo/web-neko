@@ -1,5 +1,5 @@
 import NotFound from '@/views/misc/NotFound.vue';
-import Gallery from '@/views/park/Gallery.vue';
+import Attachment from '@/views/park/Attachment.vue';
 import Pulse from '@/views/park/Pulse.vue';
 import PulseComment from '@/views/park/PulseComment.vue';
 import Account from '@/views/user/Account.vue';
@@ -27,9 +27,9 @@ const routes: RouteRecordRaw[] = [
                 component: PulseComment,
             },
             {
-                path: 'gallery',
-                name: 'park.gallery',
-                component: Gallery,
+                path: 'attachment',
+                name: 'park.attachment',
+                component: Attachment,
             },
         ],
     },
