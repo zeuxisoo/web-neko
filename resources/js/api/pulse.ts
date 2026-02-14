@@ -64,6 +64,17 @@ class Tag {
 }
 
 class Comment {
+    index(payload: PulseCommentIndexPayload) {
+        const entrypoint = 'pulse/comment/index/' + payload.memo_id;
+
+        const params = new URLSearchParams();
+        params.append('page', payload.page.toString());
+
+        const url = entrypoint + '?' + params.toString();
+
+        return useAgent<PulseCommentIndexResponse>(url).get();
+    }
+
     store(payload: PulseCommentStorePayload) {
         return useAgent<PulseCommentStoreResponse>('pulse/comment/store').post(payload);
     }
