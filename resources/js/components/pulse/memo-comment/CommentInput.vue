@@ -13,7 +13,10 @@ import { toast } from 'vue-sonner';
 
 const props = defineProps<{
     memoId: number;
-    onPosted: (comment: PulseCommentStoreResponse['data']) => void;
+}>();
+
+const emit = defineEmits<{
+    posted: [comment: PulseCommentStoreResponse['data']];
 }>();
 
 const userStore = useUserStore();
@@ -43,7 +46,7 @@ const handlePost = async () => {
         if (data.value?.ok) {
             const comment = data.value.data;
 
-            props.onPosted(comment);
+            emit('posted', comment);
 
             commentInput.value = '';
 

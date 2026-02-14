@@ -5,7 +5,10 @@ import { Card, CardContent } from '@/components/base/card';
 const props = defineProps<{
     links: PulseCommentIndexResponse['links'] | undefined;
     meta: PulseCommentIndexResponse['meta'] | undefined;
-    onLoadMore: () => void;
+}>();
+
+const emit = defineEmits<{
+    loadMore: [];
 }>();
 </script>
 
@@ -13,7 +16,7 @@ const props = defineProps<{
     <Card v-if="props.links" class="py-3">
         <CardContent>
             <div class="flex w-full justify-center">
-                <Button class="cursor-pointer" :disabled="!props.links.next" @click="props.onLoadMore">
+                <Button class="cursor-pointer" :disabled="!props.links.next" @click="emit('loadMore')">
                     <span v-if="props.links.next">Load more</span>
                     <span v-else>No more comments</span>
                 </Button>

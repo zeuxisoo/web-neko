@@ -5,7 +5,10 @@ import CommentPagination from './CommentPagination.vue';
 
 const props = defineProps<{
     comments: PulseCommentIndexResponse | null;
-    onLoadMore: () => void;
+}>();
+
+const emit = defineEmits<{
+    loadMore: [];
 }>();
 </script>
 
@@ -19,7 +22,7 @@ const props = defineProps<{
         </Card>
         <template v-else>
             <CommentItem v-for="comment in props.comments.data" :key="comment.id" :comment="comment" />
-            <CommentPagination :links="props.comments.links" :meta="props.comments.meta" @load-more="props.onLoadMore" />
+            <CommentPagination :links="props.comments.links" :meta="props.comments.meta" @load-more="emit('loadMore')" />
         </template>
     </div>
 </template>
