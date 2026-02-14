@@ -45,6 +45,7 @@ Route::prefix('v1')->group(function() {
                 Route::get('/all', [Pulse\TagController::class, 'all'])->name('api.pulse.tag.all');
             });
             Route::prefix('attachment')->group(function() {
+                Route::get('/index', [Pulse\AttachmentController::class, 'index'])->name('api.pulse.attachment.index');
                 Route::post('/upload', [Pulse\AttachmentController::class, 'upload'])->name('api.pulse.attachment.upload');
                 Route::get('/destroy/{id}', [Pulse\AttachmentController::class, 'destroy'])->name('api.pulse.attachment.destroy');
                 Route::get('/unsaved', [Pulse\AttachmentController::class, 'unsaved'])->name('api.pulse.attachment.unsaved');

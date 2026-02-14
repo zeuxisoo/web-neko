@@ -4,6 +4,7 @@ namespace App\Api\Version1\Controllers\Pulse;
 
 use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Requests\Pulse\Attachment\DestroyRequest;
+use App\Api\Version1\Requests\Pulse\Attachment\IndexRequest;
 use App\Api\Version1\Requests\Pulse\Attachment\UploadRequest;
 use App\Api\Version1\Resources\Pulse\AttachmentResourceCollection;
 use App\Enums\AttachmentKind;
@@ -55,6 +56,14 @@ class AttachmentController extends ApiController
         $attachment->delete();
 
         return $this->respondJsonMessage("Attachment deleted: {$attachment->original_name}");
+    }
+
+    public function index(IndexRequest $request): JsonResource {
+        $attachments = MemoAttachment::where('user_id', $this->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return new AttachmentResourceCollection($attachments);
     }
 
     public function unsaved(): JsonResource {
