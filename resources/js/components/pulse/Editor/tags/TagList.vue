@@ -4,7 +4,10 @@ import { ref, watch } from 'vue';
 
 const props = defineProps<{
     editor: string;
-    onExtracted: (tags: string[]) => void;
+}>();
+
+const emit = defineEmits<{
+    extracted: [tags: string[]];
 }>();
 
 const tags = ref<string[]>([]);
@@ -14,7 +17,7 @@ watch(
     (newVal, oldVal) => {
         tags.value = extractHashTags(newVal);
 
-        props.onExtracted(tags.value);
+        emit('extracted', tags.value);
     },
     { immediate: true },
 );

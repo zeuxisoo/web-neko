@@ -8,27 +8,30 @@ import UploadButton from './button/UploadButton.vue';
 const props = defineProps<{
     isLoading: boolean;
     enableCancel: boolean;
-    onUploaded: (attachments: Attachment[]) => void;
-    onSubmit: () => void;
-    onCancel: () => void;
+}>();
+
+const emit = defineEmits<{
+    uploaded: [attachments: Attachment[]];
+    submit: [];
+    cancel: [];
 }>();
 </script>
 
 <template>
     <div class="flex w-full flex-row justify-between gap-2" :class="$attrs.class">
         <div class="flex flex-row gap-2">
-            <UploadButton :onUploaded="props.onUploaded" />
+            <UploadButton @uploaded="emit('uploaded', $event)" />
         </div>
         <div class="flex gap-0.5">
             <Button
                 v-if="props.enableCancel"
                 variant="secondary"
                 :class="cn('flex flex-row items-center gap-1 rounded-md', { 'disabled:': isLoading })"
-                @click="props.onCancel"
+                @click="emit('cancel')"
             >
                 <X />
             </Button>
-            <Button :class="cn('flex flex-row items-center gap-1 rounded-md', { 'disabled:': isLoading })" @click="props.onSubmit">
+            <Button :class="cn('flex flex-row items-center gap-1 rounded-md', { 'disabled:': isLoading })" @click="emit('submit')">
                 <SendHorizontal :size="16" v-if="!props.isLoading" />
                 <Loader :size="16" class="animate-spin" v-if="props.isLoading" />
                 Submit

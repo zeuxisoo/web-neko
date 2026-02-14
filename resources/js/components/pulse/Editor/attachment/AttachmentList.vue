@@ -5,9 +5,12 @@ import AttachmentItem from './AttachmentItem.vue';
 
 const props = defineProps<{
     attachments: Attachment[];
-    onUp?: (index: number) => void;
-    onDown?: (index: number) => void;
-    onRemove?: (index: number) => void;
+}>();
+
+const emit = defineEmits<{
+    up: [index: number];
+    down: [index: number];
+    remove: [index: number];
 }>();
 </script>
 
@@ -18,7 +21,7 @@ const props = defineProps<{
             <span class="text-xs">Attachments ({{ props.attachments.length }})</span>
         </div>
         <div class="px-1">
-            <AttachmentItem :attachments="props.attachments" @up="props.onUp" @down="props.onDown" @remove="props.onRemove" />
+            <AttachmentItem :attachments="props.attachments" @up="emit('up', $event)" @down="emit('down', $event)" @remove="emit('remove', $event)" />
         </div>
     </div>
 </template>

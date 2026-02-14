@@ -6,9 +6,12 @@ import { Attachment } from '../types';
 
 const props = defineProps<{
     attachments: Attachment[];
-    onUp?: (index: number) => void;
-    onDown?: (index: number) => void;
-    onRemove?: (index: number) => void;
+}>();
+
+const emit = defineEmits<{
+    up: [index: number];
+    down: [index: number];
+    remove: [index: number];
 }>();
 
 const alertDialog = useAlertDialog();
@@ -19,8 +22,8 @@ const handleDelete = async (attachment: Attachment, index: number) => {
         description: 'Note: This action cannot be undone. This will permanently remove this attachment and delete record from our servers.',
     });
 
-    if (dialogResult === 'ok' && props.onRemove) {
-        props.onRemove(index);
+    if (dialogResult === 'ok') {
+        emit('remove', index);
     }
 };
 </script>
@@ -39,10 +42,10 @@ const handleDelete = async (attachment: Attachment, index: number) => {
             </div>
         </div>
         <div className="flex items-center gap-1.5">
-            <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="Up" @click="props.onUp(index)" v-if="props.onUp">
+            <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="Up" @click="emit('up', index)">
                 <ChevronUpIcon class="text-muted-foreground" :size="14" />
             </button>
-            <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="Down" @click="props.onDown(index)" v-if="props.onDown">
+            <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="Down" @click="emit('down', index)">
                 <ChevronDownIcon class="text-muted-foreground" :size="14" />
             </button>
             <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="remove">

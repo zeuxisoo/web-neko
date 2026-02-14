@@ -4,15 +4,15 @@ import { ImageUpIcon, LoaderIcon } from 'lucide-vue-next';
 import useFileUpload from '../../composables/useFileUpload';
 import { Attachment } from '../../types';
 
-const props = defineProps<{
-    onUploaded: (attachment: Attachment[]) => void;
+const emit = defineEmits<{
+    uploaded: [attachments: Attachment[]];
 }>();
 
 const { fileInputRef, isUploading, handleFileInputChange, handleUploadClick } = useFileUpload({
     maxFileSize: 8 * 1024 * 1024, // 8MB
     allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'],
     onUploadCompleted: (uploadedAttachments: Attachment[]) => {
-        props.onUploaded(uploadedAttachments);
+        emit('uploaded', uploadedAttachments);
     },
 });
 </script>

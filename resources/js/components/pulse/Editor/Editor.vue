@@ -14,20 +14,13 @@ const modelValue = defineModel({
     default: '',
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'uploaded', 'attachmentUp', 'attachmentDown', 'attachmentRemove', 'extractedTags', 'submit', 'cancel']);
 
 const props = defineProps<{
     isLoading: boolean;
     enableCancel: boolean;
     tags: TagOrderedList;
     attachments: Attachment[];
-    onUploaded: (files: Attachment[]) => void;
-    onAttachmentUp: (index: number) => void;
-    onAttachmentDown: (index: number) => void;
-    onAttachmentRemove: (index: number) => void;
-    onExtractedTags: (tags: string[]) => void;
-    onSubmit: (data: SubmitData) => void;
-    onCancel?: () => void;
 }>();
 
 const { textarea: editorRef, input: editor, triggerResize: updateEditorHeight } = useTextareaAutosize();
@@ -37,7 +30,7 @@ const attachments = computed(() => props.attachments);
 const extractedTags = ref<string[]>([]);
 
 const handleSubmit = () => {
-    props.onSubmit({
+    emit('submit', {
         // model: Self.editor
         editor: editor,
         content: editor.value,
@@ -56,7 +49,7 @@ const handleExtractedTags = (tags: string[]) => {
         return tag.slice(1);
     });
 
-    props.onExtractedTags(extractedTags.value);
+    emit('extractedTags', extractedTags.value);
 };
 
 watch(
@@ -135,18 +128,18 @@ const editorMethods = {
                     <TagList :editor="editor" @extracted="handleExtractedTags" />
                     <AttachmentList
                         :attachments="attachments"
-                        @up="props.onAttachmentUp"
-                        @down="props.onAttachmentDown"
-                        @remove="props.onAttachmentRemove"
+                        @up="emit('attachmentUp', $event)"
+                        @down="emit('attachmentDown', $event)"
+                        @remove="emit('attachmentRemove', $event)"
                     />
                 </div>
                 <div class="flex gap-2">
                     <ActionButton
                         :isLoading="isLoading"
                         :enableCancel="props.enableCancel"
-                        @uploaded="props.onUploaded"
+                        @uploaded="emit('uploaded', $event)"
                         @submit="handleSubmit"
-                        @cancel="props.onCancel?.()"
+                        @cancel="emit('cancel')"
                     />
                 </div>
             </div>
