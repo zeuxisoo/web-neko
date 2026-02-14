@@ -13,6 +13,7 @@ return new class() extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id')->index();
             $table->text('content');
+            $table->unsignedInteger('comments_count')->default(0);
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@ use App\Api\Version1\Requests\Pulse\Comment\IndexRequest;
 use App\Api\Version1\Requests\Pulse\Comment\StoreRequest;
 use App\Api\Version1\Resources\Pulse\MemoCommentResource;
 use App\Api\Version1\Resources\Pulse\MemoCommentResourceCollection;
+use App\Models\Memo;
 use App\Models\MemoComment;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -34,6 +35,9 @@ class CommentController extends ApiController
             'memo_comment_id' => $input['memo_comment_id'] ?? null,
             'content' => $input['content'],
         ]);
+
+        // increment comment count on memo
+        Memo::where('id', $input['memo_id'])->increment('comments_count');
 
         $comment->load('user');
 

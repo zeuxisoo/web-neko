@@ -20,10 +20,10 @@ const props = withDefaults(
             :to="{ name: 'park.pulse.comment', params: { id: props.memo.id } }"
             class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium"
         >
-            <MessageSquareMore :size="16" /> 0
+            <MessageSquareMore :size="16" /> {{ props.memo.comments_count }}
         </RouterLink>
         <span v-else class="inline-flex items-center justify-center gap-2 py-2 text-sm font-medium">
-            <MessageSquareMore :size="16" /> 0
+            <MessageSquareMore :size="16" /> {{ props.memo.comments_count }}
         </span>
     </div>
 </template>
