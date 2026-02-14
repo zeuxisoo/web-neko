@@ -11,7 +11,6 @@ const props = withDefaults(
         memo: PulseMemoIndexResponse['data'][number];
         enableActionMore?: boolean;
         enableActionComment?: boolean;
-        onEdit?: () => void;
     }>(),
     {
         enableActionMore: true,
@@ -19,8 +18,12 @@ const props = withDefaults(
     },
 );
 
+const emit = defineEmits<{
+    edit: [];
+}>();
+
 const handleEdit = () => {
-    props.onEdit?.();
+    emit('edit');
 };
 </script>
 

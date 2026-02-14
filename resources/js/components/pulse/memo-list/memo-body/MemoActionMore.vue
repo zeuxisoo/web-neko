@@ -12,12 +12,15 @@ const props = withDefaults(
     defineProps<{
         memo: PulseMemoIndexResponse['data'][number];
         enableActionMore?: boolean;
-        onEdit?: () => void;
     }>(),
     {
         enableActionMore: true,
     },
 );
+
+const emit = defineEmits<{
+    edit: [];
+}>();
 
 const isLoading = ref(false);
 
@@ -30,7 +33,7 @@ const isAuthor = computed(() => {
 });
 
 const handleEdit = () => {
-    props.onEdit?.();
+    emit('edit');
 };
 
 const handleDelete = async () => {
