@@ -45,6 +45,10 @@ const handleLoadMore = () => {
 
 const handleCommentPosted = (comment: PulseCommentStoreResponse['data']) => {
     commentsStore.append(comment);
+
+    if (memo.value) {
+        memo.value.comments_count++;
+    }
 };
 
 onMounted(() => {
