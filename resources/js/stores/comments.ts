@@ -20,6 +20,7 @@ const useCommentsStore = defineStore('comments', {
                         this.comments = data.value;
                     } else {
                         // append new comments to existing list for pagination
+                        // page is not full page reload just load more append
                         this.comments = {
                             ...data.value,
                             data: [...(this.comments?.data ?? []), ...data.value.data],

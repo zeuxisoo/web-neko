@@ -43,6 +43,10 @@ const handleLoadMore = () => {
     commentsStore.fetchList(memoId, currentPage + 1);
 };
 
+const handleCommentPosted = (comment: PulseCommentStoreResponse['data']) => {
+    commentsStore.append(comment);
+};
+
 onMounted(() => {
     fetchMemo();
 
@@ -63,7 +67,7 @@ onMounted(() => {
         <template v-else-if="memo">
             <MemoItem :memo="memo" />
             <CommentList :comments="commentsStore.comments" @load-more="handleLoadMore" />
-            <CommentInput :memo-id="memoId" />
+            <CommentInput :memo-id="memoId" @posted="handleCommentPosted" />
         </template>
     </div>
 </template>
