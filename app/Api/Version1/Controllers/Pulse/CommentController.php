@@ -17,7 +17,7 @@ class CommentController extends ApiController
 
         $comments = MemoComment::where('memo_id', $input['memo_id'])
             ->with('user')
-            ->latest()
+            ->oldest()
             ->simplePaginate(8);
 
         return new MemoCommentResourceCollection($comments);
