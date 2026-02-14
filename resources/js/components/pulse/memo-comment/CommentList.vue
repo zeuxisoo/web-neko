@@ -4,7 +4,7 @@ import CommentItem from './CommentItem.vue';
 import CommentPagination from './CommentPagination.vue';
 
 const props = defineProps<{
-    comments: PulseCommentIndexResponse | undefined;
+    comments: PulseCommentIndexResponse | null;
     onLoadMore: () => void;
 }>();
 </script>
