@@ -59,24 +59,41 @@ class AttachmentController extends ApiController
     }
 
     public function index(IndexRequest $request): JsonResource {
-        $page = (int) ($request->query('page') ?? 1);
+        $page = (int) $request->query('page', 1);
+        $cursor = $request->query('cursor'); // year cursor
+        $perPage = 2;
 
-        // get distinct years for current page
-        // - LIMIT/OFFSET with GROUP BY maybe not work reliably
-        $years = MemoAttachment::selectRaw('strftime("%Y", created_at) as year')
+        // get distinct years using cursor-based pagination
+        $yearBuilder = MemoAttachment::selectRaw('strftime("%Y", created_at) as year')
             ->where('user_id', $this->user()->id)
             ->groupByRaw('strftime("%Y", created_at)')
-            ->orderByDesc('year')
-            ->pluck('year')
-            ->forPage($page, perPage: 2)
-            ->toArray();
+            ->orderByDesc('year');
 
-        // if no years found return empty
-        if (empty($years)) {
-            return new AttachmentResourceCollection(collect([]));
+        // apply cursor filter if provided
+        if ($cursor) {
+            $yearBuilder->where('year', '<', $cursor);
         }
 
-        // otherwise, get all attachments for those years using BETWEEN (better index usage)
+        $years = $yearBuilder->pluck('year')
+            ->take($perPage)
+            ->toArray();
+
+        // if no years found return empty with pagination info
+        if (empty($years)) {
+            $collection = new AttachmentResourceCollection(collect([]));
+            $collection->links([
+                'next' => null,
+                'prev' => null,
+            ]);
+            $collection->meta([
+                'current_page' => $page,
+                'per_page' => $perPage,
+            ]);
+
+            return $collection;
+        }
+
+        // get all attachments for those years using BETWEEN (better index usage)
         $minYear = (int) min($years);
         $maxYear = (int) max($years);
 
@@ -88,7 +105,44 @@ class AttachmentController extends ApiController
             ->orderByDesc('created_at')
             ->get();
 
-        return new AttachmentResourceCollection($attachments);
+        // build pagination metadata
+        $lastYear = (int) max($years);
+        $firstYear = (int) min($years);
+
+        // check if there's a next page
+        $hasNext = MemoAttachment::selectRaw('strftime("%Y", created_at) as year')
+            ->where('user_id', $this->user()->id)
+            ->groupByRaw('strftime("%Y", created_at)')
+            ->where('year', '<', $lastYear)
+            ->exists();
+
+        // check if there's a previous page
+        $hasPrev = $page > 1 || ($cursor && $page > 1);
+
+        $collection = new AttachmentResourceCollection($attachments);
+
+        // build full URLs for pagination links
+        $baseUrl = $request->url();
+
+        $nextParams = ['page' => $page + 1, 'cursor' => $firstYear];
+        $prevParams = ['page' => $page - 1, 'cursor' => $lastYear];
+
+        $nextUrl = $hasNext ? $baseUrl.'?'.http_build_query($nextParams) : null;
+        $prevUrl = $hasPrev ? $baseUrl.'?'.http_build_query($prevParams) : null;
+
+        $collection->links([
+            'next' => $nextUrl,
+            'prev' => $prevUrl,
+        ]);
+        $collection->meta([
+            'current_page' => $page,
+            'per_page' => $perPage,
+            'path' => $baseUrl,
+            'first_year' => $firstYear,
+            'last_year' => $lastYear,
+        ]);
+
+        return $collection;
     }
 
     public function unsaved(): JsonResource {
