@@ -70,8 +70,9 @@ class AttachmentController extends ApiController
             ->orderByDesc('year');
 
         // apply cursor filter if provided
-        if ($cursor) {
-            $yearBuilder->where('year', '<', $cursor);
+        // Only apply cursor filter when page > 1, because page 1 should always show the first (newest) year
+        if ($cursor && $page > 1) {
+            $yearBuilder->whereRaw('CAST(strftime("%Y", created_at) AS INTEGER) < ?', [$cursor]);
         }
 
         $years = $yearBuilder->pluck('year')
@@ -110,11 +111,14 @@ class AttachmentController extends ApiController
         $firstYear = (int) min($years);
 
         // check if there's a next page
-        $hasNext = MemoAttachment::selectRaw('strftime("%Y", created_at) as year')
+        // get all available years and check if there are more years beyond what current page can show
+        $allYears = MemoAttachment::selectRaw('strftime("%Y", created_at) as year')
             ->where('user_id', $this->user()->id)
             ->groupByRaw('strftime("%Y", created_at)')
-            ->whereRaw('CAST(strftime("%Y", created_at) AS INTEGER) < ?', [$lastYear])
-            ->exists();
+            ->orderByDesc('year')
+            ->pluck('year')
+            ->toArray();
+        $hasNext = count($allYears) > ($page * $perPage);
 
         // check if there's a previous page
         $hasPrev = $page > 1 || ($cursor && $page > 1);
