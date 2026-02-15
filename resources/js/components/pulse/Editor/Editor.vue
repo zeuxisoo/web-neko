@@ -6,7 +6,7 @@ import { ActionButton } from './action-button';
 import { AttachmentList } from './attachment';
 import TagList from './tags/TagList.vue';
 import TagsSuggestion from './tags/TagsSuggestion.vue';
-import { Attachment, SubmitData, TagOrderedList } from './types';
+import { Attachment, TagOrderedList } from './types';
 
 // experimental: for Parent.v-model
 const modelValue = defineModel({
@@ -14,7 +14,16 @@ const modelValue = defineModel({
     default: '',
 });
 
-const emit = defineEmits(['update:modelValue', 'uploaded', 'attachmentUp', 'attachmentDown', 'attachmentRemove', 'extractedTags', 'submit', 'cancel']);
+const emit = defineEmits([
+    'update:modelValue',
+    'uploaded',
+    'attachmentUp',
+    'attachmentDown',
+    'attachmentRemove',
+    'extractedTags',
+    'submit',
+    'cancel',
+]);
 
 const props = defineProps<{
     isLoading: boolean;
