@@ -1,8 +1,15 @@
 import useAgent from './useAgent';
 
 class Attachment {
-    index() {
-        return useAgent<PulseAttachmentIndexResponse>('pulse/attachment/index').get();
+    index(payload: PulseAttachmentIndexPayload) {
+        const entrypoint = 'pulse/attachment/index';
+
+        const params = new URLSearchParams();
+        params.append('page', payload.page.toString());
+
+        const url = entrypoint + '?' + params.toString();
+
+        return useAgent<PulseAttachmentIndexResponse>(url).get();
     }
 
     upload(formData: FormData) {

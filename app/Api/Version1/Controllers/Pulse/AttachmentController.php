@@ -59,8 +59,33 @@ class AttachmentController extends ApiController
     }
 
     public function index(IndexRequest $request): JsonResource {
+        $page = (int) ($request->query('page') ?? 1);
+
+        // get distinct years for current page
+        // - LIMIT/OFFSET with GROUP BY maybe not work reliably
+        $years = MemoAttachment::selectRaw('strftime("%Y", created_at) as year')
+            ->where('user_id', $this->user()->id)
+            ->groupByRaw('strftime("%Y", created_at)')
+            ->orderByDesc('year')
+            ->pluck('year')
+            ->forPage($page, perPage: 2)
+            ->toArray();
+
+        // if no years found return empty
+        if (empty($years)) {
+            return new AttachmentResourceCollection(collect([]));
+        }
+
+        // otherwise, get all attachments for those years using BETWEEN (better index usage)
+        $minYear = (int) min($years);
+        $maxYear = (int) max($years);
+
         $attachments = MemoAttachment::where('user_id', $this->user()->id)
-            ->orderBy('created_at', 'desc')
+            ->whereBetween('created_at', [
+                "$minYear-01-01 00:00:00",
+                "$maxYear-12-31 23:59:59",
+            ])
+            ->orderByDesc('created_at')
             ->get();
 
         return new AttachmentResourceCollection($attachments);

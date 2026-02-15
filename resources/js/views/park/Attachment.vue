@@ -1,18 +1,36 @@
 <script setup lang="ts">
 import api from '@/api';
+import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import { Attachment } from '@/components/pulse/editor/types';
 import { WhoopsHandler } from '@/utils';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const isLoading = ref(true);
 const attachments = ref<Attachment[]>([]);
+const currentPage = ref(1);
 
-const fetchAttachments = async () => {
+// group attachments by year
+const attachmentsByYear = computed(() => {
+    const groups: Record<string, Attachment[]> = {};
+
+    for (const attachment of attachments.value) {
+        const year = new Date(attachment.created_at).getFullYear().toString();
+        if (!groups[year]) {
+            groups[year] = [];
+        }
+        groups[year].push(attachment);
+    }
+
+    // sort years in descending order (newest first)
+    return Object.entries(groups).sort((a, b) => b[0].localeCompare(a[0]));
+});
+
+const fetchAttachments = async (page: number = 1) => {
     isLoading.value = true;
 
     try {
-        const { data, error } = await api.pulse.attachment.index().json<PulseAttachmentIndexResponse>();
+        const { data, error } = await api.pulse.attachment.index({ page }).json<PulseAttachmentIndexResponse>();
 
         if (error.value) {
             throw error.value;
@@ -28,6 +46,12 @@ const fetchAttachments = async () => {
     } finally {
         isLoading.value = false;
     }
+};
+
+const handleLoadMore = () => {
+    currentPage.value++;
+
+    fetchAttachments(currentPage.value);
 };
 
 onMounted(() => {
@@ -59,9 +83,27 @@ onMounted(() => {
                     <p class="text-sm text-muted-foreground">No attachments yet</p>
                 </div>
 
-                <div v-else class="grid grid-cols-2 gap-4 md:grid-cols-6 xl:grid-cols-8">
-                    <div v-for="attachment in attachments" :key="attachment.id" class="aspect-square overflow-hidden rounded-lg border border-border">
-                        <img :src="attachment.links.cover" :alt="attachment.original_name" class="h-full w-full object-cover" loading="lazy" />
+                <div v-else>
+                    <div v-for="[year, yearAttachments] in attachmentsByYear" :key="year" class="mb-8">
+                        <h2 class="mb-4 text-xl font-semibold tracking-tight">{{ year }}</h2>
+                        <div class="grid grid-cols-2 gap-4 md:grid-cols-6 xl:grid-cols-8">
+                            <div
+                                v-for="attachment in yearAttachments"
+                                :key="attachment.id"
+                                class="aspect-square overflow-hidden rounded-lg border border-border"
+                            >
+                                <img
+                                    :src="attachment.links.cover"
+                                    :alt="attachment.original_name"
+                                    class="h-full w-full object-cover"
+                                    loading="lazy"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-center">
+                        <Button @click="handleLoadMore">Load More</Button>
                     </div>
                 </div>
             </CardContent>

@@ -81,6 +81,10 @@ type PulseMemoIndexPayload = {
     tag?: string;
 };
 
+type PulseAttachmentIndexPayload = {
+    page: number;
+};
+
 interface PulseAttachmentUploadResponse extends ApiResponse {
     data: {
         id: number;
@@ -89,6 +93,7 @@ interface PulseAttachmentUploadResponse extends ApiResponse {
         mime_type: string;
         size: number;
         sort_order: number;
+        created_at: string;
         links: Record<'cover' | 'thumb', string>;
     }[];
 }
