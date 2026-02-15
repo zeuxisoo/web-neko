@@ -113,7 +113,7 @@ class AttachmentController extends ApiController
         $hasNext = MemoAttachment::selectRaw('strftime("%Y", created_at) as year')
             ->where('user_id', $this->user()->id)
             ->groupByRaw('strftime("%Y", created_at)')
-            ->where('year', '<', $lastYear)
+            ->whereRaw('CAST(strftime("%Y", created_at) AS INTEGER) < ?', [$lastYear])
             ->exists();
 
         // check if there's a previous page
