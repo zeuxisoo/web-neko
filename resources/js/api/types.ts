@@ -83,6 +83,7 @@ type PulseMemoIndexPayload = {
 
 type PulseAttachmentIndexPayload = {
     page: number;
+    cursor?: number;
 };
 
 interface PulseAttachmentUploadResponse extends ApiResponse {
@@ -99,7 +100,19 @@ interface PulseAttachmentUploadResponse extends ApiResponse {
 }
 
 interface PulseAttachmentUnsavedResponse extends PulseAttachmentUploadResponse {}
-interface PulseAttachmentIndexResponse extends PulseAttachmentUploadResponse {}
+interface PulseAttachmentIndexResponse extends PulseAttachmentUploadResponse {
+    links: {
+        next: string | null;
+        prev: string | null;
+    };
+    meta: {
+        current_page: number;
+        per_page: number;
+        path: string;
+        first_year: number;
+        last_year: number;
+    };
+}
 
 interface PulseAttachmentDestroyResponse extends ApiResponse {
     data: string[];

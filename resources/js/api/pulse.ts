@@ -7,6 +7,10 @@ class Attachment {
         const params = new URLSearchParams();
         params.append('page', payload.page.toString());
 
+        if (payload.cursor) {
+            params.append('cursor', payload.cursor.toString());
+        }
+
         const url = entrypoint + '?' + params.toString();
 
         return useAgent<PulseAttachmentIndexResponse>(url).get();
