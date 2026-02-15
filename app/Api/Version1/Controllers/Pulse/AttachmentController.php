@@ -59,44 +59,38 @@ class AttachmentController extends ApiController
     }
 
     public function index(IndexRequest $request): JsonResource {
-        $page = (int) $request->query('page', 1);
-        $cursor = $request->query('cursor'); // year cursor
         $perPage = 2;
 
-        // get distinct years using cursor-based pagination
-        $yearBuilder = MemoAttachment::selectRaw('strftime("%Y", created_at) as year')
+        // Step 1: Get distinct years with cursor-based pagination
+        $yearPaginator = MemoAttachment::selectRaw('strftime("%Y", created_at) as year, MAX(created_at) as max_created_at')
             ->where('user_id', $this->user()->id)
             ->groupByRaw('strftime("%Y", created_at)')
-            ->orderByDesc('year');
+            ->orderByDesc('max_created_at')
+            ->simplePaginate($perPage);
 
-        // apply cursor filter if provided
-        // Only apply cursor filter when page > 1, because page 1 should always show the first (newest) year
-        if ($cursor && $page > 1) {
-            $yearBuilder->whereRaw('CAST(strftime("%Y", created_at) AS INTEGER) < ?', [$cursor]);
-        }
+        // Extract years from paginator
+        $paginatedYears = $yearPaginator->pluck('year')->toArray();
 
-        $years = $yearBuilder->pluck('year')
-            ->take($perPage)
-            ->toArray();
-
-        // if no years found return empty with pagination info
-        if (empty($years)) {
+        // Handle empty results
+        if (empty($paginatedYears)) {
             $collection = new AttachmentResourceCollection(collect([]));
             $collection->links([
                 'next' => null,
                 'prev' => null,
             ]);
             $collection->meta([
-                'current_page' => $page,
+                'current_page' => 1,
                 'per_page' => $perPage,
+                'first_year' => null,
+                'last_year' => null,
             ]);
 
             return $collection;
         }
 
-        // get all attachments for those years using BETWEEN (better index usage)
-        $minYear = (int) min($years);
-        $maxYear = (int) max($years);
+        // Step 2: Get ALL attachments for those years (complete groups)
+        $minYear = (int) min($paginatedYears);
+        $maxYear = (int) max($paginatedYears);
 
         $attachments = MemoAttachment::where('user_id', $this->user()->id)
             ->whereBetween('created_at', [
@@ -106,42 +100,22 @@ class AttachmentController extends ApiController
             ->orderByDesc('created_at')
             ->get();
 
-        // build pagination metadata
-        $lastYear = (int) max($years);
-        $firstYear = (int) min($years);
+        // Step 3: Build pagination metadata
+        $firstYear = (int) min($paginatedYears);
+        $lastYear = (int) max($paginatedYears);
 
-        // check if there's a next page
-        // get all available years and check if there are more years beyond what current page can show
-        $allYears = MemoAttachment::selectRaw('strftime("%Y", created_at) as year')
-            ->where('user_id', $this->user()->id)
-            ->groupByRaw('strftime("%Y", created_at)')
-            ->orderByDesc('year')
-            ->pluck('year')
-            ->toArray();
-        $hasNext = count($allYears) > ($page * $perPage);
-
-        // check if there's a previous page
-        $hasPrev = $page > 1 || ($cursor && $page > 1);
+        // Build pagination URLs
+        $nextUrl = $yearPaginator->nextPageUrl();
+        $prevUrl = $yearPaginator->previousPageUrl();
 
         $collection = new AttachmentResourceCollection($attachments);
-
-        // build full URLs for pagination links
-        $baseUrl = $request->url();
-
-        $nextParams = ['page' => $page + 1, 'cursor' => $firstYear];
-        $prevParams = ['page' => $page - 1, 'cursor' => $lastYear];
-
-        $nextUrl = $hasNext ? $baseUrl.'?'.http_build_query($nextParams) : null;
-        $prevUrl = $hasPrev ? $baseUrl.'?'.http_build_query($prevParams) : null;
-
         $collection->links([
             'next' => $nextUrl,
             'prev' => $prevUrl,
         ]);
         $collection->meta([
-            'current_page' => $page,
+            'current_page' => $yearPaginator->currentPage() ?? 1,
             'per_page' => $perPage,
-            'path' => $baseUrl,
             'first_year' => $firstYear,
             'last_year' => $lastYear,
         ]);

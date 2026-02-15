@@ -106,9 +106,8 @@ interface PulseAttachmentIndexResponse extends PulseAttachmentUploadResponse {
         prev: string | null;
     };
     meta: {
-        current_page: number;
+        current_page: number | null;
         per_page: number;
-        path: string;
         first_year: number;
         last_year: number;
     };

@@ -5,8 +5,8 @@ import { Card, CardContent } from '@/components/base/card';
 import { Attachment } from '@/components/pulse/editor/types';
 import { WhoopsHandler } from '@/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
-import { computed, onMounted, ref, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { computed, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
@@ -60,7 +60,7 @@ const fetchAttachments = async () => {
 const handlePrev = () => {
     if (!attachments.value?.links.prev || !attachments.value?.meta) return;
 
-    const prevPage = attachments.value.meta.current_page - 1;
+    const prevPage = (attachments.value.meta.current_page ?? 1) - 1;
 
     router.push({
         name: 'park.attachment',
@@ -75,7 +75,7 @@ const handlePrev = () => {
 const handleNext = () => {
     if (!attachments.value?.links.next || !attachments.value?.meta) return;
 
-    const nextPage = attachments.value.meta.current_page + 1;
+    const nextPage = (attachments.value.meta.current_page ?? 1) + 1;
 
     router.push({
         name: 'park.attachment',
