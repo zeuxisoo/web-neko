@@ -1,10 +1,31 @@
 <script setup lang="ts">
 import { PaperclipIcon } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
+import LightBox, { LightBoxComponent } from 'vue-it-bigger';
 import MemoPreviewImage from './MemoPreviewImage.vue';
 
 const props = defineProps<{
     attachments: PulseMemoIndexResponse['data'][number]['attachments'];
 }>();
+
+const showLightBox = ref(false);
+const lightBoxRef = ref<LightBoxComponent>();
+
+// collect all attachments for lightbox
+const lightboxAttachments = computed(() => {
+    return props.attachments.map((attachment) => ({
+        type: 'image',
+        src: attachment.links.thumb,
+        thumb: attachment.links.cover,
+        caption: attachment.original_name,
+    }));
+});
+
+const handleShowLightBox = (index: number) => {
+    if (lightBoxRef.value) {
+        lightBoxRef.value.showImage(index);
+    }
+};
 </script>
 
 <template>
@@ -17,8 +38,11 @@ const props = defineProps<{
             <MemoPreviewImage
                 v-for="(attachment, i) in props.attachments"
                 :key="i"
+                :index="i"
                 :image="{ src: attachment.links.thumb, title: attachment.original_name }"
+                @click="handleShowLightBox"
             />
         </div>
     </div>
+    <LightBox ref="lightBoxRef" :media="lightboxAttachments" :showLightBox="showLightBox" :interfaceHideTime="86400" :showCaption="true" />
 </template>

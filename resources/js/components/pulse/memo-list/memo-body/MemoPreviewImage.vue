@@ -3,8 +3,13 @@ import { Skeleton } from '@/components/base/skeleton';
 import { cn } from '@/lib/utils';
 import { ref } from 'vue';
 
+const emit = defineEmits<{
+    click: [index: number];
+}>();
+
 const props = defineProps<{
     image: { src: string; title: string };
+    index?: number;
 }>();
 
 const isLoading = ref(true);
@@ -12,10 +17,14 @@ const isLoading = ref(true);
 const handleLoad = () => {
     isLoading.value = false;
 };
+
+const handleClick = () => {
+    emit('click', props.index ?? 0);
+};
 </script>
 
 <template>
-    <div :class="'relative aspect-square overflow-hidden rounded-md'">
+    <div :class="'relative aspect-square overflow-hidden rounded-md'" @click="handleClick">
         <Skeleton class="absolute inset-0 z-10 h-full w-full" />
 
         <img
