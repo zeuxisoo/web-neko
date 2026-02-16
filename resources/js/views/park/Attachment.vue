@@ -6,6 +6,7 @@ import { Attachment } from '@/components/pulse/editor/types';
 import { WhoopsHandler } from '@/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
+import LightBox, { LightBoxComponent } from 'vue-it-bigger';
 import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -13,6 +14,8 @@ const route = useRoute();
 
 const isLoading = ref(true);
 const attachments = ref<PulseAttachmentIndexResponse>();
+const showLightBox = ref(false);
+const lightBoxRef = ref<LightBoxComponent>();
 
 // group attachments by year
 const attachmentsByYear = computed(() => {
@@ -30,6 +33,18 @@ const attachmentsByYear = computed(() => {
 
     // sort years in descending order (newest first)
     return Object.entries(groups).sort((a, b) => b[0].localeCompare(a[0]));
+});
+
+// collect all attachments for lightbox
+const lightboxAttachments = computed(() => {
+    return (
+        attachments.value?.data?.map((attachment) => ({
+            type: 'image',
+            src: attachment.links.thumb,
+            thumb: attachment.links.cover,
+            caption: attachment.original_name,
+        })) ?? []
+    );
 });
 
 const fetchAttachments = async () => {
@@ -87,6 +102,12 @@ const handleNext = () => {
     });
 };
 
+const handleShowLightBox = (index: number) => {
+    if (lightBoxRef.value) {
+        lightBoxRef.value.showImage(index);
+    }
+};
+
 watch(
     [() => route.query.page, () => route.query.cursor],
     () => {
@@ -133,11 +154,17 @@ watch(
                     <h2 class="mb-4 text-xl font-semibold tracking-tight">{{ year }}</h2>
                     <div class="grid grid-cols-2 gap-4 md:grid-cols-6 xl:grid-cols-8">
                         <div
-                            v-for="attachment in yearAttachments"
+                            v-for="(attachment, index) in yearAttachments"
                             :key="attachment.id"
                             class="aspect-square overflow-hidden rounded-lg border border-border"
                         >
-                            <img :src="attachment.links.cover" :alt="attachment.original_name" class="h-full w-full object-cover" loading="lazy" />
+                            <img
+                                :src="attachment.links.cover"
+                                :alt="attachment.original_name"
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                                @click="handleShowLightBox(index)"
+                            />
                         </div>
                     </div>
                 </CardContent>
@@ -152,4 +179,5 @@ watch(
             </CardContent>
         </Card>
     </div>
+    <LightBox ref="lightBoxRef" :media="lightboxAttachments" :showLightBox="showLightBox" :interfaceHideTime="86400" :showCaption="true" />
 </template>
