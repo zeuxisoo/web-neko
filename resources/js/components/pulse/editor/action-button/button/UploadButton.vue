@@ -1,0 +1,27 @@
+<script setup lang="ts">
+import { Button } from '@/components/base/button';
+import { ImageUpIcon, LoaderIcon } from 'lucide-vue-next';
+import useFileUpload from '../../composables/useFileUpload';
+import { Attachment } from '../../types';
+
+const emit = defineEmits<{
+    uploaded: [attachments: Attachment[]];
+}>();
+
+const { fileInputRef, isUploading, handleFileInputChange, handleUploadClick } = useFileUpload({
+    maxFileSize: 8 * 1024 * 1024, // 8MB
+    allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'],
+    onUploadCompleted: (uploadedAttachments: Attachment[]) => {
+        emit('uploaded', uploadedAttachments);
+    },
+});
+</script>
+
+<template>
+    <div>
+        <Button class="rounded-md" @click="handleUploadClick" :disabled="isUploading">
+            <component :is="isUploading ? LoaderIcon : ImageUpIcon" :size="24" :class="{ 'animate-spin': isUploading }" />
+        </Button>
+    </div>
+    <input class="hidden" ref="fileInputRef" @change="handleFileInputChange" :disabled="isUploading" type="file" multiple="true" accept="image/*" />
+</template>
