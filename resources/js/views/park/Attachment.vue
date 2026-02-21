@@ -118,19 +118,6 @@ watch(
 </script>
 
 <template>
-    <div class="mt-3" v-if="isLoading || !attachments?.data || attachments.data.length === 0">
-        <div v-if="isLoading" class="flex h-64 items-center justify-center">
-            <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-        </div>
-
-        <div
-            v-else-if="!attachments?.data || attachments.data.length === 0"
-            class="flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed"
-        >
-            <p class="text-sm text-muted-foreground">No attachments yet</p>
-        </div>
-    </div>
-
     <div class="attachment grid gap-3" v-if="attachments">
         <Card class="py-3">
             <CardContent>
@@ -169,16 +156,29 @@ watch(
                     </div>
                 </CardContent>
             </Card>
-        </template>
 
-        <Card class="py-3" v-if="attachments.data.length > 0">
-            <CardContent>
-                <div class="flex w-full justify-between">
-                    <Button class="cursor-pointer" :disabled="!attachments.links.prev" @click="handlePrev"> <ChevronLeft />Prev </Button>
-                    <Button class="cursor-pointer" :disabled="!attachments.links.next" @click="handleNext"> Next<ChevronRight /> </Button>
-                </div>
-            </CardContent>
-        </Card>
+            <Card class="py-3">
+                <CardContent>
+                    <div class="flex w-full justify-between">
+                        <Button class="cursor-pointer" :disabled="!attachments.links.prev" @click="handlePrev"> <ChevronLeft />Prev </Button>
+                        <Button class="cursor-pointer" :disabled="!attachments.links.next" @click="handleNext"> Next<ChevronRight /> </Button>
+                    </div>
+                </CardContent>
+            </Card>
+        </template>
+    </div>
+
+    <div class="mt-3" v-if="isLoading || !attachments?.data || attachments.data.length === 0">
+        <div v-if="isLoading" class="flex h-64 items-center justify-center">
+            <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+        </div>
+
+        <div
+            v-else-if="!attachments?.data || attachments.data.length === 0"
+            class="flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed"
+        >
+            <p class="text-sm text-muted-foreground">No attachments yet</p>
+        </div>
     </div>
 
     <LightBox ref="lightBoxRef" :media="lightboxAttachments" :showLightBox="showLightBox" :interfaceHideTime="86400" :showCaption="true" />

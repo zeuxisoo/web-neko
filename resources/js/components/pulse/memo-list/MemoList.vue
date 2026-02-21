@@ -15,19 +15,21 @@ const props = defineProps<{
     <div class="grid grid-cols-1">
         <MemoFilter />
     </div>
-    <div class="grid grid-cols-1 gap-2" v-if="props.memos">
-        <MemoItem :memo="memo" v-for="memo in props.memos.data" :key="memo.id" />
-        <MemoPagination :links="props.memos.links" :meta="props.memos.meta" v-if="props.memos.data.length > 0" />
-    </div>
-    <div class="grid grid-cols-1 gap-2" v-if="!props.memos || props.memos.data.length <= 0">
-        <Card>
-            <CardContent>
-                <Alert>
-                    <Info />
-                    <AlertTitle>Oops!</AlertTitle>
-                    <AlertDescription>Do you want to create first memo?</AlertDescription>
-                </Alert>
-            </CardContent>
-        </Card>
+    <div class="grid grid-cols-1 gap-2">
+        <template v-if="props.memos">
+            <MemoItem :memo="memo" v-for="memo in props.memos.data" :key="memo.id" />
+            <MemoPagination :links="props.memos.links" :meta="props.memos.meta" v-if="props.memos.data.length > 0" />
+        </template>
+        <template v-if="!props.memos || props.memos.data.length <= 0">
+            <Card>
+                <CardContent>
+                    <Alert>
+                        <Info />
+                        <AlertTitle>Oops!</AlertTitle>
+                        <AlertDescription>Do you want to create first memo?</AlertDescription>
+                    </Alert>
+                </CardContent>
+            </Card>
+        </template>
     </div>
 </template>
