@@ -26,15 +26,17 @@ const handleRemoveTag = () => {
 </script>
 
 <template>
-    <Card class="p-1.5" v-if="hasTag">
-        <CardContent>
-            <div class="flex flex-wrap items-center gap-2">
-                <div class="font-bold">Filter:</div>
-                <Button variant="outline" size="sm" class="round-md" @click="handleRemoveTag">
-                    Tag
-                    <CircleX />
-                </Button>
-            </div>
-        </CardContent>
-    </Card>
+    <div class="grid grid-cols-1" v-if="hasTag">
+        <Card class="p-1.5">
+            <CardContent>
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="font-bold">Filter:</div>
+                    <Button variant="outline" size="sm" class="round-md" @click="handleRemoveTag">
+                        Tag
+                        <CircleX />
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
+    </div>
 </template>

@@ -12,10 +12,8 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="grid grid-cols-1">
-        <MemoFilter />
-    </div>
-    <div class="grid grid-cols-1 gap-2">
+    <MemoFilter />
+    <div class="grid grid-cols-1 gap-3">
         <template v-if="props.memos">
             <MemoItem :memo="memo" v-for="memo in props.memos.data" :key="memo.id" />
             <MemoPagination :links="props.memos.links" :meta="props.memos.meta" v-if="props.memos.data.length > 0" />
