@@ -19,7 +19,7 @@ const props = defineProps<{
         <MemoItem :memo="memo" v-for="memo in props.memos.data" :key="memo.id" />
         <MemoPagination :links="props.memos.links" :meta="props.memos.meta" v-if="props.memos.data.length > 0" />
     </div>
-    <div class="grid grid-cols-1 gap-2" v-else>
+    <div class="grid grid-cols-1 gap-2" v-if="!props.memos || props.memos.data.length <= 0">
         <Card>
             <CardContent>
                 <Alert>
