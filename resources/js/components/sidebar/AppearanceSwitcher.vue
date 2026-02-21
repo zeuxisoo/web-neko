@@ -14,7 +14,7 @@ const toggleDark = () => {
 </script>
 
 <template>
-    <Button variant="ghost" size="icon" class="hidden sm:flex" @click="toggleDark">
+    <Button variant="ghost" size="icon" class="flex" @click="toggleDark">
         <component :is="isDark ? Sun : Moon" />
         <span class="sr-only">Toggle appearance</span>
     </Button>
