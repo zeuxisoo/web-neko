@@ -3,6 +3,7 @@
 use App\Api\Version1\Controllers\Account;
 use App\Api\Version1\Controllers\Auth;
 use App\Api\Version1\Controllers\Pulse;
+use App\Api\Version1\Controllers\Settings;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
@@ -58,6 +59,12 @@ Route::prefix('v1')->group(function() {
                 Route::get('/index/{memo_id}', [Pulse\CommentController::class, 'index'])->name('api.pulse.comment.index');
                 Route::post('/store', [Pulse\CommentController::class, 'store'])->name('api.pulse.comment.store');
             });
+        });
+
+        // api.settings.*
+        Route::prefix('settings')->group(function() {
+            Route::get('/index', [Settings\IndexController::class, 'index'])->name('api.settings.index');
+            Route::get('/clear', [Settings\IndexController::class, 'clear'])->name('api.settings.clear');
         });
     });
 });
