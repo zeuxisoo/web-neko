@@ -10,11 +10,12 @@ import {
     SidebarProps,
     SidebarRail,
 } from '@/components/base/sidebar';
-import NavItem from '@/components/sidebar/NavItem.vue';
 import NavUser from '@/components/sidebar/NavUser.vue';
 import { type NavItem as NavItemType } from '@/components/sidebar/types';
-import { Box, Shrub } from 'lucide-vue-next';
+import { Box, Settings, Shrub } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
+import NavItemMain from './NavItemMain.vue';
+import NavItemOther from './NavItemOther.vue';
 
 interface AppBarProps extends SidebarProps {
     user: User;
@@ -27,7 +28,7 @@ const props = withDefaults(defineProps<AppBarProps>(), {
 const router = useRouter();
 
 const data = {
-    items: [
+    main: [
         {
             kind: 'group',
             title: 'Park',
@@ -50,6 +51,15 @@ const data = {
             title: 'Inventory',
             to: { path: '#' },
             icon: Box,
+        },
+    ] as NavItemType[],
+    other: [
+        {
+            kind: 'single',
+            title: 'Settings',
+            to: { path: '/settings/index' },
+            icon: Settings,
+            isActive: false,
         },
     ] as NavItemType[],
 };
@@ -83,7 +93,8 @@ const handleSidebarHeader = () => {
             </SidebarMenu>
         </SidebarHeader>
         <SidebarContent>
-            <NavItem :items="data.items" />
+            <NavItemMain :items="data.main" />
+            <NavItemOther :items="data.other" class="mt-auto" />
         </SidebarContent>
         <SidebarFooter>
             <NavUser :user="props.user" />
