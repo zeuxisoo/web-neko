@@ -15,6 +15,7 @@ class UserResource extends ApiResource
             'email' => $this->email,
             'avatar' => $this->avatar,
             'link' => Storage::disk('avatar')->url($this->avatar),
+            'is_admin' => $this->is_admin,
         ];
     }
 }
