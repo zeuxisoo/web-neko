@@ -25,6 +25,7 @@ interface MeResponse extends ApiResponse {
         email: string;
         avatar: string;
         link: string;
+        isAdmin: boolean;
     };
 }
 
@@ -223,4 +224,25 @@ interface PulseCommentStoreResponse extends ApiResponse {
         created_at: string;
         user: MeResponse['data'];
     };
+}
+
+// settings
+type AttachmentSettingsPayload = {
+    max_files: number;
+    max_per_memo: number;
+    max_size_kb: number;
+    allowed_mimes: string[];
+};
+
+interface SettingsAttachmentIndexResponse extends ApiResponse {
+    data: {
+        max_size_kb: number;
+        allowed_mimes: string[];
+        max_files: number;
+        max_per_memo: number;
+    };
+}
+
+interface SettingsAttachmentUpdateResponse extends ApiResponse {
+    data: [];
 }
