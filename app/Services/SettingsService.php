@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Casts\SettingValue;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 
@@ -27,6 +28,29 @@ class SettingsService
             'value' => $value,
             'type' => gettype($value),
         ]);
+
+        $this->clearCache();
+    }
+
+    /**
+     * Set multiple setting values at once
+     *
+     * @param  $settings  array<string, mixed>
+     */
+    public function setMultiple(array $settings): void {
+        $cast = new SettingValue();
+
+        $records = array_map(function($value, $key) use ($cast) {
+            $casted = $cast->set(null, $key, $value, []);
+
+            return [
+                'key' => $key,
+                'value' => $casted['value'],
+                'type' => $casted['type'],
+            ];
+        }, $settings, array_keys($settings));
+
+        Setting::upsert($records, ['key'], ['value', 'type']);
 
         $this->clearCache();
     }

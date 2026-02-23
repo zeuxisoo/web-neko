@@ -65,6 +65,10 @@ Route::prefix('v1')->group(function() {
         Route::prefix('settings')->group(function() {
             Route::get('/index', [Settings\IndexController::class, 'index'])->name('api.settings.index');
             Route::get('/clear', [Settings\IndexController::class, 'clear'])->name('api.settings.clear');
+            Route::prefix('attachment')->group(function() {
+                Route::get('/index', [Settings\AttachmentController::class, 'index'])->name('api.settings.attachment.index');
+                Route::post('/update', [Settings\AttachmentController::class, 'update'])->name('api.settings.attachment.update');
+            });
         });
     });
 });
