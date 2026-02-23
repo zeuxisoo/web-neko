@@ -8,10 +8,10 @@ const useUserStore = defineStore('user', {
         email: '',
         avatar: '',
         link: '',
-        isAdmin: false,
+        is_admin: false,
     }),
     getters: {
-        isAdmin: (state) => state.isAdmin,
+        isAdmin: (state) => state.is_admin,
     },
     actions: {
         async fetch() {
