@@ -8,6 +8,10 @@ use App\Services\SettingsService;
 
 class UploadRequest extends ApiFormRequest
 {
+    public function __construct(
+        private readonly SettingsService $settings,
+    ) {}
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -21,22 +25,31 @@ class UploadRequest extends ApiFormRequest
      * @return array<string, array|\Illuminate\Contracts\Validation\Rule|string>
      */
     public function rules(): array {
-        $settings = app(SettingsService::class);
+        $allowedMimes = implode(',', $this->setting('attachment.allowed_mimes', ['jpeg', 'jpg', 'png', 'webp', 'gif']));
+        $maxSizeKb = $this->setting('attachment.max_size_kb', 8192);
+        $maxPerMemo = $this->setting('attachment.max_per_memo', 6);
 
         return [
             'files' => [
                 'required',
                 'array',
                 'min:1',
-                'max:'.$settings->get('attachment.max_files', 8),
+                'max:'.$this->setting('attachment.max_files', 8),
             ],
             'files.*' => [
                 'required',
                 'file',
-                'mimes:'.implode(',', $settings->get('attachment.allowed_mimes', ['jpeg', 'jpg', 'png', 'webp', 'gif'])),
-                'max:'.$settings->get('attachment.max_size_kb', 8192),
-                new MaxMemoAttachment($settings->get('attachment.max_per_memo', 6)),
+                'mimes:'.$allowedMimes,
+                'max:'.$maxSizeKb,
+                new MaxMemoAttachment($maxPerMemo),
             ],
         ];
+    }
+
+    /**
+     * Get a setting value.
+     */
+    private function setting(string $key, mixed $default = null): mixed {
+        return $this->settings->get($key, $default);
     }
 }
