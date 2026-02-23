@@ -7,7 +7,6 @@ use App\Api\Version1\Requests\Settings\Attachment\UpdateRequest;
 use App\Api\Version1\Resources\Settings\AttachmentResource;
 use App\Models\Setting;
 use App\Services\SettingsService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 
@@ -36,16 +35,24 @@ class AttachmentController extends ApiController
     /**
      * Update attachment settings
      */
-    public function update(UpdateRequest $request): JsonResponse {
+    public function update(UpdateRequest $request): JsonResource {
         Gate::authorize('update', Setting::class);
 
-        $this->settingsService->setMultiple([
+        $settings = [
             'attachment.max_size_kb' => $request->input('max_size_kb'),
             'attachment.allowed_mimes' => $request->input('allowed_mimes'),
             'attachment.max_files' => $request->input('max_files'),
             'attachment.max_per_memo' => $request->input('max_per_memo'),
-        ]);
+        ];
 
-        return $this->respondJsonMessage('Settings updated successfully');
+        $this->settingsService->setMultiple($settings);
+
+        $cleanedSettings = [];
+        foreach ($settings as $key => $value) {
+            $newKey = preg_replace('/^attachment\./', '', $key);
+            $cleanedSettings[$newKey] = $value;
+        }
+
+        return new AttachmentResource($cleanedSettings);
     }
 }

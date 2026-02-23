@@ -227,11 +227,11 @@ interface PulseCommentStoreResponse extends ApiResponse {
 }
 
 // settings
-type AttachmentSettingsPayload = {
-    max_files: number;
-    max_per_memo: number;
+type SettingsAttachmentUpdatePayload = {
     max_size_kb: number;
     allowed_mimes: string[];
+    max_files: number;
+    max_per_memo: number;
 };
 
 interface SettingsAttachmentIndexResponse extends ApiResponse {
@@ -244,5 +244,5 @@ interface SettingsAttachmentIndexResponse extends ApiResponse {
 }
 
 interface SettingsAttachmentUpdateResponse extends ApiResponse {
-    data: [];
+    data: SettingsAttachmentIndexResponse['data'];
 }
