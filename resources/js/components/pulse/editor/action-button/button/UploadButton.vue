@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@/components/base/button';
+import { useSettingsStore } from '@/stores';
 import { ImageUpIcon, LoaderIcon } from 'lucide-vue-next';
+import { computed, onMounted } from 'vue';
 import useFileUpload from '../../composables/useFileUpload';
 import { Attachment } from '../../types';
 
@@ -8,9 +10,27 @@ const emit = defineEmits<{
     uploaded: [attachments: Attachment[]];
 }>();
 
+const settingsStore = useSettingsStore();
+
+const allowedTypes = computed(() => {
+    // convert extensions ['jpeg', 'jpg', 'png'] to MIME types ['image/jpeg', 'image/jpg', 'image/png']
+    // jpg and jpeg both map to image/jpeg in browser's file.type
+    return (settingsStore.attachment?.allowed_mimes ?? []).map((ext) => {
+        return ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+    });
+});
+
+const maxFileSize = computed(() => {
+    return (settingsStore.attachment?.max_size_kb ?? 0) * 1024;
+});
+
+onMounted(async () => {
+    await settingsStore.fetchAttachment();
+});
+
 const { fileInputRef, isUploading, handleFileInputChange, handleUploadClick } = useFileUpload({
-    maxFileSize: 8 * 1024 * 1024, // 8MB
-    allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'],
+    maxFileSize: maxFileSize,
+    allowedTypes: allowedTypes,
     onUploadCompleted: (uploadedAttachments: Attachment[]) => {
         emit('uploaded', uploadedAttachments);
     },

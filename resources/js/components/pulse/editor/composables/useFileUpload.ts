@@ -1,17 +1,20 @@
 import api from '@/api';
 import { fillAttachments, humanSize, WhoopsHandler } from '@/utils';
-import { ref } from 'vue';
+import { computed, ComputedRef, ref } from 'vue';
 import { Attachment } from '../types';
 
 interface FileUploadOptions {
-    maxFileSize: number;
-    allowedTypes: string[];
+    maxFileSize: ComputedRef<number>;
+    allowedTypes: ComputedRef<string[]>;
     onUploadCompleted: (attachments: Attachment[]) => void;
 }
 
 export default function useFileUpload(options: FileUploadOptions) {
     const fileInputRef = ref<HTMLInputElement>();
     const isUploading = ref<boolean>(false);
+
+    const maxFileSize = computed(() => options.maxFileSize.value);
+    const allowedTypes = computed(() => options.allowedTypes.value);
 
     const handleFileInputChange = async () => {
         if (!fileInputRef.value?.files || fileInputRef.value.files.length === 0 || isUploading.value) {
@@ -22,14 +25,14 @@ export default function useFileUpload(options: FileUploadOptions) {
 
         const attachmentList: Attachment[] = [];
         try {
-            // check file size and type befoe upload all
+            // check file size and type before upload all
             for (const file of fileInputRef.value.files) {
-                if (file.size > options.maxFileSize) {
-                    throw new Error(`Error on "${file.name}" exceeds ${humanSize(options.maxFileSize)}, got ${humanSize(file.size)}`);
+                if (file.size > maxFileSize.value) {
+                    throw new Error(`Error on "${file.name}" exceeds ${humanSize(maxFileSize.value)}, got ${humanSize(file.size)}`);
                 }
 
-                if (!options.allowedTypes.includes(file.type)) {
-                    throw new Error(`Error on "${file.name}" file type is not image`);
+                if (!allowedTypes.value.includes(file.type)) {
+                    throw new Error(`Error on "${file.name}" file type is not image, got ${file.type}`);
                 }
             }
 
