@@ -1,0 +1,33 @@
+info:
+  name: update
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/settings/attachment/update"
+  headers:
+    - name: Authorization
+      value: Bearer {{accessToken}}
+  body:
+    type: json
+    data: |-
+      {
+        "max_size_kb": 8192,
+        "allowed_mimes": [
+          "jpeg",
+          "jpg",
+          "png",
+          "webp",
+          "gif"
+        ],
+        "max_files": 8,
+        "max_per_memo": 6
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
