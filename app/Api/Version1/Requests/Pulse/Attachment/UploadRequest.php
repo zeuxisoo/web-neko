@@ -28,13 +28,14 @@ class UploadRequest extends ApiFormRequest
         $allowedMimes = implode(',', $this->setting('attachment.allowed_mimes', ['jpeg', 'jpg', 'png', 'webp', 'gif']));
         $maxSizeKb = $this->setting('attachment.max_size_kb', 8192);
         $maxPerMemo = $this->setting('attachment.max_per_memo', 6);
+        $maxFiles = $this->setting('attachment.max_files', 8);
 
         return [
             'files' => [
                 'required',
                 'array',
                 'min:1',
-                'max:'.$this->setting('attachment.max_files', 8),
+                'max:'.$$maxFiles,
             ],
             'files.*' => [
                 'required',
