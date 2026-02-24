@@ -51,6 +51,12 @@ Route::prefix('v1')->group(function() {
                 Route::get('/destroy/{id}', [Pulse\AttachmentController::class, 'destroy'])->name('api.pulse.attachment.destroy');
                 Route::get('/unsaved', [Pulse\AttachmentController::class, 'unsaved'])->name('api.pulse.attachment.unsaved');
             });
+            Route::prefix('link')->group(function() {
+                Route::post('/store', [Pulse\LinkController::class, 'store'])->name('api.pulse.link.store');
+                Route::get('/destroy/{id}', [Pulse\LinkController::class, 'destroy'])->name('api.pulse.link.destroy');
+                Route::get('/unsaved', [Pulse\LinkController::class, 'unsaved'])->name('api.pulse.link.unsaved');
+                Route::post('/fetch', [Pulse\LinkController::class, 'fetch'])->name('api.pulse.link.fetch');
+            });
             Route::prefix('bookmark')->group(function() {
                 Route::get('/add/{memo_id}', [Pulse\BookmarkController::class, 'add'])->name('api.pulse.bookmark.add');
                 Route::get('/remove/{memo_id}', [Pulse\BookmarkController::class, 'remove'])->name('api.pulse.bookmark.remove');

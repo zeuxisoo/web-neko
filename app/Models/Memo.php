@@ -33,6 +33,13 @@ class Memo extends Model
     }
 
     /**
+     * @return HasMany<MemoLink>
+     */
+    public function links(): HasMany {
+        return $this->hasMany(MemoLink::class);
+    }
+
+    /**
      * Get all bookmarks for this memo
      *
      * @return HasMany<MemoBookmark>
