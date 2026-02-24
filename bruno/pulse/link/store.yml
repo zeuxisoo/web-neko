@@ -1,0 +1,27 @@
+info:
+  name: store
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/pulse/link/store"
+  headers:
+    - name: Authorization
+      value: Bearer {{accessToken}}
+  body:
+    type: json
+    data: |-
+      {
+        "url": "https://mockhttp.org/",
+        "title": "1",
+        "description": "2",
+        "image": "https://placehold.co/600x400"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
