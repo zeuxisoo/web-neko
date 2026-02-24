@@ -3,6 +3,7 @@ import { Button } from '@/components/base/button';
 import { cn } from '@/lib/utils';
 import { Loader, SendHorizontal, X } from 'lucide-vue-next';
 import { Attachment } from '../types';
+import LinkButton from './button/LinkButton.vue';
 import UploadButton from './button/UploadButton.vue';
 
 const props = defineProps<{
@@ -12,6 +13,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     uploaded: [attachments: Attachment[]];
+    linked: [links: string[]];
     submit: [];
     cancel: [];
 }>();
@@ -21,6 +23,7 @@ const emit = defineEmits<{
     <div class="flex w-full flex-row justify-between gap-2" :class="$attrs.class">
         <div class="flex flex-row gap-2">
             <UploadButton @uploaded="emit('uploaded', $event)" />
+            <LinkButton @linked="emit('linked', $event)" />
         </div>
         <div class="flex gap-0.5">
             <Button
