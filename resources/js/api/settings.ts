@@ -5,8 +5,8 @@ class Attachment {
         return useAgent<SettingsAttachmentIndexResponse>('settings/attachment/index').get();
     }
 
-    update(payload: AttachmentSettingsPayload) {
-        return useAgent<SettingsAttachmentUpdateResponse>('settings/attachment/update').put(payload);
+    update(payload: SettingsAttachmentUpdatePayload) {
+        return useAgent<SettingsAttachmentUpdateResponse>('settings/attachment/update').post(payload);
     }
 }
 
