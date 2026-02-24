@@ -2,6 +2,7 @@ import { AccountProfileUpdate, AccountSecurityUpdate } from './account';
 import AuthLogin from './auth/login';
 import { ValidateError } from './error';
 import { PulseCommentStore, PulseMemoStore, PulseMemoUpdate } from './pulse';
+import { SettingsAttachmentUpdate } from './settings';
 import Validator from './validator';
 
 /*
@@ -29,6 +30,7 @@ const validators: Record<string, typeof Validator> = {
     'pulse.memo.store': PulseMemoStore,
     'pulse.memo.update': PulseMemoUpdate,
     'pulse.comment.store': PulseCommentStore,
+    'settings.attachment.update': SettingsAttachmentUpdate,
 };
 
 const validator = {

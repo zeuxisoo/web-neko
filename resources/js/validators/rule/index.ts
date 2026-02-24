@@ -24,6 +24,26 @@ const checkers: Record<string, CheckerFunction> = {
         return value === confirmationValue;
     },
 
+    integer: ({ value }) => {
+        return /^[0-9]+$/.test(value);
+    },
+
+    gt: ({ value, parameters }) => {
+        const greaterThanValue = Number(parameters[0]);
+
+        return value > greaterThanValue;
+    },
+
+    gte: ({ value, parameters }) => {
+        const greaterThanValue = Number(parameters[0]);
+
+        return value >= greaterThanValue;
+    },
+
+    array: ({ value }) => {
+        return Array.isArray(value);
+    },
+
     present: ({ data, attribute }) => {
         // check key exsts in data object
         return Object.hasOwn(data, attribute);
