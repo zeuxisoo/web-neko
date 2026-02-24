@@ -2,6 +2,7 @@
 import api from '@/api';
 import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
+import { Header } from '@/components/page';
 import { Attachment } from '@/components/pulse/editor/types';
 import { WhoopsHandler } from '@/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
@@ -120,21 +121,15 @@ watch(
 <template>
     <div class="attachment grid gap-3">
         <template v-if="attachments">
-            <Card class="py-3">
-                <CardContent>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <h1 class="text-2xl font-semibold tracking-tight">Attachments</h1>
-                            <span
-                                v-if="attachments.data.length > 0"
-                                class="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
-                            >
-                                {{ attachments.data.length }}
-                            </span>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+            <Header #main>
+                <h1 class="text-2xl font-semibold tracking-tight">Attachments</h1>
+                <span
+                    v-if="attachments.data.length > 0"
+                    class="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
+                >
+                    {{ attachments.data.length }}
+                </span>
+            </Header>
 
             <template v-if="attachments.data.length > 0">
                 <Card v-for="[year, yearAttachments] in attachmentsByYear" :key="year">

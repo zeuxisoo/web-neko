@@ -2,6 +2,7 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/base/alert';
 import { Card, CardContent } from '@/components/base/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/base/tabs';
+import { Header } from '@/components/page';
 import { useUserStore } from '@/stores';
 import { Info } from 'lucide-vue-next';
 import Attachment from './Attachment.vue';
@@ -11,15 +12,7 @@ const userStore = useUserStore();
 
 <template>
     <div class="attachment grid gap-3">
-        <Card class="py-3">
-            <CardContent>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <h1 class="text-2xl font-semibold tracking-tight">Settings</h1>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
+        <Header #title>Site Settings</Header>
 
         <Card v-if="!userStore.isAdmin">
             <CardContent>

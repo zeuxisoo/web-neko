@@ -7,7 +7,7 @@ import Security from './Security.vue';
 
 <template>
     <div class="pulse grid gap-3">
-        <Header>Account Settings</Header>
+        <Header #title>Account Settings</Header>
         <Tabs default-value="profile">
             <TabsList>
                 <TabsTrigger value="profile"> Profile </TabsTrigger>
