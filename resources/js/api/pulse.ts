@@ -95,6 +95,24 @@ class Comment {
     }
 }
 
+class Link {
+    store(payload: PulseLinkStorePayload) {
+        return useAgent<PulseLinkStoreResponse>('pulse/link/store').post(payload);
+    }
+
+    destroy(id: number) {
+        return useAgent<PulseLinkDestroyResponse>('pulse/link/destroy/' + id).get();
+    }
+
+    unsaved() {
+        return useAgent<PulseLinkUnsavedResponse>('pulse/link/unsaved').get();
+    }
+
+    fetch(payload: PulseLinkFetchPayload) {
+        return useAgent<PulseLinkFetchResponse>('pulse/link/fetch').post(payload);
+    }
+}
+
 export default {
     get attachment() {
         return new Attachment();
@@ -110,5 +128,8 @@ export default {
     },
     get comment() {
         return new Comment();
+    },
+    get link() {
+        return new Link();
     },
 };

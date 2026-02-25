@@ -55,7 +55,7 @@ interface AccountSecurityResponse extends ApiResponse {
     data: string[];
 }
 
-// pulse
+// pulse memo
 type PulseMemoStorePayload = {
     content: string;
     tag: string[];
@@ -81,42 +81,6 @@ type PulseMemoIndexPayload = {
     page: number;
     tag?: string;
 };
-
-type PulseAttachmentIndexPayload = {
-    page: number;
-    cursor?: number;
-};
-
-interface PulseAttachmentUploadResponse extends ApiResponse {
-    data: {
-        id: number;
-        filename: string;
-        original_name: string;
-        mime_type: string;
-        size: number;
-        sort_order: number;
-        created_at: string;
-        links: Record<'cover' | 'thumb', string>;
-    }[];
-}
-
-interface PulseAttachmentUnsavedResponse extends PulseAttachmentUploadResponse {}
-interface PulseAttachmentIndexResponse extends PulseAttachmentUploadResponse {
-    links: {
-        next: string | null;
-        prev: string | null;
-    };
-    meta: {
-        current_page: number | null;
-        per_page: number;
-        first_year: number;
-        last_year: number;
-    };
-}
-
-interface PulseAttachmentDestroyResponse extends ApiResponse {
-    data: string[];
-}
 
 interface PulseMemoStoreResponse extends ApiResponse {
     data: {
@@ -169,20 +133,108 @@ interface PulseMemoShowResponse extends ApiResponse {
     data: PulseMemoStoreResponse['data'];
 }
 
+// pulse attachment
+type PulseAttachmentIndexPayload = {
+    page: number;
+    cursor?: number;
+};
+
+interface PulseAttachmentUploadResponse extends ApiResponse {
+    data: {
+        id: number;
+        filename: string;
+        original_name: string;
+        mime_type: string;
+        size: number;
+        sort_order: number;
+        created_at: string;
+        links: Record<'cover' | 'thumb', string>;
+    }[];
+}
+
+interface PulseAttachmentUnsavedResponse extends PulseAttachmentUploadResponse {}
+interface PulseAttachmentIndexResponse extends PulseAttachmentUploadResponse {
+    links: {
+        next: string | null;
+        prev: string | null;
+    };
+    meta: {
+        current_page: number | null;
+        per_page: number;
+        first_year: number;
+        last_year: number;
+    };
+}
+
+interface PulseAttachmentDestroyResponse extends ApiResponse {
+    data: string[];
+}
+
 interface PulseBookmarkAddResponse extends ApiResponse {
     data: string[];
 }
 
+// pulse bookmark
 interface PulseBookmarkRemoveResponse extends ApiResponse {
     data: string[];
 }
 
+// pulse tag
 interface PulseTagResponse extends ApiResponse {
     data: {
         id: number;
         name: string;
         order_column: number;
     }[];
+}
+
+// pulse link
+type PulseLinkStorePayload = {
+    url: string;
+    title: string;
+    description: string;
+    image: string;
+};
+
+interface PulseLinkStoreResponse extends ApiResponse {
+    data: {
+        id: number;
+        url: string;
+        title: string;
+        description: string;
+        image: string;
+        created_at: string;
+    };
+}
+
+interface PulseLinkDestroyResponse extends ApiResponse {
+    data: string[];
+}
+
+interface PulseLinkUnsavedResponse extends ApiResponse {
+    data: PulseLinkStoreResponse['data'][];
+}
+
+type PulseLinkFetchPayload = {
+    url: string;
+};
+
+interface PulseLinkFetchResponse extends ApiResponse {
+    data: {
+        title: string;
+        description: string;
+        url: string;
+        image: string;
+        extra: {
+            site_name: string;
+            image_attribute: {
+                width: number;
+                height: number;
+                alt: string;
+                type: string;
+            };
+        };
+    };
 }
 
 // pulse comment
