@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import api from '@/api';
 import { Button } from '@/components/base/button';
 import {
     Dialog,
@@ -11,22 +12,67 @@ import {
     DialogTrigger,
 } from '@/components/base/dialog';
 import { Input } from '@/components/base/input';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/base/input-group';
+import { Label } from '@/components/base/label';
+import { Separator } from '@/components/base/separator';
+import { WhoopsHandler } from '@/utils';
 import { ExternalLink, LinkIcon, LoaderIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
 
 const isLoading = ref(false);
 const isOpen = ref(false);
 const linkUrl = ref('https://example.com');
+const fetchedLink = ref<{
+    url: string;
+    title: string;
+    description: string;
+    image: string;
+} | null>(null);
 
 const emit = defineEmits<{
-    (e: 'linked', links: string[]): void;
+    (e: 'linked', link: typeof fetchedLink.value): void;
 }>();
 
+const handleFetch = async () => {
+    isLoading.value = true;
+
+    try {
+        const { data, error } = await api.pulse.link.fetch({ url: linkUrl.value }).json<PulseLinkFetchResponse>();
+
+        if (error.value) {
+            throw error.value;
+        }
+
+        if (data.value && data.value.ok) {
+            const result = data.value;
+
+            fetchedLink.value = {
+                url: result.data.url,
+                title: result.data.title || '',
+                description: result.data.description || '',
+                image: result.data.image || '',
+            };
+        } else {
+            throw error.value;
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error on handle fetch link action');
+    } finally {
+        isLoading.value = false;
+    }
+};
+
 const handleSave = () => {
-    // TODO: submit to backend
-    emit('linked', [linkUrl.value]);
+    if (fetchedLink.value) {
+        emit('linked', fetchedLink.value);
+
+        toast.success('Link added successfully');
+    }
 
     isOpen.value = !isOpen.value;
+
+    fetchedLink.value = null;
 };
 </script>
 
@@ -52,21 +98,46 @@ const handleSave = () => {
                 </DialogHeader>
 
                 <div class="py-2">
-                    <div class="space-y-2">
-                        <div class="relative">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <ExternalLink :size="16" class="text-muted-foreground" />
+                    <InputGroup>
+                        <InputGroupInput id="link-url" v-model="linkUrl" placeholder="https://example.com" type="url" />
+                        <InputGroupAddon>
+                            <ExternalLink :size="16" />
+                        </InputGroupAddon>
+                    </InputGroup>
+                    <Separator v-if="fetchedLink" class="my-4" />
+                    <div v-if="fetchedLink" class="space-y-4">
+                        <div class="flex gap-4">
+                            <div class="flex-1 space-y-3">
+                                <div>
+                                    <Label for="link-title" class="text-xs text-muted-foreground">Title</Label>
+                                    <Input id="link-title" v-model="fetchedLink.title" class="mt-1" />
+                                </div>
+                                <div>
+                                    <Label for="link-description" class="text-xs text-muted-foreground">Description</Label>
+                                    <Input id="link-description" v-model="fetchedLink.description" class="mt-1" />
+                                </div>
+                                <div class="flex justify-center">
+                                    <img
+                                        v-if="fetchedLink.image"
+                                        :src="fetchedLink.image"
+                                        class="mt-1 h-18 w-18 rounded-md object-cover"
+                                        alt="Link preview"
+                                    />
+                                </div>
                             </div>
-                            <Input id="link-url" v-model="linkUrl" type="url" placeholder="https://example.com" class="pl-10" />
                         </div>
                     </div>
                 </div>
 
                 <DialogFooter>
                     <DialogClose as-child>
-                        <Button variant="outline">Cancel</Button>
+                        <Button variant="outline" @click="fetchedLink = null">Cancel</Button>
                     </DialogClose>
-                    <Button type="submit" @click="handleSave" :disabled="!linkUrl">Add</Button>
+                    <Button type="submit" variant="secondary" @click="handleFetch" :disabled="!linkUrl || isLoading">
+                        <LoaderIcon v-if="isLoading" :class="{ 'animate-spin': isLoading }" />
+                        <template v-else>Fetch</template>
+                    </Button>
+                    <Button v-if="fetchedLink" type="submit" @click="handleSave"> Save </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
