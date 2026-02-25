@@ -13,6 +13,7 @@ use App\Api\Version1\Resources\Pulse\MemoResourceCollection;
 use App\Enums\TagKind;
 use App\Models\Memo;
 use App\Models\MemoAttachment;
+use App\Models\MemoLink;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -40,29 +41,41 @@ class MemoController extends ApiController
             $memo->attachTags($tags, type: TagKind::MEMO->value);
 
             // update previous uploaded attachment relationship
-            $attachmentIds = array_column($input['attachments'], 'id');
-            $attachments = MemoAttachment::where('user_id', $userId)
-                ->whereIn('id', $attachmentIds)
-                ->update([
-                    'memo_id' => $memo->id,
-                    'user_id' => $this->user()->id,
-                ]);
+            if (!empty($input['attachments'])) {
+                $attachmentIds = array_column($input['attachments'], 'id');
+                $attachments = MemoAttachment::where('user_id', $userId)
+                    ->whereIn('id', $attachmentIds)
+                    ->update([
+                        'memo_id' => $memo->id,
+                    ]);
 
-            // update sort_order column
-            // set related index, update sort_order to db record, bulk update sort_order column
-            $sortedAttachmentsIds = collect($input['attachments'])->pluck('sort_order', key: 'id')->toArray();
-            $dbAttachments = MemoAttachment::where('user_id', $userId)->whereIn('id', $attachmentIds)->get();
-            foreach ($dbAttachments as $attachment) {
-                $attachment->sort_order = $sortedAttachmentsIds[$attachment->id];
+                // update sort_order column in attachment
+                // set related index, update sort_order to db record, bulk update sort_order column
+                $sortedAttachmentsIds = collect($input['attachments'])->pluck('sort_order', key: 'id')->toArray();
+                $dbAttachments = MemoAttachment::where('user_id', $userId)->whereIn('id', $attachmentIds)->get();
+                foreach ($dbAttachments as $attachment) {
+                    $attachment->sort_order = $sortedAttachmentsIds[$attachment->id];
+                }
+
+                MemoAttachment::where('user_id', $userId)
+                    ->upsert($dbAttachments->toArray(), ['id'], ['sort_order']);
             }
 
-            MemoAttachment::where('user_id', $userId)
-                ->upsert($dbAttachments->toArray(), ['id'], ['sort_order']);
+            // update previous created link relationship
+            if (!empty($input['links'])) {
+                $linkIds = array_column($input['links'], 'id');
+                MemoLink::where('user_id', $userId)
+                    ->whereIn('id', $linkIds)
+                    ->update([
+                        'memo_id' => $memo->id,
+                    ]);
+            }
 
             // load attachment
             $memo->load([
                 'user',
                 'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
+                'links',
             ]);
 
             return $memo;
@@ -79,6 +92,7 @@ class MemoController extends ApiController
             ->with([
                 'user',
                 'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
+                'links',
                 'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
             ])
             ->withExists([
@@ -105,6 +119,7 @@ class MemoController extends ApiController
             ->with([
                 'user',
                 'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
+                'links',
                 'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
             ])
             ->withExists([
@@ -159,10 +174,24 @@ class MemoController extends ApiController
                     ->upsert($dbAttachments->toArray(), ['id'], ['sort_order']);
             }
 
+            // update link relationship
+            if (!empty($input['links'])) {
+                $linkIds = array_column($input['links'], 'id');
+
+                // update memo_id for new links
+                MemoLink::where('user_id', $userId)
+                    ->whereIn('id', $linkIds)
+                    ->whereNull('memo_id')
+                    ->update([
+                        'memo_id' => $memo->id,
+                    ]);
+            }
+
             // load relations
             $memo->load([
                 'user',
                 'attachments' => fn(HasMany $attachments) => $attachments->orderBy('sort_order', 'asc'),
+                'links',
                 'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
             ]);
 

@@ -4,6 +4,8 @@ namespace App\Api\Version1\Requests\Pulse\Memo;
 
 use App\Api\Version1\Bases\ApiFormRequest;
 use App\Api\Version1\Rules\MustUserMemoAttachments;
+use App\Api\Version1\Rules\MustUserMemoLinks;
+use App\Services\SettingsService;
 use Illuminate\Validation\Rule;
 
 class UpdateRequest extends ApiFormRequest
@@ -14,6 +16,10 @@ class UpdateRequest extends ApiFormRequest
     public function authorize(): bool {
         return auth()->check();
     }
+
+    public function __construct(
+        private readonly SettingsService $settingsService,
+    ) {}
 
     /**
      * Get the validation rules that apply to the request.
@@ -44,12 +50,19 @@ class UpdateRequest extends ApiFormRequest
             'attachments' => [
                 'nullable',
                 'array',
-                'max:8',
+                'max:'.$this->settingsService->get('attachment.max_files', 8),
                 new MustUserMemoAttachments(),
             ],
             'attachments.*.id' => ['required', 'integer'],
             'attachments.*.filename' => ['required', 'string'],
             'attachments.*.sort_order' => ['required', 'integer'],
+            'links' => [
+                'nullable',
+                'array',
+                new MustUserMemoLinks(),
+            ],
+            'links.*.id' => ['required', 'integer'],
+            'links.*.url' => ['required', 'string'],
         ];
     }
 }
