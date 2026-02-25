@@ -69,8 +69,8 @@ const handleDelete = async () => {
 };
 
 const handleNoMoreAction = () => {
-    toast.info("No more action in comment page");
-}
+    toast.info('No more action in comment page');
+};
 </script>
 
 <template>
@@ -87,6 +87,6 @@ const handleNoMoreAction = () => {
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
-        <Ellipsis v-else :size="16" @click="handleNoMoreAction"" />
+        <Ellipsis v-else :size="16" @click="handleNoMoreAction" />
     </div>
 </template>
