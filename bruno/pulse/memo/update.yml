@@ -36,6 +36,12 @@ http:
             "filename": "3.png",
             "sort_order": 2
           }
+        ],
+        "links": [
+          {
+            "id": 1,
+            "url": "https://non-exists.com"
+          }
         ]
       }
   auth: inherit
