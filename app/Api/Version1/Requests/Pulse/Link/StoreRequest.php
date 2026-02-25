@@ -3,7 +3,7 @@
 namespace App\Api\Version1\Requests\Pulse\Link;
 
 use App\Api\Version1\Bases\ApiFormRequest;
-use App\Api\Version1\Rules\MustNotUnsavedMemoLinkExists;
+use App\Api\Version1\Rules\MustNoUnsavedMemoLinkExists;
 
 class StoreRequest extends ApiFormRequest
 {
@@ -26,7 +26,7 @@ class StoreRequest extends ApiFormRequest
                 'string',
                 'max:2048',
                 'url',
-                new MustNotUnsavedMemoLinkExists(),
+                new MustNoUnsavedMemoLinkExists(),
             ],
             'title' => [
                 'required',

@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Auth;
 
-class MustNotUnsavedMemoLinkExists implements ValidationRule
+class MustNoUnsavedMemoLinkExists implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void {
         $exists = MemoLink::where('url', $value)
