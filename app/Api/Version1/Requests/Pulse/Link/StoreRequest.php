@@ -38,7 +38,7 @@ class StoreRequest extends ApiFormRequest
                 'string',
             ],
             'image' => [
-                'required',
+                'nullable',
                 'string',
                 'max:2048',
             ],
