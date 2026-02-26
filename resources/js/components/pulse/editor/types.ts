@@ -3,6 +3,13 @@ import { Ref } from 'vue';
 export type Attachment = PulseAttachmentUploadResponse['data'][number];
 export type TagOrderedList = Record<string, number>;
 
+export type Link = {
+    url: string;
+    title: string;
+    description: string;
+    image: string;
+};
+
 export interface EditorMethods {
     insertText: (text: string, prefix?: string, suffix?: string) => void;
     removeText: (start: number, length: number) => void;

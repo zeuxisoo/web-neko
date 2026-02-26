@@ -19,19 +19,15 @@ import { WhoopsHandler } from '@/utils';
 import { ExternalLink, LinkIcon, LoaderIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
+import { Link } from '../../types';
 
 const isLoading = ref(false);
 const isOpen = ref(false);
 const linkUrl = ref('https://example.com');
-const fetchedLink = ref<{
-    url: string;
-    title: string;
-    description: string;
-    image: string;
-} | null>(null);
+const fetchedLink = ref<Link>();
 
 const emit = defineEmits<{
-    (e: 'linked', link: typeof fetchedLink.value): void;
+    (e: 'linked', link: Link): void;
 }>();
 
 const handleFetch = async () => {
@@ -72,7 +68,7 @@ const handleSave = () => {
 
     isOpen.value = !isOpen.value;
 
-    fetchedLink.value = null;
+    fetchedLink.value = undefined;
 };
 </script>
 
@@ -131,7 +127,7 @@ const handleSave = () => {
 
                 <DialogFooter>
                     <DialogClose as-child>
-                        <Button variant="outline" @click="fetchedLink = null">Cancel</Button>
+                        <Button variant="outline" @click="fetchedLink = undefined">Cancel</Button>
                     </DialogClose>
                     <Button type="submit" variant="secondary" @click="handleFetch" :disabled="!linkUrl || isLoading">
                         <LoaderIcon v-if="isLoading" :class="{ 'animate-spin': isLoading }" />
