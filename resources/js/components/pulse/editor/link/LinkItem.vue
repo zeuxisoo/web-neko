@@ -10,7 +10,7 @@ const props = defineProps<{
 const emit = defineEmits<{
     remove: [index: number];
 }>();
-console.log(props.links);
+
 const alertDialog = useAlertDialog();
 
 const handleDelete = async (link: Link, index: number) => {

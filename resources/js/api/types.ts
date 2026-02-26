@@ -100,6 +100,15 @@ interface PulseMemoStoreResponse extends ApiResponse {
             size: number;
             sort_order: number;
             links: Record<'cover' | 'thumb', string>;
+            created_at: string;
+        }[];
+        links: {
+            id: number;
+            url: string;
+            title: string;
+            description: string;
+            image: string;
+            created_at: string;
         }[];
         is_bookmarked: boolean;
         comments_count: number;
