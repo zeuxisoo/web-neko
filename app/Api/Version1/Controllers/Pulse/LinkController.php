@@ -61,10 +61,10 @@ class LinkController extends ApiController
             $data = [
                 'title' => $meta['title'] ?? '',
                 'description' => $meta['description'] ?? '',
-                'url' => $meta['url'],
+                'url' => $meta['url'] ?? $input['url'],
                 'image' => $meta['image:secure_url'] ?? $meta['image'] ?? '',
                 'extra' => [
-                    'site_name' => $meta['site_name'],
+                    'site_name' => $meta['site_name'] ?? '',
                     'image_attribute' => [
                         'width' => $meta['image:width'] ?? 0,
                         'height' => $meta['image:height'] ?? 0,
