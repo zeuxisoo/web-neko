@@ -101,7 +101,7 @@ const handleSave = () => {
                         </InputGroupAddon>
                     </InputGroup>
                     <Separator v-if="fetchedLink" class="my-4" />
-                    <div v-if="fetchedLink" class="space-y-4">
+                    <div v-if="fetchedLink">
                         <div class="flex gap-4">
                             <div class="flex-1 space-y-3">
                                 <div>
@@ -117,7 +117,7 @@ const handleSave = () => {
                                         v-if="fetchedLink.image"
                                         :src="fetchedLink.image"
                                         class="mt-1 h-18 w-18 rounded-md object-cover"
-                                        alt="Link preview"
+                                        alt="Link image preview"
                                     />
                                 </div>
                             </div>
