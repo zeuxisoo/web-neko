@@ -16,6 +16,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/base/
 import { Label } from '@/components/base/label';
 import { Separator } from '@/components/base/separator';
 import { WhoopsHandler } from '@/utils';
+import { formatISO } from 'date-fns';
 import { ExternalLink, LinkIcon, LoaderIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
@@ -44,10 +45,12 @@ const handleFetch = async () => {
             const result = data.value;
 
             fetchedLink.value = {
+                id: 0, // fetch only no db records
                 url: result.data.url,
                 title: result.data.title || '',
                 description: result.data.description || '',
                 image: result.data.image || '',
+                created_at: formatISO(new Date()),
             };
         } else {
             throw error.value;

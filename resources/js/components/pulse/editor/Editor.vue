@@ -4,9 +4,10 @@ import { useTextareaAutosize } from '@vueuse/core';
 import { computed, ref, watch } from 'vue';
 import { ActionButton } from './action-button';
 import { AttachmentList } from './attachment';
+import { LinkList } from './link';
 import TagList from './tags/TagList.vue';
 import TagsSuggestion from './tags/TagsSuggestion.vue';
-import { Attachment, TagOrderedList } from './types';
+import { Attachment, Link, TagOrderedList } from './types';
 
 // experimental: for Parent.v-model
 const modelValue = defineModel({
@@ -17,10 +18,11 @@ const modelValue = defineModel({
 const emit = defineEmits([
     'update:modelValue',
     'uploaded',
-    'linked',
     'attachmentUp',
     'attachmentDown',
     'attachmentRemove',
+    'linked',
+    'linkRemove',
     'extractedTags',
     'submit',
     'cancel',
@@ -31,12 +33,14 @@ const props = defineProps<{
     enableCancel: boolean;
     tags: TagOrderedList;
     attachments: Attachment[];
+    links: Link[];
 }>();
 
 const { textarea: editorRef, input: editor, triggerResize: updateEditorHeight } = useTextareaAutosize();
 
 const tags = computed(() => props.tags);
 const attachments = computed(() => props.attachments);
+const links = computed(() => props.links);
 const extractedTags = ref<string[]>([]);
 
 const handleSubmit = () => {
@@ -142,6 +146,7 @@ const editorMethods = {
                         @down="emit('attachmentDown', $event)"
                         @remove="emit('attachmentRemove', $event)"
                     />
+                    <LinkList :links="links" @remove="emit('linkRemove', $event)" />
                 </div>
                 <div class="flex gap-2">
                     <ActionButton
