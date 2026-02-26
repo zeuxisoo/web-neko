@@ -30,9 +30,9 @@ const handleDelete = async (link: Link, index: number) => {
         <div class="h-8 w-8 shrink-0 overflow-hidden rounded-sm">
             <img :src="link.image" class="h-full w-full object-cover" />
         </div>
-        <div class="flex flex-1 flex-col gap-1">
-            <span class="truncate font-medium">{{ link.title }}</span>
-            <span class="truncate text-muted-foreground">{{ link.url }}</span>
+        <div class="flex w-0 flex-1 flex-col gap-1">
+            <span class="truncate overflow-hidden font-medium">{{ link.title }}</span>
+            <span class="truncate overflow-hidden text-muted-foreground">{{ link.url }}</span>
         </div>
         <div className="flex items-center gap-1.5">
             <button class="rouned-sm text-xs transition-colors hover:bg-accent" title="remove">
