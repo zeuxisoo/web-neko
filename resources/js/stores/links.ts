@@ -12,7 +12,7 @@ const useLinksStore = (id: string = 'default') => {
         actions: {
             async fetchUnsaved() {
                 try {
-                    const { data, error } = await api.pulse.link.unsaved().json<PulseLinkStoreResponse>();
+                    const { data, error } = await api.pulse.link.unsaved().json<PulseLinkUnsavedResponse>();
 
                     if (error.value) {
                         throw error.value;
@@ -20,9 +20,11 @@ const useLinksStore = (id: string = 'default') => {
 
                     if (data && data.value) {
                         const result = data.value;
-                        const link = result.data;
+                        const linkList = result.data;
 
-                        this.links.push(link);
+                        for (const link of linkList) {
+                            this.links.push(link);
+                        }
                     } else {
                         throw error.value;
                     }
