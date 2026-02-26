@@ -5,6 +5,7 @@ import MemoActionComment from '../memo-body/MemoActionComment.vue';
 import MemoActionMore from '../memo-body/MemoActionMore.vue';
 import MemoAttachment from '../memo-body/MemoAttachment.vue';
 import MemoContent from '../memo-body/MemoContent.vue';
+import MemoLink from '../memo-body/MemoLink.vue';
 
 const props = withDefaults(
     defineProps<{
@@ -31,6 +32,7 @@ const handleEdit = () => {
     <div class="flex flex-col gap-2">
         <MemoContent :content="props.memo.content" />
         <MemoAttachment :attachments="props.memo.attachments" />
+        <MemoLink :links="props.memo.links" />
         <div class="gap-2">
             <Badge variant="secondary" v-for="(tag, i) in props.memo.tags" :key="i"> #{{ tag.name }} </Badge>
         </div>
