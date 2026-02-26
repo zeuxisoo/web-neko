@@ -17,6 +17,7 @@ const modelValue = defineModel({
 const emit = defineEmits([
     'update:modelValue',
     'uploaded',
+    'linked',
     'attachmentUp',
     'attachmentDown',
     'attachmentRemove',
@@ -147,6 +148,7 @@ const editorMethods = {
                         :isLoading="isLoading"
                         :enableCancel="props.enableCancel"
                         @uploaded="emit('uploaded', $event)"
+                        @linked="emit('linked', $event)"
                         @submit="handleSubmit"
                         @cancel="emit('cancel')"
                     />

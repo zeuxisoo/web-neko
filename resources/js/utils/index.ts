@@ -32,6 +32,7 @@ const fillAttachments = (attachments: Attachment[], attachment: PulseAttachmentU
         mime_type: attachment.mime_type || 'application/octet-stream',
         size: attachment.size,
         sort_order: attachment.sort_order,
+        created_at: attachment.created_at,
         links: attachment.links,
     });
 };

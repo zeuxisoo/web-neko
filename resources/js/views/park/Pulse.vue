@@ -2,6 +2,7 @@
 import api from '@/api';
 import { Editor, MemoList } from '@/components/pulse';
 import { SubmitData } from '@/components/pulse/editor/types';
+import { useLinksStore } from '@/stores';
 import useAttachmentsStore from '@/stores/attachments';
 import useMemosStore from '@/stores/memos';
 import useTagsStore from '@/stores/tags';
@@ -18,9 +19,10 @@ const extractedTags = ref<string[]>([]);
 const route = useRoute();
 const tagsStore = useTagsStore();
 const attachmentsStore = useAttachmentsStore();
+const linkStore = useLinksStore();
 const memosStore = useMemosStore();
 
-onMounted(() => Promise.all([tagsStore.fetch(), attachmentsStore.fetchUnsaved()]));
+onMounted(() => Promise.all([tagsStore.fetch(), attachmentsStore.fetchUnsaved(), linkStore.fetchUnsaved()]));
 
 const handleExtractedTags = (tags: string[]) => {
     extractedTags.value = tags;
@@ -35,6 +37,13 @@ const handleSubmit = async (_: SubmitData) => {
         };
     });
 
+    const linkList = linkStore.links.map((link, index) => {
+        return {
+            id: link.id,
+            url: link.url,
+        };
+    });
+
     try {
         isLoading.value = true;
 
@@ -42,6 +51,7 @@ const handleSubmit = async (_: SubmitData) => {
             content: editor.value,
             tags: extractedTags.value,
             attachments: attachmentList,
+            links: linkList,
         });
 
         const { data, error } = await api.pulse.memo.store(formData as PulseMemoStorePayload).json<PulseMemoStoreResponse>();
@@ -62,6 +72,7 @@ const handleSubmit = async (_: SubmitData) => {
             // cleanup extracted tag in pulse and attachments in store
             extractedTags.value = [];
             attachmentsStore.attachments = [];
+            linkStore.links = [];
 
             toast.info('Memo created');
         } else {
@@ -95,6 +106,7 @@ watch(
             :tags="tagsStore.tags"
             :attachments="attachmentsStore.attachments"
             @uploaded="attachmentsStore.onUploaded"
+            @linked="linkStore.onLinked"
             @attachmentUp="attachmentsStore.onAttachmentUp"
             @attachmentDown="attachmentsStore.onAttachmentDown"
             @attachmentRemove="attachmentsStore.removeAttachment"

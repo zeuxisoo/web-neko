@@ -15,7 +15,7 @@ const settingsStore = useSettingsStore();
 const allowedTypes = computed(() => {
     // convert extensions ['jpeg', 'jpg', 'png'] to MIME types ['image/jpeg', 'image/jpg', 'image/png']
     // jpg and jpeg both map to image/jpeg in browser's file.type
-    return (settingsStore.attachment?.allowed_mimes ?? []).map((ext) => {
+    return (settingsStore.attachment?.allowed_mimes ?? []).map((ext: string) => {
         return ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
     });
 });

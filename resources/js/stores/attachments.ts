@@ -53,7 +53,7 @@ const useAttachmentsStore = (id: string = 'default') => {
                         throw error.value;
                     }
                 } catch (e: unknown) {
-                    WhoopsHandler.handleError(e, 'Unknown error when remove attachment action in park pulse');
+                    WhoopsHandler.handleError(e, 'Unknown error when remove attachment action in attachment store');
                 }
             },
             onUploaded(files: Attachment[]) {

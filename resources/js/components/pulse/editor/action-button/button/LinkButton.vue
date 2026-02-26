@@ -59,11 +59,36 @@ const handleFetch = async () => {
     }
 };
 
-const handleSave = () => {
+const handleSave = async () => {
     if (fetchedLink.value) {
-        emit('linked', fetchedLink.value);
+        isLoading.value = true;
 
-        toast.success('Link added successfully');
+        try {
+            const { data, error } = await api.pulse.link
+                .store({
+                    url: fetchedLink.value.url,
+                    title: fetchedLink.value.title,
+                    description: fetchedLink.value.description,
+                    image: fetchedLink.value.image,
+                })
+                .json<PulseLinkStoreResponse>();
+
+            if (error.value) {
+                throw error.value;
+            }
+
+            if (data.value && data.value.ok) {
+                emit('linked', fetchedLink.value);
+
+                toast.success('Link added successfully');
+            } else {
+                throw error.value;
+            }
+        } catch (e: unknown) {
+            WhoopsHandler.handleError(e, 'Unknown error on handle save link action');
+        } finally {
+            isLoading.value = false;
+        }
     }
 
     isOpen.value = !isOpen.value;
@@ -133,7 +158,10 @@ const handleSave = () => {
                         <LoaderIcon v-if="isLoading" :class="{ 'animate-spin': isLoading }" />
                         <template v-else>Fetch</template>
                     </Button>
-                    <Button v-if="fetchedLink" type="submit" @click="handleSave"> Save </Button>
+                    <Button v-if="fetchedLink" type="submit" :disabled="isLoading" @click="handleSave">
+                        <LoaderIcon v-if="isLoading" :class="{ 'animate-spin': isLoading }" />
+                        <template v-else>Save</template>
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

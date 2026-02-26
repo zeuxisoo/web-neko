@@ -6,6 +6,7 @@ type AuthStorageValue = {
 
 type Memo = PulseMemoIndexResponse['data'][number];
 type Attachment = PulseAttachmentUploadResponse['data'][number];
+type Link = PulseLinkStoreResponse['data'];
 type Comment_ = PulseCommentIndexResponse['data'][number];
 
 type TagOrderedList = Record<string, number>;

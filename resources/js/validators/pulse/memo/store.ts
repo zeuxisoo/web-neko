@@ -6,6 +6,7 @@ class PulseMemoStore extends Validator {
             content: ['required'],
             tags: ['present'],
             attachments: ['present'],
+            links: ['present'],
         };
     }
 
@@ -14,6 +15,7 @@ class PulseMemoStore extends Validator {
             'content.required': 'Please enter content',
             'tags.present': 'Tags must be present in form data',
             'attachments.present': 'Attachments must be present in form data',
+            'links.present': 'Links must be present in form data',
         };
     }
 }

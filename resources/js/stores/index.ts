@@ -2,6 +2,7 @@ import { createPinia } from 'pinia';
 import useAttachmentsStore from './attachments';
 import useAuthStore from './auth';
 import useCommentsStore from './comments';
+import useLinksStore from './links';
 import useMemosStore from './memos';
 import useSettingsStore from './settings';
 import useTagsStore from './tags';
@@ -10,4 +11,4 @@ import useUserStore from './user';
 const pinia = createPinia();
 
 export default pinia;
-export { useAttachmentsStore, useAuthStore, useCommentsStore, useMemosStore, useSettingsStore, useTagsStore, useUserStore };
+export { useAttachmentsStore, useAuthStore, useCommentsStore, useLinksStore, useMemosStore, useSettingsStore, useTagsStore, useUserStore };
