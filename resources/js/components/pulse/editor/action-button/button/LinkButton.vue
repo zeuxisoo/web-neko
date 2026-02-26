@@ -81,7 +81,14 @@ const handleSave = async () => {
             }
 
             if (data.value && data.value.ok) {
-                emit('linked', fetchedLink.value);
+                const result = data.value;
+                const link = result.data;
+
+                emit('linked', {
+                    ...fetchedLink.value,
+                    id: link.id, // update to stored db records
+                    created_at: link.created_at,
+                });
 
                 toast.success('Link added successfully');
             } else {
