@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { useAlertDialog } from '@/components/alert-dialog';
-import { XIcon } from 'lucide-vue-next';
+import { LinkIcon, XIcon } from 'lucide-vue-next';
 import { Link } from '../types';
 
 const props = defineProps<{
@@ -27,9 +28,12 @@ const handleDelete = async (link: Link, index: number) => {
 
 <template>
     <div class="flex items-center gap-2 px-0.5 py-1 text-xs transition-all hover:bg-accent/50" v-for="(link, index) in props.links" :key="index">
-        <div class="h-8 w-8 shrink-0 overflow-hidden rounded-sm">
-            <img :src="link.image" class="h-full w-full object-cover" />
-        </div>
+        <Avatar class="h-8 w-8 shrink-0 rounded-sm">
+            <AvatarImage v-if="link.image" :src="link.image" :alt="link.title" />
+            <AvatarFallback class="rounded-sm">
+                <LinkIcon :size="16" />
+            </AvatarFallback>
+        </Avatar>
         <div class="flex w-0 flex-1 flex-col gap-1">
             <span class="truncate overflow-hidden font-medium">{{ link.title }}</span>
             <span class="truncate overflow-hidden text-muted-foreground">{{ link.url }}</span>

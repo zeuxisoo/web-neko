@@ -127,7 +127,7 @@ watch(
         @submit="handleSubmit"
         @cancel="handleCancel"
     />
-    <Card class="gap-2" v-else>
+    <Card class="hover:border-1.5 gap-2 hover:bg-accent/35" v-else>
         <CardHeader>
             <MemoHeader :item="props.memo" />
         </CardHeader>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import api from '@/api';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { Button } from '@/components/base/button';
 import {
     Dialog,
@@ -47,8 +48,8 @@ const handleFetch = async () => {
             fetchedLink.value = {
                 id: 0, // fetch only no db records
                 url: result.data.url,
-                title: result.data.title || '',
-                description: result.data.description || '',
+                title: result.data.title || new URL(linkUrl.value).hostname,
+                description: result.data.description || 'no description',
                 image: result.data.image || '',
                 created_at: formatISO(new Date()),
             };
@@ -148,12 +149,12 @@ const handleSave = async () => {
                                     <Input id="link-description" v-model="fetchedLink.description" class="mt-1" />
                                 </div>
                                 <div class="flex justify-center">
-                                    <img
-                                        v-if="fetchedLink.image"
-                                        :src="fetchedLink.image"
-                                        class="mt-1 h-18 w-18 rounded-md object-cover"
-                                        alt="Link image preview"
-                                    />
+                                    <Avatar class="mt-1 h-18 w-18 rounded-md">
+                                        <AvatarImage v-if="fetchedLink.image" :src="fetchedLink.image" :alt="'Link image preview'" />
+                                        <AvatarFallback class="rounded-md">
+                                            <LinkIcon :size="32" />
+                                        </AvatarFallback>
+                                    </Avatar>
                                 </div>
                             </div>
                         </div>

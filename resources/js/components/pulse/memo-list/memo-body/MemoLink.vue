@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { LinkIcon } from 'lucide-vue-next';
 
 const props = defineProps<{
@@ -21,7 +22,12 @@ const props = defineProps<{
                 rel="noopener noreferrer"
                 class="flex items-start gap-2 rounded-sm border border-border p-2 transition-colors hover:bg-muted/50"
             >
-                <img v-if="link.image" :src="link.image" :alt="link.title" class="h-12 w-12 shrink-0 rounded-sm object-cover" />
+                <Avatar class="h-12 w-12 shrink-0 rounded-sm">
+                    <AvatarImage v-if="link.image" :src="link.image" :alt="link.title" />
+                    <AvatarFallback class="rounded-sm">
+                        <LinkIcon :size="16" class="text-muted-foreground" />
+                    </AvatarFallback>
+                </Avatar>
                 <div class="flex min-w-0 flex-col gap-1">
                     <span class="truncate text-sm font-medium text-foreground">{{ link.title }}</span>
                     <span class="truncate text-xs text-muted-foreground">{{ link.url }}</span>
