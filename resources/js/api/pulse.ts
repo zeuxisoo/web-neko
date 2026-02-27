@@ -96,6 +96,17 @@ class Comment {
 }
 
 class Link {
+    index(payload: PulseLinkIndexPayload) {
+        const entrypoint = 'pulse/link/index';
+
+        const params = new URLSearchParams();
+        params.append('page', payload.page.toString());
+
+        const url = entrypoint + '?' + params.toString();
+
+        return useAgent<PulseLinkIndexResponse>(url).get();
+    }
+
     store(payload: PulseLinkStorePayload) {
         return useAgent<PulseLinkStoreResponse>('pulse/link/store').post(payload);
     }
