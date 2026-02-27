@@ -16,6 +16,14 @@ use shweshi\OpenGraph\OpenGraph;
 
 class LinkController extends ApiController
 {
+    public function index(): JsonResource {
+        $links = MemoLink::where('user_id', $this->user()->id)
+            ->latest()
+            ->simplePaginate(8);
+
+        return new LinkResourceCollection($links);
+    }
+
     public function store(StoreRequest $request): JsonResource {
         $input = $request->validated();
 

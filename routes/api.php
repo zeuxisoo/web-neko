@@ -52,6 +52,7 @@ Route::prefix('v1')->group(function() {
                 Route::get('/unsaved', [Pulse\AttachmentController::class, 'unsaved'])->name('api.pulse.attachment.unsaved');
             });
             Route::prefix('link')->group(function() {
+                Route::get('/index', [Pulse\LinkController::class, 'index'])->name('api.pulse.link.index');
                 Route::post('/store', [Pulse\LinkController::class, 'store'])->name('api.pulse.link.store');
                 Route::get('/destroy/{id}', [Pulse\LinkController::class, 'destroy'])->name('api.pulse.link.destroy');
                 Route::get('/unsaved', [Pulse\LinkController::class, 'unsaved'])->name('api.pulse.link.unsaved');
