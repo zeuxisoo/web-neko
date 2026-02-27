@@ -44,6 +44,10 @@ const data = {
                     title: 'Attachment',
                     to: { name: 'park.attachment' },
                 },
+                {
+                    title: 'Link',
+                    to: { name: 'park.link' },
+                },
             ],
         },
         {

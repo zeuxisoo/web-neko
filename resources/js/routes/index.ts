@@ -1,5 +1,6 @@
 import NotFound from '@/views/misc/NotFound.vue';
 import Attachment from '@/views/park/Attachment.vue';
+import Link from '@/views/park/Link.vue';
 import Pulse from '@/views/park/Pulse.vue';
 import PulseComment from '@/views/park/PulseComment.vue';
 import SettingsIndex from '@/views/settings/Index.vue';
@@ -31,6 +32,11 @@ const routes: RouteRecordRaw[] = [
                 path: 'attachment',
                 name: 'park.attachment',
                 component: Attachment,
+            },
+            {
+                path: 'link',
+                name: 'park.link',
+                component: Link,
             },
         ],
     },
