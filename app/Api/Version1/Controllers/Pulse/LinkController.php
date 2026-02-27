@@ -5,6 +5,7 @@ namespace App\Api\Version1\Controllers\Pulse;
 use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Requests\Pulse\Link\DestroyRequest;
 use App\Api\Version1\Requests\Pulse\Link\FetchRequest;
+use App\Api\Version1\Requests\Pulse\Link\IndexRequest;
 use App\Api\Version1\Requests\Pulse\Link\StoreRequest;
 use App\Api\Version1\Resources\Pulse\LinkResource;
 use App\Api\Version1\Resources\Pulse\LinkResourceCollection;
@@ -16,10 +17,21 @@ use shweshi\OpenGraph\OpenGraph;
 
 class LinkController extends ApiController
 {
-    public function index(): JsonResource {
-        $links = MemoLink::where('user_id', $this->user()->id)
-            ->latest()
-            ->simplePaginate(8);
+    public function index(IndexRequest $request): JsonResource {
+        $input = $request->validated();
+
+        $builder = MemoLink::where('user_id', $this->user()->id);
+
+        if (!empty($input['keyword'])) {
+            $keyword = $input['keyword'];
+            $builder->where(function($q) use ($keyword) {
+                $q->where('title', 'like', "%{$keyword}%")
+                    ->orWhere('description', 'like', "%{$keyword}%")
+                    ->orWhere('url', 'like', "%{$keyword}%");
+            });
+        }
+
+        $links = $builder->latest()->simplePaginate(8);
 
         return new LinkResourceCollection($links);
     }

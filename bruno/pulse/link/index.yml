@@ -5,10 +5,14 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/pulse/link/index"
+  url: "{{baseUrl}}/pulse/link/index?keyword=.org"
   headers:
     - name: Authorization
       value: Bearer {{accessToken}}
+  params:
+    - name: keyword
+      value: .org
+      type: query
   body:
     type: json
     data: "{}"
