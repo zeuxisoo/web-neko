@@ -226,6 +226,7 @@ interface PulseLinkUnsavedResponse extends ApiResponse {
 
 type PulseLinkIndexPayload = {
     page: number;
+    keyword?: string;
 };
 
 interface PulseLinkIndexResponse extends ApiResponse {

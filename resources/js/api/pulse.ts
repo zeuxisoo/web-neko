@@ -102,6 +102,10 @@ class Link {
         const params = new URLSearchParams();
         params.append('page', payload.page.toString());
 
+        if (payload.keyword) {
+            params.append('keyword', payload.keyword);
+        }
+
         const url = entrypoint + '?' + params.toString();
 
         return useAgent<PulseLinkIndexResponse>(url).get();

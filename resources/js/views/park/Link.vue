@@ -2,9 +2,10 @@
 import api from '@/api';
 import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/base/input-group';
 import { Header } from '@/components/page';
 import { WhoopsHandler } from '@/utils';
-import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-vue-next';
+import { ChevronLeft, ChevronRight, ExternalLink, Search, X } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -13,14 +14,16 @@ const route = useRoute();
 
 const isLoading = ref(true);
 const links = ref<PulseLinkIndexResponse>();
+const keyword = ref('');
 
 const fetchLinks = async () => {
     isLoading.value = true;
 
     try {
         const page = Number(router.currentRoute.value.query.page) || 1;
+        const searchKeyword = keyword.value;
 
-        const { data, error } = await api.pulse.link.index({ page }).json<PulseLinkIndexResponse>();
+        const { data, error } = await api.pulse.link.index({ page, keyword: searchKeyword }).json<PulseLinkIndexResponse>();
 
         if (error.value) {
             throw error.value;
@@ -70,9 +73,41 @@ const handleOpenLink = (url: string) => {
     window.open(url, '_blank');
 };
 
+const handleSearch = () => {
+    router.push({
+        name: 'park.link',
+        query: {
+            ...router.currentRoute.value.query,
+            page: 1,
+            keyword: keyword.value || undefined,
+        },
+    });
+};
+
+const handleSearchInput = (e: InputEvent) => {
+    const target = e.target as HTMLInputElement;
+
+    keyword.value = target.value;
+};
+
+const handleSearchClear = () => {
+    keyword.value = '';
+
+    router.push({
+        name: 'park.link',
+        query: {
+            ...router.currentRoute.value.query,
+            page: 1,
+            keyword: undefined,
+        },
+    });
+};
+
 watch(
-    [() => route.query.page],
+    [() => route.query.page, () => route.query.keyword],
     () => {
+        keyword.value = route.query.keyword as string;
+
         fetchLinks();
     },
     { immediate: true },
@@ -91,6 +126,25 @@ watch(
                     {{ links.data.length }}
                 </span>
             </Header>
+
+            <Card class="py-2">
+                <CardContent>
+                    <div class="flex items-center gap-2">
+                        <InputGroup>
+                            <InputGroupInput v-model="keyword" placeholder="Search links..." @input="handleSearchInput" @keyup.enter="handleSearch" />
+                            <InputGroupAddon>
+                                <Search />
+                            </InputGroupAddon>
+                            <InputGroupAddon align="inline-end" @click="handleSearchClear">
+                                <X v-if="keyword" />
+                            </InputGroupAddon>
+                        </InputGroup>
+                        <Button @click="handleSearch">
+                            <Search class="h-4 w-4" />
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
 
             <template v-if="links.data.length > 0">
                 <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
