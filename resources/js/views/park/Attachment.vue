@@ -2,7 +2,7 @@
 import api from '@/api';
 import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
-import { Header } from '@/components/page';
+import { EmptyState, Header } from '@/components/page';
 import { Attachment } from '@/components/pulse/editor/types';
 import { WhoopsHandler } from '@/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
@@ -164,22 +164,7 @@ watch(
             </template>
         </template>
 
-        <div v-if="isLoading || !attachments?.data || attachments.data.length === 0">
-            <Card>
-                <CardContent>
-                    <div v-if="isLoading" class="flex h-64 items-center justify-center">
-                        <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-                    </div>
-
-                    <div
-                        v-else-if="!attachments?.data || attachments.data.length === 0"
-                        class="flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed"
-                    >
-                        <p class="text-sm text-muted-foreground">No attachments yet</p>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
+        <EmptyState :is-loading="isLoading" message="No attachments yet" />
     </div>
 
     <LightBox ref="lightBoxRef" :media="lightboxAttachments" :showLightBox="showLightBox" :interfaceHideTime="86400" :showCaption="true" />
