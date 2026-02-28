@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/base/card';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/base/input-group';
 import { EmptyState, Header } from '@/components/page';
 import { WhoopsHandler } from '@/utils';
-import { ChevronLeft, ChevronRight, ExternalLink, Search, X } from 'lucide-vue-next';
+import { ChevronLeft, ChevronRight, ExternalLink, Loader2, Search, X } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -13,11 +13,13 @@ const router = useRouter();
 const route = useRoute();
 
 const isLoading = ref(true);
+const isSearching = ref(false);
 const links = ref<PulseLinkIndexResponse>();
 const keyword = ref('');
 
 const fetchLinks = async () => {
     isLoading.value = true;
+    isSearching.value = true;
 
     try {
         const page = Number(router.currentRoute.value.query.page) || 1;
@@ -38,6 +40,7 @@ const fetchLinks = async () => {
         WhoopsHandler.handleError(e, 'Unknown error when fetch link list action in link page');
     } finally {
         isLoading.value = false;
+        isSearching.value = false;
     }
 };
 
@@ -74,6 +77,8 @@ const handleOpenLink = (url: string) => {
 };
 
 const handleSearch = () => {
+    isSearching.value = true;
+
     router.push({
         name: 'park.link',
         query: {
@@ -139,8 +144,9 @@ watch(
                                 <X v-if="keyword" />
                             </InputGroupAddon>
                         </InputGroup>
-                        <Button @click="handleSearch">
-                            <Search class="h-4 w-4" />
+                        <Button @click="handleSearch" :disabled="isSearching">
+                            <Loader2 v-if="isSearching" class="h-4 w-4 animate-spin" />
+                            <Search v-else class="h-4 w-4" />
                         </Button>
                     </div>
                 </CardContent>
