@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { Alert, AlertDescription, AlertTitle } from '@/components/base/alert';
-import { Card, CardContent } from '@/components/base/card';
-import { Info } from 'lucide-vue-next';
+import { EmptyState } from '@/components/page';
 import MemoFilter from './MemoFilter.vue';
 import MemoItem from './MemoItem.vue';
 import MemoPagination from './MemoPagination.vue';
 
 const props = defineProps<{
+    isLoading: boolean;
     memos: PulseMemoIndexResponse | null;
 }>();
 </script>
@@ -18,16 +17,7 @@ const props = defineProps<{
             <MemoItem :memo="memo" v-for="memo in props.memos.data" :key="memo.id" />
             <MemoPagination :links="props.memos.links" :meta="props.memos.meta" v-if="props.memos.data.length > 0" />
         </template>
-        <template v-if="!props.memos || props.memos.data.length <= 0">
-            <Card>
-                <CardContent>
-                    <Alert>
-                        <Info />
-                        <AlertTitle>Oops!</AlertTitle>
-                        <AlertDescription>Do you want to create first memo?</AlertDescription>
-                    </Alert>
-                </CardContent>
-            </Card>
-        </template>
+
+        <EmptyState :is-loading="props.isLoading" message="No memos yet" v-if="!props.memos || props.memos.data.length <= 0" />
     </div>
 </template>

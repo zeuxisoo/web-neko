@@ -4,10 +4,13 @@ import { defineStore } from 'pinia';
 
 const useMemosStore = defineStore('memos', {
     state: () => ({
+        isLoading: false,
         memos: null as PulseMemoIndexResponse | null,
     }),
     actions: {
         async fetchList(page: number = 1, tag: string = '') {
+            this.isLoading = true;
+
             try {
                 const { data, error } = await api.pulse.memo.index({ page, tag }).json<PulseMemoIndexResponse>();
 
@@ -22,6 +25,8 @@ const useMemosStore = defineStore('memos', {
                 }
             } catch (e: unknown) {
                 WhoopsHandler.handleError(e, 'Unknown error when fetch memo list action in memo store');
+            } finally {
+                this.isLoading = false;
             }
         },
         prepend(memo: Memo) {

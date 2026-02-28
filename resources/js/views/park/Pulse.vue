@@ -115,6 +115,6 @@ watch(
             @extractedTags="handleExtractedTags"
             @submit="handleSubmit"
         />
-        <MemoList :memos="memosStore.memos" />
+        <MemoList :is-loading="memosStore.isLoading" :memos="memosStore.memos" />
     </div>
 </template>
