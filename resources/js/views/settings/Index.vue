@@ -24,7 +24,7 @@ const userStore = useUserStore();
             </CardContent>
         </Card>
 
-        <Tabs default-value="attachment">
+        <Tabs default-value="attachment" v-else>
             <TabsList>
                 <TabsTrigger value="attachment"> Attachment </TabsTrigger>
             </TabsList>
