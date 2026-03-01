@@ -59,6 +59,7 @@ Route::prefix('v1')->group(function() {
                 Route::post('/fetch', [Pulse\LinkController::class, 'fetch'])->name('api.pulse.link.fetch');
             });
             Route::prefix('bookmark')->group(function() {
+                Route::get('/index', [Pulse\BookmarkController::class, 'index'])->name('api.pulse.bookmark.index');
                 Route::get('/add/{memo_id}', [Pulse\BookmarkController::class, 'add'])->name('api.pulse.bookmark.add');
                 Route::get('/remove/{memo_id}', [Pulse\BookmarkController::class, 'remove'])->name('api.pulse.bookmark.remove');
             });
