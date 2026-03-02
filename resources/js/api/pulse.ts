@@ -63,6 +63,17 @@ class Memo {
 }
 
 class Bookmark {
+    index(payload: PulseBookmarkIndexPayload) {
+        const entrypoint = 'pulse/bookmark/index';
+
+        const params = new URLSearchParams();
+        params.append('page', payload.page.toString());
+
+        const url = entrypoint + '?' + params.toString();
+
+        return useAgent<PulseBookmarkIndexResponse>(url).get();
+    }
+
     add(memoId: number) {
         return useAgent<PulseBookmarkAddResponse>('pulse/bookmark/add/' + memoId).get();
     }

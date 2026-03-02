@@ -179,11 +179,33 @@ interface PulseAttachmentDestroyResponse extends ApiResponse {
     data: string[];
 }
 
+// pulse bookmark
+type PulseBookmarkIndexPayload = {
+    page: number;
+};
+
+interface PulseBookmarkIndexResponse extends ApiResponse {
+    data: PulseMemoStoreResponse['data'][];
+    links: {
+        first: string;
+        last: string;
+        next: string;
+        prev: string;
+    };
+    meta: {
+        current_page: number;
+        current_page_url: string;
+        from: number;
+        path: string;
+        per_page: number;
+        to: number;
+    };
+}
+
 interface PulseBookmarkAddResponse extends ApiResponse {
     data: string[];
 }
 
-// pulse bookmark
 interface PulseBookmarkRemoveResponse extends ApiResponse {
     data: string[];
 }
