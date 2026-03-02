@@ -1,5 +1,6 @@
 import NotFound from '@/views/misc/NotFound.vue';
 import Attachment from '@/views/park/Attachment.vue';
+import Bookmark from '@/views/park/Bookmark.vue';
 import Link from '@/views/park/Link.vue';
 import Pulse from '@/views/park/Pulse.vue';
 import PulseComment from '@/views/park/PulseComment.vue';
@@ -27,6 +28,11 @@ const routes: RouteRecordRaw[] = [
                 path: 'pulse/comment/:id',
                 name: 'park.pulse.comment',
                 component: PulseComment,
+            },
+            {
+                path: 'pulse/bookmark/',
+                name: 'park.bookmark',
+                component: Bookmark,
             },
             {
                 path: 'attachment',
