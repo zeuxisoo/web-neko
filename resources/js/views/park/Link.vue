@@ -191,6 +191,6 @@ watch(
             </template>
         </template>
 
-        <EmptyState :is-loading="isLoading" message="No links yet" />
+        <EmptyState :is-loading="isLoading" message="No links yet" v-if="!links || links.data.length <= 0" />
     </div>
 </template>

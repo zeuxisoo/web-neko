@@ -164,7 +164,7 @@ watch(
             </template>
         </template>
 
-        <EmptyState :is-loading="isLoading" message="No attachments yet" />
+        <EmptyState :is-loading="isLoading" message="No attachments yet" v-if="!attachments || attachments.data.length <= 0" />
     </div>
 
     <LightBox ref="lightBoxRef" :media="lightboxAttachments" :showLightBox="showLightBox" :interfaceHideTime="86400" :showCaption="true" />
