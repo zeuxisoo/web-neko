@@ -1,0 +1,28 @@
+info:
+  name: update
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseUrl}}/settings/pagination/update"
+  headers:
+    - name: Authorization
+      value: Bearer {{accessToken}}
+  body:
+    type: json
+    data: |-
+      {
+        "per_page_attachment": 2,
+        "per_page_bookmark": 8,
+        "per_page_comment": 8,
+        "per_page_link": 8,
+        "per_page_memo": 8
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
