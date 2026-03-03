@@ -8,6 +8,7 @@ use App\Api\Version1\Requests\Pulse\Bookmark\RemoveRequest;
 use App\Api\Version1\Resources\Pulse\MemoResourceCollection;
 use App\Models\Memo;
 use App\Models\MemoBookmark;
+use App\Services\SettingsService;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\JsonResponse;
@@ -15,6 +16,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class BookmarkController extends ApiController
 {
+    public function __construct(
+        private readonly SettingsService $settingsService,
+    ) {}
+
     public function index(): JsonResource {
         $userId = $this->user()->id;
 
@@ -32,7 +37,7 @@ class BookmarkController extends ApiController
                 'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
             ])
             ->latest()
-            ->simplePaginate(8);
+            ->simplePaginate($this->settingsService->get('pagination.per_page_bookmark', 8));
 
         return new MemoResourceCollection($memos);
     }

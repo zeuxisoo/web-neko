@@ -14,6 +14,7 @@ use App\Enums\TagKind;
 use App\Models\Memo;
 use App\Models\MemoAttachment;
 use App\Models\MemoLink;
+use App\Services\SettingsService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -24,6 +25,10 @@ use Illuminate\Support\Facades\Storage;
 
 class MemoController extends ApiController
 {
+    public function __construct(
+        private readonly SettingsService $settingsService,
+    ) {}
+
     public function store(StoreRequest $request): JsonResource {
         $input = $request->validated();
 
@@ -106,7 +111,7 @@ class MemoController extends ApiController
         }
 
         $memos = $builder->latest()
-            ->simplePaginate(8);
+            ->simplePaginate($this->settingsService->get('pagination.per_page_memo', 8));
 
         return new MemoResourceCollection($memos);
     }

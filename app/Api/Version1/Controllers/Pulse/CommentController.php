@@ -9,17 +9,22 @@ use App\Api\Version1\Resources\Pulse\MemoCommentResource;
 use App\Api\Version1\Resources\Pulse\MemoCommentResourceCollection;
 use App\Models\Memo;
 use App\Models\MemoComment;
+use App\Services\SettingsService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CommentController extends ApiController
 {
+    public function __construct(
+        private readonly SettingsService $settingsService,
+    ) {}
+
     public function index(IndexRequest $request): JsonResource {
         $input = $request->validated();
 
         $comments = MemoComment::where('memo_id', $input['memo_id'])
             ->with('user')
             ->oldest()
-            ->simplePaginate(8);
+            ->simplePaginate($this->settingsService->get('pagination.per_page_comment', 8));
 
         return new MemoCommentResourceCollection($comments);
     }

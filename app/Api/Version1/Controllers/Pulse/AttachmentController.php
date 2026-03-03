@@ -9,6 +9,7 @@ use App\Api\Version1\Requests\Pulse\Attachment\UploadRequest;
 use App\Api\Version1\Resources\Pulse\AttachmentResourceCollection;
 use App\Enums\AttachmentKind;
 use App\Models\MemoAttachment;
+use App\Services\SettingsService;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -21,6 +22,10 @@ use Intervention\Image\ImageManager;
 
 class AttachmentController extends ApiController
 {
+    public function __construct(
+        private readonly SettingsService $settingsService,
+    ) {}
+
     public function upload(UploadRequest $request): JsonResource {
         $files = $request->file('files');
 
@@ -59,7 +64,7 @@ class AttachmentController extends ApiController
     }
 
     public function index(IndexRequest $request): JsonResource {
-        $perPage = 2;
+        $perPage = $this->settingsService->get('pagination.per_page_attachment', 2);
 
         // Step 1: Get distinct years with cursor-based pagination
         $yearPaginator = MemoAttachment::selectRaw('strftime("%Y", created_at) as year, MAX(created_at) as max_created_at')

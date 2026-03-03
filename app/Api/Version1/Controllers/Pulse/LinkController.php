@@ -10,6 +10,7 @@ use App\Api\Version1\Requests\Pulse\Link\StoreRequest;
 use App\Api\Version1\Resources\Pulse\LinkResource;
 use App\Api\Version1\Resources\Pulse\LinkResourceCollection;
 use App\Models\MemoLink;
+use App\Services\SettingsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use shweshi\OpenGraph\Exceptions\FetchException;
@@ -17,6 +18,10 @@ use shweshi\OpenGraph\OpenGraph;
 
 class LinkController extends ApiController
 {
+    public function __construct(
+        private readonly SettingsService $settingsService,
+    ) {}
+
     public function index(IndexRequest $request): JsonResource {
         $input = $request->validated();
 
@@ -31,7 +36,7 @@ class LinkController extends ApiController
             });
         }
 
-        $links = $builder->latest()->simplePaginate(8);
+        $links = $builder->latest()->simplePaginate($this->settingsService->get('pagination.per_page_link', 8));
 
         return new LinkResourceCollection($links);
     }
