@@ -6,6 +6,7 @@ import { Header } from '@/components/page';
 import { useUserStore } from '@/stores';
 import { Info } from 'lucide-vue-next';
 import Attachment from './Attachment.vue';
+import General from './General.vue';
 
 const userStore = useUserStore();
 </script>
@@ -24,10 +25,14 @@ const userStore = useUserStore();
             </CardContent>
         </Card>
 
-        <Tabs default-value="attachment" v-else>
+        <Tabs default-value="general" v-else>
             <TabsList>
+                <TabsTrigger value="general"> General </TabsTrigger>
                 <TabsTrigger value="attachment"> Attachment </TabsTrigger>
             </TabsList>
+            <TabsContent value="general">
+                <General />
+            </TabsContent>
             <TabsContent value="attachment">
                 <Attachment />
             </TabsContent>
