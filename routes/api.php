@@ -77,6 +77,10 @@ Route::prefix('v1')->group(function() {
                 Route::get('/index', [Settings\AttachmentController::class, 'index'])->name('api.settings.attachment.index');
                 Route::post('/update', [Settings\AttachmentController::class, 'update'])->name('api.settings.attachment.update');
             });
+            Route::prefix('pagination')->group(function() {
+                Route::get('/index', [Settings\PaginationController::class, 'index'])->name('api.settings.pagination.index');
+                Route::post('/update', [Settings\PaginationController::class, 'update'])->name('api.settings.pagination.update');
+            });
         });
     });
 });
