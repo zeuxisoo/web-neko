@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { useAlertDialog } from '@/components/alert-dialog';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { LinkIcon, XIcon } from 'lucide-vue-next';
 import { Link } from '../types';
 
