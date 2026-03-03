@@ -10,8 +10,21 @@ class Attachment {
     }
 }
 
+class Pagination {
+    index() {
+        return useAgent<SettingsPaginationIndexResponse>('settings/pagination/index').get();
+    }
+
+    update(payload: SettingsPaginationUpdatePayload) {
+        return useAgent<SettingsPaginationUpdateResponse>('settings/pagination/update').post(payload);
+    }
+}
+
 export default {
     get attachment() {
         return new Attachment();
+    },
+    get pagination() {
+        return new Pagination();
     },
 };

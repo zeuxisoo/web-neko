@@ -352,3 +352,25 @@ interface SettingsAttachmentIndexResponse extends ApiResponse {
 interface SettingsAttachmentUpdateResponse extends ApiResponse {
     data: SettingsAttachmentIndexResponse['data'];
 }
+
+type SettingsPaginationUpdatePayload = {
+    per_page_attachment: number;
+    per_page_bookmark: number;
+    per_page_comment: number;
+    per_page_link: number;
+    per_page_memo: number;
+};
+
+interface SettingsPaginationIndexResponse extends ApiResponse {
+    data: {
+        per_page_attachment: number;
+        per_page_bookmark: number;
+        per_page_comment: number;
+        per_page_link: number;
+        per_page_memo: number;
+    };
+}
+
+interface SettingsPaginationUpdateResponse extends ApiResponse {
+    data: SettingsPaginationIndexResponse['data'];
+}
