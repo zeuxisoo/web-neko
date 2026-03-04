@@ -1,18 +1,10 @@
-import NotFound from '@/views/misc/NotFound.vue';
-import Attachment from '@/views/park/Attachment.vue';
-import Bookmark from '@/views/park/Bookmark.vue';
-import Link from '@/views/park/Link.vue';
-import Pulse from '@/views/park/Pulse.vue';
-import PulseComment from '@/views/park/PulseComment.vue';
-import SettingsIndex from '@/views/settings/Index.vue';
-import Account from '@/views/user/Account.vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
         name: 'index',
-        component: Pulse,
+        component: () => import('@/views/park/Pulse.vue'),
         alias: '/park',
     },
     {
@@ -22,27 +14,27 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'pulse',
                 name: 'park.pulse',
-                component: Pulse,
+                component: () => import('@/views/park/Pulse.vue'),
             },
             {
                 path: 'pulse/comment/:id',
                 name: 'park.pulse.comment',
-                component: PulseComment,
+                component: () => import('@/views/park/PulseComment.vue'),
             },
             {
                 path: 'pulse/bookmark/',
                 name: 'park.bookmark',
-                component: Bookmark,
+                component: () => import('@/views/park/Bookmark.vue'),
             },
             {
                 path: 'attachment',
                 name: 'park.attachment',
-                component: Attachment,
+                component: () => import('@/views/park/Attachment.vue'),
             },
             {
                 path: 'link',
                 name: 'park.link',
-                component: Link,
+                component: () => import('@/views/park/Link.vue'),
             },
         ],
     },
@@ -54,7 +46,7 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'index',
                 name: 'settings.index',
-                component: SettingsIndex,
+                component: () => import('@/views/settings/Index.vue'),
             },
         ],
     },
@@ -66,14 +58,14 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'account',
                 name: 'user.account',
-                component: Account,
+                component: () => import('@/views/user/Account.vue'),
             },
         ],
     },
     {
         path: '/:catchAll(.*)*',
         name: 'NotFound',
-        component: NotFound,
+        component: () => import('@/views/misc/NotFound.vue'),
     },
 ];
 
