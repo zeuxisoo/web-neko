@@ -24,5 +24,33 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, './resources/js'),
         },
-    }
+    },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    framework: ['vue', 'vue-router', 'pinia'],
+                    'ui-components': [
+                        'lucide-vue-next',
+                        'reka-ui',
+                        'tw-animate-css',
+                        'vue-sonner',
+                        'vue-it-bigger',
+                    ],
+                    utils: [
+                        'es-toolkit',
+                        'date-fns',
+                        'clsx',
+                        'tailwind-merge',
+                        'fuse.js',
+                        'sprintf-js',
+                        'chevrotain',
+                        '@vueuse/core',
+                        'class-variance-authority',
+                        'textarea-caret',
+                    ],
+                },
+            },
+        },
+    },
 });
