@@ -35,7 +35,7 @@ class UploadRequest extends ApiFormRequest
                 'required',
                 'array',
                 'min:1',
-                'max:'.$$maxFiles,
+                'max:'.$maxFiles,
             ],
             'files.*' => [
                 'required',
