@@ -34,6 +34,7 @@ const props = defineProps<{
     tags: TagOrderedList;
     attachments: Attachment[];
     links: Link[];
+    memo?: PulseMemoIndexResponse['data'][number];
 }>();
 
 const { textarea: editorRef, input: editor, triggerResize: updateEditorHeight } = useTextareaAutosize();
@@ -152,6 +153,7 @@ const editorMethods = {
                     <ActionButton
                         :isLoading="isLoading"
                         :enableCancel="props.enableCancel"
+                        :memo="props.memo"
                         @uploaded="emit('uploaded', $event)"
                         @linked="emit('linked', $event)"
                         @submit="handleSubmit"

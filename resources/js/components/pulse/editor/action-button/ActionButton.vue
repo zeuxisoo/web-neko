@@ -9,6 +9,7 @@ import UploadButton from './button/UploadButton.vue';
 const props = defineProps<{
     isLoading: boolean;
     enableCancel: boolean;
+    memo?: PulseMemoIndexResponse['data'][number];
 }>();
 
 const emit = defineEmits<{
@@ -22,7 +23,7 @@ const emit = defineEmits<{
 <template>
     <div class="flex w-full flex-row justify-between gap-2" :class="$attrs.class">
         <div class="flex flex-row gap-2">
-            <UploadButton @uploaded="emit('uploaded', $event)" />
+            <UploadButton :memo="props.memo" @uploaded="emit('uploaded', $event)" />
             <LinkButton @linked="emit('linked', $event)" />
         </div>
         <div class="flex gap-0.5">

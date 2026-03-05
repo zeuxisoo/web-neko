@@ -6,8 +6,8 @@ import { Attachment } from '../types';
 interface FileUploadOptions {
     maxFileSize: ComputedRef<number>;
     allowedTypes: ComputedRef<string[]>;
-    onUploadCompleted?: (attachments: Attachment[]) => void;
     attachmentsStoreId?: string;
+    onUploadCompleted?: (attachments: Attachment[]) => void;
 }
 
 export default function useFileUpload(options: FileUploadOptions) {

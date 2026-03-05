@@ -117,6 +117,7 @@ watch(
         :tags="tagsStore.tags"
         :attachments="attachmentsStore.attachments"
         :links="linkStore.links"
+        :memo="props.memo"
         @uploaded="attachmentsStore.onUploaded"
         @attachmentUp="attachmentsStore.onAttachmentUp"
         @attachmentDown="attachmentsStore.onAttachmentDown"

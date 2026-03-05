@@ -6,6 +6,10 @@ import { computed, onMounted } from 'vue';
 import useFileUpload from '../../composables/useFileUpload';
 import { Attachment } from '../../types';
 
+const props = defineProps<{
+    memo?: PulseMemoIndexResponse['data'][number];
+}>();
+
 const emit = defineEmits<{
     uploaded: [attachments: Attachment[]];
 }>();
@@ -31,6 +35,7 @@ onMounted(async () => {
 const { fileInputRef, isUploading, handleFileInputChange, handleUploadClick } = useFileUpload({
     maxFileSize: maxFileSize,
     allowedTypes: allowedTypes,
+    attachmentsStoreId: props.memo?.id.toString(),
     onUploadCompleted: (uploadedAttachments: Attachment[]) => {
         emit('uploaded', uploadedAttachments);
     },
