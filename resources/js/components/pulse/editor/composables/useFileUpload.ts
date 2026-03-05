@@ -1,68 +1,43 @@
-import api from '@/api';
-import { fillAttachments, humanSize, WhoopsHandler } from '@/utils';
+import { useAttachmentsStore } from '@/stores';
+import type { UploadOptions } from '@/stores/attachments';
 import { computed, ComputedRef, ref } from 'vue';
 import { Attachment } from '../types';
 
 interface FileUploadOptions {
     maxFileSize: ComputedRef<number>;
     allowedTypes: ComputedRef<string[]>;
-    onUploadCompleted: (attachments: Attachment[]) => void;
+    onUploadCompleted?: (attachments: Attachment[]) => void;
+    attachmentsStoreId?: string;
 }
 
 export default function useFileUpload(options: FileUploadOptions) {
     const fileInputRef = ref<HTMLInputElement>();
-    const isUploading = ref<boolean>(false);
+    const attachmentsStore = useAttachmentsStore(options.attachmentsStoreId ?? 'default');
 
     const maxFileSize = computed(() => options.maxFileSize.value);
     const allowedTypes = computed(() => options.allowedTypes.value);
+    const isUploading = computed(() => attachmentsStore.isUploading);
 
     const handleFileInputChange = async () => {
-        if (!fileInputRef.value?.files || fileInputRef.value.files.length === 0 || isUploading.value) {
+        if (!fileInputRef.value?.files || fileInputRef.value.files.length === 0 || attachmentsStore.isUploading) {
             return;
         }
 
-        isUploading.value = true;
+        const uploadOptions: UploadOptions = {
+            maxFileSize: maxFileSize.value,
+            allowedTypes: allowedTypes.value,
+        };
 
-        const attachmentList: Attachment[] = [];
-        try {
-            // check file size and type before upload all
-            for (const file of fileInputRef.value.files) {
-                if (file.size > maxFileSize.value) {
-                    throw new Error(`Error on "${file.name}" exceeds ${humanSize(maxFileSize.value)}, got ${humanSize(file.size)}`);
-                }
+        const uploadedAttachments = await attachmentsStore.uploadFiles(fileInputRef.value.files, uploadOptions);
 
-                if (!allowedTypes.value.includes(file.type)) {
-                    throw new Error(`Error on "${file.name}" file type is not image, got ${file.type}`);
-                }
-            }
+        // call the onUploadCompleted callback with uploaded attachments
+        if (options.onUploadCompleted && uploadedAttachments.length > 0) {
+            options.onUploadCompleted(uploadedAttachments);
+        }
 
-            const formData = new FormData();
-            for (const file of fileInputRef.value.files) {
-                formData.append('files[]', file);
-            }
-
-            const { data, error } = await api.pulse.attachment.upload(formData).json<PulseAttachmentUploadResponse>();
-
-            if (error.value) {
-                throw error.value;
-            }
-
-            if (data && data.value) {
-                const result = data.value;
-                const attachments = result.data;
-
-                for (const attachment of attachments) {
-                    fillAttachments(attachmentList, attachment);
-                }
-            } else {
-                throw error;
-            }
-
-            options.onUploadCompleted(attachmentList);
-        } catch (e: unknown) {
-            WhoopsHandler.handleError(e, 'Unknown error when upload attachment action in park pulse');
-        } finally {
-            isUploading.value = false;
+        // clear the input so the same file can be selected again
+        if (fileInputRef.value) {
+            fileInputRef.value.value = '';
         }
     };
 
