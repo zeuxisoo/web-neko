@@ -33,7 +33,6 @@ export default defineConfig({
                     'ui-components': [
                         'lucide-vue-next',
                         'reka-ui',
-                        'tw-animate-css',
                         'vue-sonner',
                         'vue-it-bigger',
                     ],
