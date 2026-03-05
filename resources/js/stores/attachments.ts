@@ -105,8 +105,6 @@ const useAttachmentsStore = (id: string = 'default') => {
                         for (const attachment of attachments) {
                             fillAttachments(attachmentList, attachment);
                         }
-
-                        this.attachments = this.attachments.concat(attachmentList);
                     } else {
                         throw error.value;
                     }
