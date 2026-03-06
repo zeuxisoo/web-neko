@@ -72,8 +72,8 @@ const useAttachmentsStore = (id: string = 'default') => {
 
                 this.isUploading = true;
 
-                const attachmentList: Attachment[] = [];
                 try {
+                    const attachmentList: Attachment[] = [];
                     const fileArray = Array.from(files);
 
                     // validate file size and type before upload
@@ -105,11 +105,11 @@ const useAttachmentsStore = (id: string = 'default') => {
                         for (const attachment of attachments) {
                             fillAttachments(attachmentList, attachment);
                         }
+
+                        return attachmentList;
                     } else {
                         throw error.value;
                     }
-
-                    return attachmentList;
                 } catch (e: unknown) {
                     WhoopsHandler.handleError(e, 'Unknown error when upload attachment action in attachment store');
                     return [];
