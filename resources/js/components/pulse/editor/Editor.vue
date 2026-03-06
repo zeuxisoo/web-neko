@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Card, CardContent } from '@/components/base/card';
-import { useTextareaAutosize } from '@vueuse/core';
-import { computed, ref, watch } from 'vue';
+import { useAttachmentsStore, useSettingsStore } from '@/stores';
+import { useDropZone, useTextareaAutosize } from '@vueuse/core';
+import { computed, onMounted, ref, watch } from 'vue';
 import { ActionButton } from './action-button';
 import { AttachmentList } from './attachment';
 import { LinkList } from './link';
@@ -37,12 +38,37 @@ const props = defineProps<{
     memo?: PulseMemoIndexResponse['data'][number];
 }>();
 
-const { textarea: editorRef, input: editor, triggerResize: updateEditorHeight } = useTextareaAutosize();
-
 const tags = computed(() => props.tags);
 const attachments = computed(() => props.attachments);
 const links = computed(() => props.links);
 const extractedTags = ref<string[]>([]);
+const dropZoneRef = ref<HTMLElement>();
+
+const settingsStore = useSettingsStore();
+const attachmentsStore = useAttachmentsStore();
+
+const { textarea: editorRef, input: editor, triggerResize: updateEditorHeight } = useTextareaAutosize();
+const { isOverDropZone } = useDropZone(dropZoneRef, {
+    onDrop: async (files: File[] | null) => {
+        if (!files || files.length === 0 || attachmentsStore.isUploading) {
+            return;
+        }
+
+        const maxFileSize = (settingsStore.attachment?.max_size_kb ?? 0) * 1024;
+        const allowedTypes = (settingsStore.attachment?.allowed_mimes ?? []).map((ext: string) => {
+            return ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+        });
+
+        const uploadedAttachments = await attachmentsStore.uploadFiles(files, {
+            maxFileSize,
+            allowedTypes,
+        });
+
+        if (uploadedAttachments.length > 0) {
+            emit('uploaded', uploadedAttachments);
+        }
+    },
+});
 
 const handleSubmit = () => {
     emit('submit', {
@@ -74,6 +100,10 @@ watch(
     },
     { immediate: true },
 );
+
+onMounted(async () => {
+    await settingsStore.fetchAttachment();
+});
 
 const editorMethods = {
     removeText: (start: number, length: number) => {
@@ -122,9 +152,13 @@ const editorMethods = {
 </script>
 
 <template>
-    <Card>
-        <CardContent>
-            <div class="item-center grid w-full gap-2">
+    <Card class="py-4">
+        <CardContent class="px-4">
+            <div
+                ref="dropZoneRef"
+                class="item-center grid w-full gap-2 p-2"
+                :class="{ 'rounded-md border border-dashed border-primary bg-muted/50': isOverDropZone }"
+            >
                 <div class="relative flex flex-col">
                     <textarea
                         v-model="editor"
