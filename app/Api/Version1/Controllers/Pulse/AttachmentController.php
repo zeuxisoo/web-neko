@@ -30,12 +30,14 @@ class AttachmentController extends ApiController
         $files = $request->file('files');
 
         $attachments = [];
-        $storeFolder = now()->format('Y/m');
+        $currentYear = now()->format('Y');
+        $currentMonth = now()->format('m');
+        $storeFolder = $currentYear.'/'.$currentMonth;
 
         try {
-            DB::transaction(function() use ($files, &$attachments, $storeFolder) {
+            DB::transaction(function() use ($files, &$attachments, $storeFolder, $currentYear, $currentMonth) {
                 foreach ($files as $file) {
-                    $uploadedFile = $this->processUpload($file, $storeFolder);
+                    $uploadedFile = $this->processUpload($file, $storeFolder, $currentYear, $currentMonth);
                     $attachments[] = $uploadedFile;
                 }
             });
@@ -57,7 +59,10 @@ class AttachmentController extends ApiController
             ->where('user_id', $this->user()->id)
             ->first();
 
-        $this->cleanupAttachment($attachment, $attachment->created_at->format('Y/m'));
+        $year = $attachment->year;
+        $month = sprintf('%02d', $attachment->month);
+        $this->cleanupAttachment($attachment, storeFolder: $year.'/'.$month);
+
         $attachment->delete();
 
         return $this->respondJsonMessage("Attachment deleted: {$attachment->original_name}");
@@ -67,9 +72,9 @@ class AttachmentController extends ApiController
         $perPage = $this->settingsService->get('pagination.per_page_attachment', 2);
 
         // Step 1: Get distinct years with cursor-based pagination
-        $yearPaginator = MemoAttachment::selectRaw('strftime("%Y", created_at) as year, MAX(created_at) as max_created_at')
+        $yearPaginator = MemoAttachment::selectRaw('year, MAX(created_at) as max_created_at')
             ->where('user_id', $this->user()->id)
-            ->groupByRaw('strftime("%Y", created_at)')
+            ->groupBy('year')
             ->orderByDesc('max_created_at')
             ->simplePaginate($perPage);
 
@@ -98,10 +103,7 @@ class AttachmentController extends ApiController
         $maxYear = (int) max($paginatedYears);
 
         $attachments = MemoAttachment::where('user_id', $this->user()->id)
-            ->whereBetween('created_at', [
-                "$minYear-01-01 00:00:00",
-                "$maxYear-12-31 23:59:59",
-            ])
+            ->whereBetween('year', [$minYear, $maxYear])
             ->orderByDesc('created_at')
             ->get();
 
@@ -137,7 +139,7 @@ class AttachmentController extends ApiController
     }
 
     // helpers
-    private function processUpload(UploadedFile $file, string $storeFolder): MemoAttachment {
+    private function processUpload(UploadedFile $file, string $storeFolder, int $currentYear, int $currentMonth): MemoAttachment {
         $mime = $file->getMimeType();
         $kind = $this->detectKind($mime);
 
@@ -149,6 +151,8 @@ class AttachmentController extends ApiController
 
         $attachment = MemoAttachment::create([
             'user_id' => $this->user()->id,
+            'year' => (int) $currentYear,
+            'month' => (int) $currentMonth,
             'kind' => $kind,
             'filename' => $newFilename,
             'original_name' => $file->getClientOriginalName(),

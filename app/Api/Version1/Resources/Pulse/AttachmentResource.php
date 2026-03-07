@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Storage;
 class AttachmentResource extends ApiResource
 {
     public function toArray(Request $request): array {
-        $baseUrl = Storage::disk('pulse')->url($this->created_at->format('Y/m'));
+        $month = sprintf('%02d', $this->month);
+        $baseUrl = Storage::disk('pulse')->url($this->year.'/'.$month);
 
         return [
             'id' => $this->id,
