@@ -374,3 +374,15 @@ interface SettingsPaginationIndexResponse extends ApiResponse {
 interface SettingsPaginationUpdateResponse extends ApiResponse {
     data: SettingsPaginationIndexResponse['data'];
 }
+
+// settings index
+interface SettingsIndexResponse extends ApiResponse {
+    data: {
+        attachment: SettingsAttachmentIndexResponse['data'];
+        pagination: SettingsPaginationIndexResponse['data'];
+    };
+}
+
+interface SettingsClearResponse extends ApiResponse {
+    data: [];
+}

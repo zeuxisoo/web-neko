@@ -9,11 +9,8 @@ const useSettingsStore = defineStore('settings', {
     }),
     actions: {
         async fetchAll() {
-            Promise.all([this.fetchAttachment(), this.fetchPagination()]);
-        },
-        async fetchAttachment() {
             try {
-                const { data, error } = await api.settings.attachment.index().json<SettingsAttachmentIndexResponse>();
+                const { data, error } = await api.settings.all.index().json<SettingsIndexResponse>();
 
                 if (error.value) {
                     throw error.value;
@@ -21,44 +18,23 @@ const useSettingsStore = defineStore('settings', {
 
                 if (data && data.value) {
                     const result = data.value;
-                    const attachmentSettings = result.data;
+                    const allSettings = result.data;
 
-                    this.attachment = attachmentSettings;
+                    this.attachment = allSettings.attachment;
+                    this.pagination = allSettings.pagination;
 
-                    return attachmentSettings;
+                    return allSettings;
                 } else {
                     throw error.value;
                 }
             } catch (e: unknown) {
-                WhoopsHandler.handleError(e, 'Unknown error when fetch attachment settings in settings store');
+                WhoopsHandler.handleError(e, 'Unknown error when fetch settings in settings store');
             }
         },
-        async updateAttachment(settings: SettingsAttachmentUpdateResponse['data']) {
+        async updateAttachment(settings: SettingsAttachmentIndexResponse['data']) {
             this.attachment = settings;
         },
-        async fetchPagination() {
-            try {
-                const { data, error } = await api.settings.pagination.index().json<SettingsPaginationIndexResponse>();
-
-                if (error.value) {
-                    throw error.value;
-                }
-
-                if (data && data.value) {
-                    const result = data.value;
-                    const paginationSettings = result.data;
-
-                    this.pagination = paginationSettings;
-
-                    return paginationSettings;
-                } else {
-                    throw error.value;
-                }
-            } catch (e: unknown) {
-                WhoopsHandler.handleError(e, 'Unknown error when fetch pagination settings in settings store');
-            }
-        },
-        async updatePagination(settings: SettingsPaginationUpdateResponse['data']) {
+        async updatePagination(settings: SettingsPaginationIndexResponse['data']) {
             this.pagination = settings;
         },
     },

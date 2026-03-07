@@ -1,5 +1,11 @@
 import useAgent from './useAgent';
 
+class Settings {
+    index() {
+        return useAgent<SettingsIndexResponse>('settings/index').get();
+    }
+}
+
 class Attachment {
     index() {
         return useAgent<SettingsAttachmentIndexResponse>('settings/attachment/index').get();
@@ -21,6 +27,9 @@ class Pagination {
 }
 
 export default {
+    get all() {
+        return new Settings();
+    },
     get attachment() {
         return new Attachment();
     },
