@@ -2,7 +2,7 @@
 import { Card, CardContent } from '@/components/base/card';
 import { useAttachmentsStore, useSettingsStore } from '@/stores';
 import { useDropZone, useTextareaAutosize } from '@vueuse/core';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { ActionButton } from './action-button';
 import { AttachmentList } from './attachment';
 import { LinkList } from './link';
@@ -100,10 +100,6 @@ watch(
     },
     { immediate: true },
 );
-
-onMounted(async () => {
-    await settingsStore.fetchAttachment();
-});
 
 const editorMethods = {
     removeText: (start: number, length: number) => {

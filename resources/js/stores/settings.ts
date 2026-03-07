@@ -8,6 +8,9 @@ const useSettingsStore = defineStore('settings', {
         pagination: null as SettingsPaginationIndexResponse['data'] | null,
     }),
     actions: {
+        async fetchAll() {
+            Promise.all([this.fetchAttachment(), this.fetchPagination()]);
+        },
         async fetchAttachment() {
             try {
                 const { data, error } = await api.settings.attachment.index().json<SettingsAttachmentIndexResponse>();

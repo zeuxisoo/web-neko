@@ -27,7 +27,7 @@ onMounted(async () => {
     try {
         isLoading.value = true;
 
-        const paginationSettings = await settingsStore.fetchPagination();
+        const paginationSettings = settingsStore.pagination;
 
         if (paginationSettings) {
             form.value = {

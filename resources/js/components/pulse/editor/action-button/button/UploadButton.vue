@@ -2,7 +2,7 @@
 import { Button } from '@/components/base/button';
 import { useSettingsStore } from '@/stores';
 import { ImageUpIcon, LoaderIcon } from 'lucide-vue-next';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import useFileUpload from '../../composables/useFileUpload';
 import { Attachment } from '../../types';
 
@@ -26,10 +26,6 @@ const allowedTypes = computed(() => {
 
 const maxFileSize = computed(() => {
     return (settingsStore.attachment?.max_size_kb ?? 0) * 1024;
-});
-
-onMounted(async () => {
-    await settingsStore.fetchAttachment();
 });
 
 const { fileInputRef, isUploading, handleFileInputChange, handleUploadClick } = useFileUpload({

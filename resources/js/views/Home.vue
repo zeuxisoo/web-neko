@@ -2,11 +2,12 @@
 import { Separator } from '@/components/base/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/base/sidebar';
 import { AppBar, AppearanceSwitcher, ThemeSwitcher } from '@/components/sidebar';
-import { useUserStore } from '@/stores';
+import { useSettingsStore, useUserStore } from '@/stores';
 import { WhoopsHandler } from '@/utils';
 import { onMounted, ref } from 'vue';
 
 const user = useUserStore();
+const settings = useSettingsStore();
 const isLoading = ref(false);
 
 onMounted(async () => {
@@ -14,6 +15,7 @@ onMounted(async () => {
         isLoading.value = true;
 
         await user.fetch();
+        await settings.fetchAll();
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error when fetch me action in app sidebar');
     } finally {

@@ -26,7 +26,7 @@ onMounted(async () => {
     try {
         isLoading.value = true;
 
-        const attachmentSettings = await settingsStore.fetchAttachment();
+        const attachmentSettings = settingsStore.attachment;
 
         if (attachmentSettings) {
             form.value = {
