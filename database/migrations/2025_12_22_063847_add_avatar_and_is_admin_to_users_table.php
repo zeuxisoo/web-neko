@@ -10,6 +10,7 @@ return new class() extends Migration {
      */
     public function up(): void {
         Schema::table('users', function(Blueprint $table) {
+            $table->string('avatar')->default('')->after('password');
             $table->boolean('is_admin')->default(false)->after('avatar');
         });
     }
@@ -19,7 +20,7 @@ return new class() extends Migration {
      */
     public function down(): void {
         Schema::table('users', function(Blueprint $table) {
-            $table->dropColumn('is_admin');
+            $table->dropColumn(['avatar', 'is_admin']);
         });
     }
 };

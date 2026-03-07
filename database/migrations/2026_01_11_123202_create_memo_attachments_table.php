@@ -13,10 +13,12 @@ return new class() extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('memo_id')->nullable()->index();
-            $table->string('kind')->default('file')->index();             // e.g. image/video/file
+            $table->unsignedSmallInteger('year')->nullable()->index();
+            $table->unsignedTinyInteger('month')->nullable()->index();
+            $table->string('kind')->default('file')->index(); // e.g. image/video/file
             $table->string('filename');
             $table->string('original_name');
-            $table->string('mime_type');        // e.g. 'image/png', 'image/png'
+            $table->string('mime_type'); // e.g. 'image/png', 'image/png'
             $table->unsignedBigInteger('size');
             $table->unsignedInteger('sort_order')->default(0)->index();
             $table->timestamps();
