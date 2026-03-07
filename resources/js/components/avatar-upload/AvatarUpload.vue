@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { useFileDialog } from '@vueuse/core';
 import { CircleUserRoundIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
@@ -50,12 +51,12 @@ const removeFile = () => {
 <template>
     <div class="flex flex-col items-center gap-2">
         <div class="inline-flex items-center gap-2 align-top">
-            <div class="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-md border border-input">
-                <img v-if="previewUrl" :src="previewUrl" class="size-full object-cover" width="32" height="32" />
-                <div v-else>
+            <Avatar class="size-9 rounded-md border border-input">
+                <AvatarImage v-if="previewUrl" :src="previewUrl" class="size-full object-cover" />
+                <AvatarFallback class="size-full">
                     <CircleUserRoundIcon class="opacity-60" :size="16" />
-                </div>
-            </div>
+                </AvatarFallback>
+            </Avatar>
             <div class="relative inline-block">
                 <Button @click="open">
                     <span v-if="fileName">Change image</span>
