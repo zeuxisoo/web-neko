@@ -17,6 +17,8 @@ const useAttachmentsStore = (id: string = 'default') => {
         }),
         actions: {
             async fetchUnsaved() {
+                this.attachments = [];
+
                 try {
                     const { data, error } = await api.pulse.attachment.unsaved().json<PulseAttachmentUploadResponse>();
 
