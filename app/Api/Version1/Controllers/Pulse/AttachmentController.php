@@ -22,27 +22,34 @@ use Intervention\Image\ImageManager;
 
 class AttachmentController extends ApiController
 {
+    protected ImageManager $imageManager;
+
     public function __construct(
         private readonly SettingsService $settingsService,
-    ) {}
+    ) {
+        $this->imageManager = new ImageManager(new Driver());
+    }
 
     public function upload(UploadRequest $request): JsonResource {
         $files = $request->file('files');
 
         $attachments = [];
+
+        // determine the storage folder once for the batch
         $currentYear = now()->format('Y');
         $currentMonth = now()->format('m');
         $storeFolder = $currentYear.'/'.$currentMonth;
 
         try {
-            DB::transaction(function() use ($files, &$attachments, $storeFolder, $currentYear, $currentMonth) {
+            DB::transaction(function() use ($files, &$attachments, $storeFolder) {
                 foreach ($files as $file) {
-                    $uploadedFile = $this->processUpload($file, $storeFolder, $currentYear, $currentMonth);
+                    // process each file; processUpload now extracts year/month from $storeFolder
+                    $uploadedFile = $this->processUpload($file, $storeFolder);
                     $attachments[] = $uploadedFile;
                 }
             });
         } catch (\Exception $e) {
-            // clean up any stored files on failure
+            // clean up any stored files on failure before re-throwing the exception
             foreach ($attachments as $attachment) {
                 $this->cleanupAttachment($attachment, $storeFolder);
             }
@@ -60,10 +67,12 @@ class AttachmentController extends ApiController
             ->first();
 
         $year = $attachment->year;
-        $month = sprintf('%02d', $attachment->month);
+        $month = sprintf('%02d', $attachment->month); // ensure two-digit month
 
+        // clean up associated files from storage
         $this->cleanupAttachment($attachment, storeFolder: $year.'/'.$month);
 
+        // delete the attachment record from the database
         $attachment->delete();
 
         return $this->respondJsonMessage("Attachment deleted: {$attachment->original_name}");
@@ -139,30 +148,44 @@ class AttachmentController extends ApiController
         return new AttachmentResourceCollection($attachments);
     }
 
-    // helpers
-    private function processUpload(UploadedFile $file, string $storeFolder, int $currentYear, int $currentMonth): MemoAttachment {
+    /**
+     * Processes a single uploaded file, stores it, and creates a MemoAttachment record.
+     *
+     * @param  UploadedFile  $file  The file to process.
+     * @param  string  $storeFolder  The base folder (e.g., 'YYYY/MM') where files should be stored.
+     * @return MemoAttachment The created MemoAttachment model.
+     *
+     * @throws FileNotFoundException If a source file is not found during image variant generation.
+     */
+    private function processUpload(UploadedFile $file, string $storeFolder): MemoAttachment {
         $mime = $file->getMimeType();
         $kind = $this->detectKind($mime);
 
-        // generate filename using ulids
+        // generate a unique filename using ULIDs and a random string
         $newFilename = strtolower((string) Str::ulid()).'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
 
-        // store original file to 'uncooked' folder
+        // store the original file in the 'uncooked' subfolder within the pulse disk
         $file->storeAs($storeFolder, 'uncooked/'.$newFilename, 'pulse');
 
+        // extract year and month from the storeFolder string for database storage
+        [$year, $month] = explode('/', $storeFolder);
+        $year = (int) $year;
+        $month = (int) $month;
+
+        // create a new MemoAttachment record
         $attachment = MemoAttachment::create([
             'user_id' => $this->user()->id,
-            'year' => (int) $currentYear,
-            'month' => (int) $currentMonth,
+            'year' => $year,
+            'month' => $month,
             'kind' => $kind,
             'filename' => $newFilename,
             'original_name' => $file->getClientOriginalName(),
             'mime_type' => $mime,
             'size' => $file->getSize(),
-            'sort_order' => 0,
+            'sort_order' => 0, // Default sort order
         ]);
 
-        // generate cover and thumb for images
+        // if the attachment is an image, generate cover and thumbnail variants
         if ($attachment->kind === AttachmentKind::IMAGE) {
             $this->generateCover($attachment, $storeFolder);
             $this->generateThumb($attachment, $storeFolder);
@@ -171,6 +194,12 @@ class AttachmentController extends ApiController
         return $attachment;
     }
 
+    /**
+     * Detects the attachment kind based on its MIME type.
+     *
+     * @param  string  $mime  The MIME type of the file.
+     * @return AttachmentKind The detected kind (IMAGE, VIDEO, or FILE).
+     */
     private function detectKind(string $mime): AttachmentKind {
         return match (true) {
             str_starts_with($mime, 'image/') => AttachmentKind::IMAGE,
@@ -179,41 +208,71 @@ class AttachmentController extends ApiController
         };
     }
 
+    /**
+     * Generates a 'cover' image variant for the given attachment.
+     *
+     * @param  MemoAttachment  $attachment  The attachment model.
+     * @param  string  $storeFolder  The base storage folder.
+     */
     private function generateCover(MemoAttachment $attachment, string $storeFolder): void {
         $this->generateImageVariant($attachment, $storeFolder, 'cover', fn($image) => $image->cover(48, 48, 'center'));
     }
 
+    /**
+     * Generates a 'thumb' image variant for the given attachment.
+     *
+     * @param  MemoAttachment  $attachment  The attachment model.
+     * @param  string  $storeFolder  The base storage folder.
+     */
     private function generateThumb(MemoAttachment $attachment, string $storeFolder): void {
         $this->generateImageVariant($attachment, $storeFolder, 'thumb', fn($image) => $image->scaleDown(512, 512));
     }
 
-    // @param callable $processCallback Call generate action (cover/scaleDown)
+    /**
+     * Generic method to generate an image variant (cover/thumb).
+     *
+     * @param  MemoAttachment  $attachment  The attachment model.
+     * @param  string  $storeFolder  The base storage folder.
+     * @param  string  $ownFolder  The subfolder for this variant (e.g., 'cover', 'thumb').
+     * @param  callable  $processCallback  A callback function to apply image manipulation (e.g., cover, scaleDown).
+     *
+     * @throws FileNotFoundException If the original source file for the image is not found.
+     */
     private function generateImageVariant(MemoAttachment $attachment, string $storeFolder, string $ownFolder, callable $processCallback): void {
-        // read from 'uncooked' folder (original file)
+        // construct the full path to the original file in the 'uncooked' folder
         $sourcePath = $storeFolder.'/uncooked/'.$attachment->filename;
         $fullSourcePath = Storage::disk('pulse')->path($sourcePath);
 
         if (!file_exists($fullSourcePath)) {
-            throw new FileNotFoundException("Cannot found source file: {$sourcePath}");
+            throw new FileNotFoundException("Cannot found source file for image variant: {$sourcePath}");
         }
 
-        // store path for generated file (cover/thumb)
+        // construct the storage path for the generated variant
         $storePath = $storeFolder.'/'.$ownFolder.'/'.$attachment->filename;
 
-        $manager = new ImageManager(new Driver());
-        $image = $processCallback($manager->read($fullSourcePath));
+        // use Intervention Image to read, process, and encode the image
+        $image = $processCallback($this->imageManager->read($fullSourcePath));
 
+        // store the processed image variant
         Storage::disk('pulse')->put($storePath, (string) $image->encode());
     }
 
+    /**
+     * Cleans up all associated files for a given attachment from storage.
+     *
+     * @param  MemoAttachment  $attachment  The attachment model whose files are to be deleted.
+     * @param  string  $storeFolder  The base folder (e.g., 'YYYY/MM') where the attachment files are located.
+     */
     private function cleanupAttachment(MemoAttachment $attachment, string $storeFolder): void {
-        // delete original file from uncooked
-        Storage::disk('pulse')->delete($storeFolder.'/uncooked/'.$attachment->filename);
+        $storage = Storage::disk('pulse');
 
-        // delete cover if exists
-        Storage::disk('pulse')->delete($storeFolder.'/cover/'.$attachment->filename);
+        // delete the original file from the 'uncooked' folder
+        $storage->delete($storeFolder.'/uncooked/'.$attachment->filename);
 
-        // delete thumb if exists
-        Storage::disk('pulse')->delete($storeFolder.'/thumb/'.$attachment->filename);
+        // delete the 'cover' variant if it exists
+        $storage->delete($storeFolder.'/cover/'.$attachment->filename);
+
+        // delete the 'thumb' variant if it exists
+        $storage->delete($storeFolder.'/thumb/'.$attachment->filename);
     }
 }
