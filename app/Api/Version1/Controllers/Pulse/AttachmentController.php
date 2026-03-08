@@ -61,6 +61,7 @@ class AttachmentController extends ApiController
 
         $year = $attachment->year;
         $month = sprintf('%02d', $attachment->month);
+
         $this->cleanupAttachment($attachment, storeFolder: $year.'/'.$month);
 
         $attachment->delete();
@@ -146,8 +147,8 @@ class AttachmentController extends ApiController
         // generate filename using ulids
         $newFilename = strtolower((string) Str::ulid()).'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
 
-        // store to 'pulse' disk
-        $file->storeAs($storeFolder, $newFilename, 'pulse');
+        // store original file to 'uncooked' folder
+        $file->storeAs($storeFolder, 'uncooked/'.$newFilename, 'pulse');
 
         $attachment = MemoAttachment::create([
             'user_id' => $this->user()->id,
@@ -188,7 +189,8 @@ class AttachmentController extends ApiController
 
     // @param callable $processCallback Call generate action (cover/scaleDown)
     private function generateImageVariant(MemoAttachment $attachment, string $storeFolder, string $ownFolder, callable $processCallback): void {
-        $sourcePath = $storeFolder.'/'.$attachment->filename;
+        // read from 'uncooked' folder (original file)
+        $sourcePath = $storeFolder.'/uncooked/'.$attachment->filename;
         $fullSourcePath = Storage::disk('pulse')->path($sourcePath);
 
         if (!file_exists($fullSourcePath)) {
@@ -205,8 +207,8 @@ class AttachmentController extends ApiController
     }
 
     private function cleanupAttachment(MemoAttachment $attachment, string $storeFolder): void {
-        // delete original file
-        Storage::disk('pulse')->delete($storeFolder.'/'.$attachment->filename);
+        // delete original file from uncooked
+        Storage::disk('pulse')->delete($storeFolder.'/uncooked/'.$attachment->filename);
 
         // delete cover if exists
         Storage::disk('pulse')->delete($storeFolder.'/cover/'.$attachment->filename);

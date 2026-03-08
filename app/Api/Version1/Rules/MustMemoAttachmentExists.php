@@ -24,7 +24,8 @@ class MustMemoAttachmentExists implements ValidationRule
 
         $storePath = $attachment->created_at->format('Y/m');
 
-        if (!Storage::disk('pulse')->exists($storePath.'/'.$attachment->filename)) {
+        // check if original file exists in uncooked folder
+        if (!Storage::disk('pulse')->exists($storePath.'/uncooked/'.$attachment->filename)) {
             $fail('The attachment file [:value] does not exist on the server filesytem')->translate([
                 'value' => $attachment->filename,
             ]);
