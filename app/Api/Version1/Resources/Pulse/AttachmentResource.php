@@ -19,6 +19,8 @@ class AttachmentResource extends ApiResource
             'mime_type' => $this->mime_type,
             'size' => $this->size,
             'sort_order' => $this->sort_order,
+            'year' => $this->year,
+            'month' => $this->month,
             'created_at' => $this->created_at->toISOString(),
             'links' => [
                 'cover' => $baseUrl.'/cover/'.$this->filename,

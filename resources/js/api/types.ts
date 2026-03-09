@@ -156,6 +156,8 @@ interface PulseAttachmentUploadResponse extends ApiResponse {
         mime_type: string;
         size: number;
         sort_order: number;
+        year: number;
+        month: number;
         created_at: string;
         links: Record<'cover' | 'thumb', string>;
     }[];

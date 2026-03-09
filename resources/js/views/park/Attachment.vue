@@ -23,7 +23,7 @@ const attachmentsByYear = computed(() => {
     const groups: Record<string, Attachment[]> = {};
 
     for (const attachment of attachments.value?.data ?? []) {
-        const year = new Date(attachment.created_at).getFullYear().toString();
+        const year = attachment.year.toString();
 
         if (!groups[year]) {
             groups[year] = [];
