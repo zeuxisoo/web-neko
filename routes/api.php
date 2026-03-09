@@ -2,6 +2,7 @@
 
 use App\Api\Version1\Controllers\Account;
 use App\Api\Version1\Controllers\Auth;
+use App\Api\Version1\Controllers\Drift;
 use App\Api\Version1\Controllers\Pulse;
 use App\Api\Version1\Controllers\Settings;
 use Illuminate\Support\Facades\Route;
@@ -81,6 +82,11 @@ Route::prefix('v1')->group(function() {
                 Route::get('/index', [Settings\PaginationController::class, 'index'])->name('api.settings.pagination.index');
                 Route::post('/update', [Settings\PaginationController::class, 'update'])->name('api.settings.pagination.update');
             });
+        });
+
+        // api.drift.*
+        Route::prefix('drift')->group(function() {
+            Route::post('/store', [Drift\DriftController::class, 'store'])->name('api.drift.store');
         });
     });
 });
