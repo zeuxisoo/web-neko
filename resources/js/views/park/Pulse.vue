@@ -22,7 +22,7 @@ const attachmentsStore = useAttachmentsStore();
 const linkStore = useLinksStore();
 const memosStore = useMemosStore();
 
-onMounted(() => Promise.all([tagsStore.fetch(), attachmentsStore.fetchUnsaved(), linkStore.fetchUnsaved()]));
+onMounted(() => Promise.all([tagsStore.fetchMemo(), attachmentsStore.fetchUnsaved(), linkStore.fetchUnsaved()]));
 
 const handleExtractedTags = (tags: string[]) => {
     extractedTags.value = tags;
@@ -103,7 +103,7 @@ watch(
             v-model="editor"
             :isLoading="isLoading"
             :enableCancel="false"
-            :tags="tagsStore.tags"
+            :tags="tagsStore.memoTags"
             :attachments="attachmentsStore.attachments"
             :links="linkStore.links"
             @uploaded="attachmentsStore.onUploaded"

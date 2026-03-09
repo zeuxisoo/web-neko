@@ -4,10 +4,10 @@ import { defineStore } from 'pinia';
 
 const useTagsStore = defineStore('tags', {
     state: () => ({
-        tags: {} as TagOrderedList,
+        memoTags: {} as TagOrderedList,
     }),
     actions: {
-        async fetch() {
+        async fetchMemo() {
             try {
                 const { data, error } = await api.pulse.tag.index().json<PulseTagIndexResponse>();
 
@@ -19,7 +19,7 @@ const useTagsStore = defineStore('tags', {
                     const resultTags = data.value.data;
 
                     // convert Tag[] `[{ id, name, order_column }]` to TagOrderedList `{ name: id }`
-                    this.tags = resultTags.reduce<TagOrderedList>((acc, tag) => {
+                    this.memoTags = resultTags.reduce<TagOrderedList>((acc, tag) => {
                         acc[tag.name] = tag.id;
                         return acc;
                     }, {});
