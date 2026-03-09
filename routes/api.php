@@ -88,6 +88,7 @@ Route::prefix('v1')->group(function() {
         Route::prefix('drift')->group(function() {
             Route::post('/store', [Drift\DriftController::class, 'store'])->name('api.drift.store');
             Route::get('/index', [Drift\DriftController::class, 'index'])->name('api.drift.index');
+            Route::get('/show/{id}', [Drift\DriftController::class, 'show'])->name('api.drift.show');
         });
     });
 });

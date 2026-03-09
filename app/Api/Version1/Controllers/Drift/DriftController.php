@@ -4,6 +4,7 @@ namespace App\Api\Version1\Controllers\Drift;
 
 use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Requests\Drift\IndexRequest;
+use App\Api\Version1\Requests\Drift\ShowRequest;
 use App\Api\Version1\Requests\Drift\StoreRequest;
 use App\Api\Version1\Resources\Drift\DriftResource;
 use App\Api\Version1\Resources\Drift\DriftResourceCollection;
@@ -46,5 +47,18 @@ class DriftController extends ApiController
             ->simplePaginate(8);
 
         return new DriftResourceCollection($drifts);
+    }
+
+    public function show(ShowRequest $request): JsonResource {
+        $input = $request->validated();
+
+        $drift = Drift::where('id', $input['id'])
+            ->with([
+                'user',
+                'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
+            ])
+            ->firstOrFail();
+
+        return new DriftResource($drift);
     }
 }
