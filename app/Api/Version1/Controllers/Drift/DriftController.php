@@ -3,8 +3,10 @@
 namespace App\Api\Version1\Controllers\Drift;
 
 use App\Api\Version1\Bases\ApiController;
+use App\Api\Version1\Requests\Drift\IndexRequest;
 use App\Api\Version1\Requests\Drift\StoreRequest;
 use App\Api\Version1\Resources\Drift\DriftResource;
+use App\Api\Version1\Resources\Drift\DriftResourceCollection;
 use App\Enums\TagKind;
 use App\Models\Drift;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -32,5 +34,17 @@ class DriftController extends ApiController
         ]);
 
         return new DriftResource($drift);
+    }
+
+    public function index(IndexRequest $request): JsonResource {
+        $drifts = Drift::query()
+            ->with([
+                'user',
+                'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
+            ])
+            ->latest()
+            ->simplePaginate(8);
+
+        return new DriftResourceCollection($drifts);
     }
 }
