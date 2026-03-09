@@ -12,7 +12,7 @@ import {
 } from '@/components/base/sidebar';
 import NavUser from '@/components/sidebar/NavUser.vue';
 import { type NavItem as NavItemType } from '@/components/sidebar/types';
-import { Box, Settings, Shrub } from 'lucide-vue-next';
+import { Box, PencilRuler, Settings, Shrub } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
 import NavItemMain from './NavItemMain.vue';
 import NavItemOther from './NavItemOther.vue';
@@ -53,6 +53,12 @@ const data = {
                     to: { name: 'park.link' },
                 },
             ],
+        },
+        {
+            kind: 'single',
+            title: 'Drift',
+            to: { name: 'drift.index' },
+            icon: PencilRuler,
         },
         {
             kind: 'single',

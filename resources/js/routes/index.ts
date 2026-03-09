@@ -39,6 +39,18 @@ const routes: RouteRecordRaw[] = [
         ],
     },
     {
+        path: '/drift',
+        name: 'drift',
+        redirect: { name: 'drift.index' },
+        children: [
+            {
+                path: 'index',
+                name: 'drift.index',
+                component: () => import('@/views/drift/Index.vue'),
+            },
+        ],
+    },
+    {
         path: '/settings',
         name: 'settings',
         redirect: { name: 'settings.index' },

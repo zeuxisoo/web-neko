@@ -12,7 +12,7 @@ const userStore = useUserStore();
 </script>
 
 <template>
-    <div class="attachment grid gap-3">
+    <div class="settings grid gap-3">
         <Header #title>Site Settings</Header>
 
         <Card v-if="!userStore.isAdmin">
