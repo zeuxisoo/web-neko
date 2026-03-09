@@ -90,6 +90,7 @@ Route::prefix('v1')->group(function() {
             Route::get('/index', [Drift\DriftController::class, 'index'])->name('api.drift.index');
             Route::get('/show/{id}', [Drift\DriftController::class, 'show'])->name('api.drift.show');
             Route::post('/update', [Drift\DriftController::class, 'update'])->name('api.drift.update');
+            Route::get('/destroy/{id}', [Drift\DriftController::class, 'destroy'])->name('api.drift.destroy');
         });
     });
 });

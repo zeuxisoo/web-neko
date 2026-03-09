@@ -3,15 +3,16 @@
 namespace App\Api\Version1\Controllers\Drift;
 
 use App\Api\Version1\Bases\ApiController;
+use App\Api\Version1\Requests\Drift\DestroyRequest;
 use App\Api\Version1\Requests\Drift\IndexRequest;
 use App\Api\Version1\Requests\Drift\ShowRequest;
 use App\Api\Version1\Requests\Drift\StoreRequest;
-use App\Api\Version1\Requests\Drift\UpdateRequest;
 use App\Api\Version1\Resources\Drift\DriftResource;
 use App\Api\Version1\Resources\Drift\DriftResourceCollection;
 use App\Enums\TagKind;
 use App\Models\Drift;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DriftController extends ApiController
@@ -85,5 +86,14 @@ class DriftController extends ApiController
         ]);
 
         return new DriftResource($drift);
+    }
+
+    public function destroy(DestroyRequest $request): JsonResponse {
+        $input = $request->validated();
+
+        $drift = Drift::findOrFail($input['id']);
+        $drift->delete();
+
+        return $this->respondJsonMessage('Drift deleted');
     }
 }
