@@ -84,8 +84,8 @@ class Bookmark {
 }
 
 class Tag {
-    all() {
-        return useAgent<PulseTagResponse>('pulse/tag/all').get();
+    index() {
+        return useAgent<PulseTagIndexResponse>('pulse/tag/index').get();
     }
 }
 

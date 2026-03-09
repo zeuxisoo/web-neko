@@ -213,7 +213,7 @@ interface PulseBookmarkRemoveResponse extends ApiResponse {
 }
 
 // pulse tag
-interface PulseTagResponse extends ApiResponse {
+interface PulseTagIndexResponse extends ApiResponse {
     data: {
         id: number;
         name: string;

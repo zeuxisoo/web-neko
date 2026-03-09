@@ -9,7 +9,7 @@ const useTagsStore = defineStore('tags', {
     actions: {
         async fetch() {
             try {
-                const { data, error } = await api.pulse.tag.all().json<PulseTagResponse>();
+                const { data, error } = await api.pulse.tag.index().json<PulseTagIndexResponse>();
 
                 if (error.value) {
                     throw error.value;

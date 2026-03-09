@@ -1,11 +1,11 @@
 info:
-  name: all
+  name: index
   type: http
   seq: 1
 
 http:
   method: GET
-  url: "{{baseUrl}}/pulse/tag/all"
+  url: "{{baseUrl}}/pulse/tag/index"
   headers:
     - name: Authorization
       value: Bearer {{accessToken}}

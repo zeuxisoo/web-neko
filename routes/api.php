@@ -44,7 +44,7 @@ Route::prefix('v1')->group(function() {
                 Route::get('/destroy/{id}', [Pulse\MemoController::class, 'destroy'])->name('api.pulse.memo.destroy');
             });
             Route::prefix('tag')->group(function() {
-                Route::get('/all', [Pulse\TagController::class, 'all'])->name('api.pulse.tag.all');
+                Route::get('/index', [Pulse\TagController::class, 'index'])->name('api.pulse.tag.index');
             });
             Route::prefix('attachment')->group(function() {
                 Route::get('/index', [Pulse\AttachmentController::class, 'index'])->name('api.pulse.attachment.index');

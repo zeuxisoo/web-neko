@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class TagController extends ApiController
 {
-    public function all(Request $request): JsonResource {
+    public function index(Request $request): JsonResource {
         $tags = Tag::withType(TagKind::MEMO->value)->get();
 
         return new TagResourceCollection($tags);
