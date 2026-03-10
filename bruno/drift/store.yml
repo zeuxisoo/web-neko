@@ -13,7 +13,8 @@ http:
     type: json
     data: |-
       {
-        "content": "this is a test drift content",
+        "subject": "this is test subject",
+        "content": "this is test drift content",
         "tags": [
           "tags1",
           "tags2"

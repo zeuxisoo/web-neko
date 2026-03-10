@@ -13,6 +13,7 @@ class Drift extends Model
 
     protected $fillable = [
         'user_id',
+        'subject',
         'content',
     ];
 

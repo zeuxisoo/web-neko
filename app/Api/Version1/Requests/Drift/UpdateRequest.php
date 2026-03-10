@@ -26,6 +26,10 @@ class UpdateRequest extends ApiFormRequest
                 'integer',
                 Rule::exists('drifts', 'id')->where('user_id', auth()->id()),
             ],
+            'subject' => [
+                'required',
+                'string',
+            ],
             'content' => [
                 'required',
                 'string',

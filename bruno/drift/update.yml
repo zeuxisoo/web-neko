@@ -14,7 +14,8 @@ http:
     data: |-
       {
         "id": 1,
-        "content": "this is a test drift content 2",
+        "subject": "this is test subject 2",
+        "content": "this is test drift content 2",
         "tags": [
           "tags1",
           "tags2"

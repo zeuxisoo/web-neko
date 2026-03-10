@@ -13,6 +13,7 @@ class DriftResource extends ApiResource
         return [
             'id' => $this->id,
             'user' => new UserResource($this->whenLoaded('user')),
+            'subject' => $this->subject,
             'content' => $this->content,
             'tags' => new TagResourceCollection($this->tags),
             'created_at' => $this->created_at,

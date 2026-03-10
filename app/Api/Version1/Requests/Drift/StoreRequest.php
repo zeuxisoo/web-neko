@@ -20,6 +20,10 @@ class StoreRequest extends ApiFormRequest
      */
     public function rules(): array {
         return [
+            'subject' => [
+                'required',
+                'string',
+            ],
             'tags' => [
                 'array',
                 'max:10',

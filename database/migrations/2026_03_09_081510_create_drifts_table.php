@@ -12,6 +12,7 @@ return new class() extends Migration {
         Schema::create('drifts', function(Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->index();
+            $table->string('subject');
             $table->text('content');
             $table->timestamps();
         });

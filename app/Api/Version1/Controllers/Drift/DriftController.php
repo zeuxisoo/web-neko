@@ -7,6 +7,7 @@ use App\Api\Version1\Requests\Drift\DestroyRequest;
 use App\Api\Version1\Requests\Drift\IndexRequest;
 use App\Api\Version1\Requests\Drift\ShowRequest;
 use App\Api\Version1\Requests\Drift\StoreRequest;
+use App\Api\Version1\Requests\Drift\UpdateRequest;
 use App\Api\Version1\Resources\Drift\DriftResource;
 use App\Api\Version1\Resources\Drift\DriftResourceCollection;
 use App\Enums\TagKind;
@@ -22,6 +23,7 @@ class DriftController extends ApiController
 
         $drift = Drift::create([
             'user_id' => $this->user()->id,
+            'subject' => $input['subject'],
             'content' => $input['content'],
         ]);
 
@@ -69,6 +71,7 @@ class DriftController extends ApiController
 
         $drift = Drift::findOrFail($input['id']);
         $drift->update([
+            'subject' => $input['subject'],
             'content' => $input['content'],
         ]);
 
