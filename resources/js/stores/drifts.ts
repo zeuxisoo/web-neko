@@ -12,7 +12,7 @@ const useDriftsStore = defineStore('drifts', {
             this.isLoading = true;
 
             try {
-                const { data, error } = await api.drift.index({ page }).json<DriftIndexResponse>();
+                const { data, error } = await api.drift.main.index({ page }).json<DriftIndexResponse>();
 
                 if (error.value) {
                     throw error.value;

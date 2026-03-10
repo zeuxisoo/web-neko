@@ -1,6 +1,6 @@
 import useAgent from './useAgent';
 
-class Drift {
+class Main {
     store(payload: DriftStorePayload) {
         return useAgent<DriftStoreResponse>('drift/store').post(payload);
     }
@@ -29,4 +29,17 @@ class Drift {
     }
 }
 
-export default new Drift();
+class Tag {
+    index() {
+        return useAgent<PulseTagIndexResponse>('drift/tag/index').get();
+    }
+}
+
+export default {
+    get main() {
+        return new Main();
+    },
+    get tag() {
+        return new Tag();
+    },
+};
