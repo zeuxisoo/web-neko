@@ -388,3 +388,62 @@ interface SettingsIndexResponse extends ApiResponse {
 interface SettingsClearResponse extends ApiResponse {
     data: [];
 }
+
+// drift
+type DriftStorePayload = {
+    subject: string;
+    content: string;
+    tags?: string[];
+};
+
+type DriftUpdatePayload = {
+    id: number;
+    subject: string;
+    content: string;
+    tags?: string[];
+};
+
+type DriftIndexPayload = {
+    page: number;
+};
+
+interface DriftStoreResponse extends ApiResponse {
+    data: {
+        id: number;
+        user: MeResponse['data'];
+        subject: string;
+        content: string;
+        tags: {
+            id: number;
+            name: string;
+            sort_order: number;
+        }[];
+        created_at: string;
+    };
+}
+
+interface DriftIndexResponse extends ApiResponse {
+    data: DriftStoreResponse['data'][];
+    links: {
+        first: string;
+        last: string;
+        next: string;
+        prev: string;
+    };
+    meta: {
+        current_page: number;
+        current_page_url: string;
+        from: number;
+        path: string;
+        per_page: number;
+        to: number;
+    };
+}
+
+interface DriftShowResponse extends ApiResponse {
+    data: DriftStoreResponse['data'];
+}
+
+interface DriftDestroyResponse extends ApiResponse {
+    data: string[];
+}
