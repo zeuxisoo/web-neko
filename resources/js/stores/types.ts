@@ -8,5 +8,6 @@ type Memo = PulseMemoIndexResponse['data'][number];
 type Attachment = PulseAttachmentUploadResponse['data'][number];
 type Link = PulseLinkStoreResponse['data'];
 type Comment_ = PulseCommentIndexResponse['data'][number];
+type Drift = DriftIndexResponse['data'][number];
 
 type TagOrderedList = Record<string, number>;
