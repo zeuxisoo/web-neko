@@ -51,7 +51,7 @@ const filteredTags = computed(() => {
                 </div>
 
                 <ComboboxInput v-model="searchTag" as-child>
-                    <TagsInputInput placeholder="Fruits..." class="h-auto w-full p-0" @keydown.enter.prevent />
+                    <TagsInputInput placeholder="Tags..." class="h-auto w-full p-0" @keydown.enter.prevent />
                 </ComboboxInput>
             </TagsInput>
 
