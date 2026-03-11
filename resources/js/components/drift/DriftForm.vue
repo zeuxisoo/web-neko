@@ -4,17 +4,20 @@ import { Card, CardContent } from '@/components/base/card';
 import { Input } from '@/components/base/input';
 import { Textarea } from '@/components/base/textarea';
 import { TagsInput } from '@/components/tags-input';
+import { cn } from '@/lib/utils';
 import { useTagsStore } from '@/stores';
-import { Loader } from 'lucide-vue-next';
+import { Loader, X } from 'lucide-vue-next';
 import { computed, onMounted, ref, watch } from 'vue';
 
 const props = defineProps<{
     isLoading?: boolean;
+    enableCancel?: boolean;
     drift?: DriftIndexResponse['data'][number] | null;
 }>();
 
 const emit = defineEmits<{
     submit: [DriftFromSubmitData];
+    cancel: [];
 }>();
 
 const subject = ref('');
@@ -71,7 +74,15 @@ const handleSubmit = () => {
             <div class="grid gap-2">
                 <TagsInput v-model="selectedTags" :remote-tags="availableTags" />
             </div>
-            <div class="flex justify-end">
+            <div class="flex justify-end gap-1">
+                <Button
+                    v-if="props.enableCancel"
+                    variant="secondary"
+                    :class="cn('flex flex-row items-center gap-1 rounded-md', { 'disabled:': props.isLoading })"
+                    @click="emit('cancel')"
+                >
+                    <X />
+                </Button>
                 <Button @click="handleSubmit" :disabled="props.isLoading">
                     <Loader v-if="props.isLoading" class="animate-spin" />
                     <template v-else>Post</template>
