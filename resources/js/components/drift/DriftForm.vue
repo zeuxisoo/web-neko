@@ -9,11 +9,17 @@ import { useTagsStore } from '@/stores';
 import { Loader, X } from 'lucide-vue-next';
 import { computed, onMounted, ref, watch } from 'vue';
 
-const props = defineProps<{
-    isLoading?: boolean;
-    enableCancel?: boolean;
-    drift?: DriftIndexResponse['data'][number] | null;
-}>();
+const props = withDefaults(
+    defineProps<{
+        isLoading?: boolean;
+        enableCancel?: boolean;
+        submitLabel?: string;
+        drift?: DriftIndexResponse['data'][number] | null;
+    }>(),
+    {
+        submitLabel: 'Submit',
+    },
+);
 
 const emit = defineEmits<{
     submit: [DriftFromSubmitData];
@@ -55,11 +61,17 @@ const handleSubmit = () => {
         content: content.value,
         tags: selectedTags.value,
     });
+};
 
+const clearFormData = () => {
     subject.value = '';
     content.value = '';
     selectedTags.value = [];
 };
+
+defineExpose({
+    clearFormData,
+});
 </script>
 
 <template>
@@ -85,7 +97,7 @@ const handleSubmit = () => {
                 </Button>
                 <Button @click="handleSubmit" :disabled="props.isLoading">
                     <Loader v-if="props.isLoading" class="animate-spin" />
-                    <template v-else>Post</template>
+                    <template v-else>{{ props.submitLabel }}</template>
                 </Button>
             </div>
         </CardContent>

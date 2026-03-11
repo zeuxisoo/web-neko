@@ -7,19 +7,68 @@ import { Card, CardContent, CardHeader } from '@/components/base/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/base/dropdown-menu';
 import { useDriftsStore } from '@/stores';
 import { humanDateTime, WhoopsHandler } from '@/utils';
+import validator from '@/validators';
 import { EllipsisVertical, Loader } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { toast } from 'vue-sonner';
+import DriftForm from './DriftForm.vue';
 
 const props = defineProps<{
     drift: DriftIndexResponse['data'][number];
 }>();
 
+const isEditing = ref(false);
 const isDeleting = ref(false);
+const isSubmitting = ref(false);
+const showRawDateTime = ref(false);
+const driftFormRef = useTemplateRef('driftFormRef');
+
 const alertDialog = useAlertDialog();
 const driftStore = useDriftsStore();
 
-const showRawDateTime = ref(false);
+const handleEditable = (enable: boolean) => {
+    isEditing.value = enable;
+};
+
+const handleUpdate = async (submitData: DriftFromSubmitData) => {
+    try {
+        isSubmitting.value = true;
+
+        const formData = validator.form('drift.update').validate({
+            id: props.drift.id,
+            subject: submitData.subject,
+            content: submitData.content,
+            tags: submitData.tags,
+        });
+
+        const { data, error } = await api.drift.main.update(formData as DriftUpdatePayload).json<DriftStoreResponse>();
+
+        if (error.value) {
+            throw error.value;
+        }
+
+        if (data && data.value) {
+            const result = data.value;
+            const drift = result.data;
+
+            driftStore.update(drift);
+
+            toast.info('Drift updated');
+
+            if (driftFormRef.value) {
+                driftFormRef.value.clearFormData();
+            }
+
+            handleEditable(false);
+        } else {
+            throw error.value;
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error on handle drift update action');
+    } finally {
+        isSubmitting.value = false;
+    }
+};
 
 const handleDelete = async (id: number) => {
     const dialogResult = await alertDialog.start({
@@ -56,7 +105,17 @@ const handleDelete = async (id: number) => {
 </script>
 
 <template>
-    <Card class="gap-3">
+    <DriftForm
+        ref="driftFormRef"
+        v-if="isEditing"
+        :is-loading="isSubmitting"
+        :drift="props.drift"
+        :enable-cancel="true"
+        @submit="handleUpdate"
+        @cancel="handleEditable(false)"
+        submit-label="Update"
+    />
+    <Card class="gap-3" v-else>
         <CardHeader class="gap-0">
             <div class="flex items-start justify-between">
                 <div class="flex items-center gap-2">
@@ -76,7 +135,7 @@ const handleDelete = async (id: number) => {
                         <EllipsisVertical :size="16" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem @click="handleEditable(true)">Edit</DropdownMenuItem>
                         <DropdownMenuItem @click="handleDelete(props.drift.id)" :disabled="isDeleting">
                             <Loader v-if="isDeleting" />
                             <template v-else>Delete</template>
