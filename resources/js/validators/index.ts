@@ -1,5 +1,6 @@
 import { AccountProfileUpdate, AccountSecurityUpdate } from './account';
 import AuthLogin from './auth/login';
+import { DriftStore } from './drift';
 import { ValidateError } from './error';
 import { PulseCommentStore, PulseMemoStore, PulseMemoUpdate } from './pulse';
 import { SettingsAttachmentUpdate, SettingsPaginationUpdate } from './settings';
@@ -32,6 +33,7 @@ const validators: Record<string, typeof Validator> = {
     'pulse.comment.store': PulseCommentStore,
     'settings.attachment.update': SettingsAttachmentUpdate,
     'settings.pagination.update': SettingsPaginationUpdate,
+    'drift.store': DriftStore,
 };
 
 const validator = {
