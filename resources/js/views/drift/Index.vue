@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import api from '@/api';
+import { useAlertDialog } from '@/components/alert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { Badge } from '@/components/base/badge';
 import { Button } from '@/components/base/button';
@@ -17,16 +18,18 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
-const router = useRouter();
-const route = useRoute();
-const driftStore = useDriftsStore();
-const tagsStore = useTagsStore();
-
 const isSubmitting = ref(false);
 const subject = ref('');
 const content = ref('');
 const selectedTags = ref<string[]>([]);
 const showRawDateTime = ref(false);
+const isDeleting = ref(false);
+
+const router = useRouter();
+const route = useRoute();
+const alertDialog = useAlertDialog();
+const driftStore = useDriftsStore();
+const tagsStore = useTagsStore();
 
 const availableTags = computed(() => {
     return Object.keys(tagsStore.driftTags).map((name) => ({
@@ -101,25 +104,36 @@ const handleNext = () => {
     });
 };
 
-const handleRemoveDrift = async (id: number) => {
-    try {
-        const { data, error } = await api.drift.main.destroy(id).json<DriftDestroyResponse>();
+const handleDelete = async (id: number) => {
+    const dialogResult = await alertDialog.start({
+        title: 'Are you sure delete this drift?',
+        description: 'Note: This action cannot be undone. This will permanently remove this drift and related data record from our servers.',
+    });
 
-        if (error.value) {
-            throw error.value;
+    if (dialogResult === 'ok') {
+        try {
+            isDeleting.value = true;
+
+            const { data, error } = await api.drift.main.destroy(id).json<DriftDestroyResponse>();
+
+            if (error.value) {
+                throw error.value;
+            }
+
+            if (data && data.value) {
+                const result = data.value;
+
+                driftStore.remove(id);
+
+                toast.info(result.message);
+            } else {
+                throw error.value;
+            }
+        } catch (e: unknown) {
+            WhoopsHandler.handleError(e, 'Unknown error when remove drift action in drift page');
+        } finally {
+            isDeleting.value = false;
         }
-
-        if (data && data.value) {
-            const result = data.value;
-
-            driftStore.remove(id);
-
-            toast.info(result.message);
-        } else {
-            throw error.value;
-        }
-    } catch (e: unknown) {
-        WhoopsHandler.handleError(e, 'Unknown error when remove drift action in drift page');
     }
 };
 
@@ -177,12 +191,15 @@ onMounted(() => {
                             </div>
                         </div>
                         <DropdownMenu>
-                            <DropdownMenuTrigger as-child>
+                            <DropdownMenuTrigger as-child :disabled="isDeleting">
                                 <EllipsisVertical :size="16" />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                                 <DropdownMenuItem>Edit</DropdownMenuItem>
-                                <DropdownMenuItem> Delete </DropdownMenuItem>
+                                <DropdownMenuItem @click="handleDelete(drift.id)" :disabled="isDeleting">
+                                    <Loader v-if="isDeleting" />
+                                    <template v-else>Delete</template>
+                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
