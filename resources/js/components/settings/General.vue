@@ -21,6 +21,7 @@ const form = ref({
     per_page_comment: 8,
     per_page_link: 8,
     per_page_memo: 8,
+    per_page_drift: 8,
 });
 
 onMounted(async () => {
@@ -36,6 +37,7 @@ onMounted(async () => {
                 per_page_comment: paginationSettings.per_page_comment,
                 per_page_link: paginationSettings.per_page_link,
                 per_page_memo: paginationSettings.per_page_memo,
+                per_page_drift: paginationSettings.per_page_drift,
             };
         }
     } catch (e: unknown) {
@@ -55,6 +57,7 @@ const handleSave = async () => {
             per_page_comment: form.value.per_page_comment,
             per_page_link: form.value.per_page_link,
             per_page_memo: form.value.per_page_memo,
+            per_page_drift: form.value.per_page_drift,
         });
 
         const { data, error } = await api.settings.pagination
@@ -114,6 +117,11 @@ const handleSave = async () => {
                 <Label for="per-page-memo">Memos Per Page</Label>
                 <Input id="per-page-memo" v-model.number="form.per_page_memo" type="number" min="1" max="100" :disabled="isLoading" />
                 <p class="text-xs text-muted-foreground">Number of memos to show per page.</p>
+            </div>
+            <div class="grid gap-2">
+                <Label for="per-page-drift">Drifts Per Page</Label>
+                <Input id="per-page-drift" v-model.number="form.per_page_drift" type="number" min="1" max="100" :disabled="isLoading" />
+                <p class="text-xs text-muted-foreground">Number of drifts to show per page.</p>
             </div>
         </CardContent>
         <CardFooter>

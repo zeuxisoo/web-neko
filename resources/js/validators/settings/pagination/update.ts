@@ -8,6 +8,7 @@ class SettingsPaginationUpdate extends Validator {
             per_page_comment: ['required', 'integer', 'gte:1'],
             per_page_link: ['required', 'integer', 'gte:1'],
             per_page_memo: ['required', 'integer', 'gte:1'],
+            per_page_drift: ['required', 'integer', 'gte:1'],
         };
     }
 
@@ -28,6 +29,9 @@ class SettingsPaginationUpdate extends Validator {
             'per_page_memo.required': 'Please enter per page memo',
             'per_page_memo.integer': 'Per page memo must be integer',
             'per_page_memo.gte': 'Per page memo must greater than or equals 1',
+            'per_page_drift.required': 'Please enter per page drift',
+            'per_page_drift.integer': 'Per page drift must be integer',
+            'per_page_drift.gte': 'Per page drift must greater than or equals 1',
         };
     }
 }

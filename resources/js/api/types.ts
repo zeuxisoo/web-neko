@@ -361,6 +361,7 @@ type SettingsPaginationUpdatePayload = {
     per_page_comment: number;
     per_page_link: number;
     per_page_memo: number;
+    per_page_drift: number;
 };
 
 interface SettingsPaginationIndexResponse extends ApiResponse {
@@ -370,6 +371,7 @@ interface SettingsPaginationIndexResponse extends ApiResponse {
         per_page_comment: number;
         per_page_link: number;
         per_page_memo: number;
+        per_page_drift: number;
     };
 }
 
