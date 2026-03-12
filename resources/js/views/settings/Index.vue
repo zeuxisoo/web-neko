@@ -3,10 +3,9 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/base/alert';
 import { Card, CardContent } from '@/components/base/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/base/tabs';
 import { Header } from '@/components/page';
+import { Attachment, General } from '@/components/settings';
 import { useUserStore } from '@/stores';
 import { Info } from 'lucide-vue-next';
-import Attachment from './Attachment.vue';
-import General from './General.vue';
 
 const userStore = useUserStore();
 </script>
