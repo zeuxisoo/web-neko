@@ -2,12 +2,12 @@
 import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import { Input } from '@/components/base/input';
-import { Textarea } from '@/components/base/textarea';
 import { TagsInput } from '@/components/tags-input';
 import { cn } from '@/lib/utils';
 import { useTagsStore } from '@/stores';
-import { Loader, X } from 'lucide-vue-next';
+import { Eye, Loader, X } from 'lucide-vue-next';
 import { computed, onMounted, ref, watch } from 'vue';
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from '../base/input-group';
 
 const props = withDefaults(
     defineProps<{
@@ -81,7 +81,14 @@ defineExpose({
                 <Input v-model="subject" placeholder="Subject" />
             </div>
             <div class="grid gap-2">
-                <Textarea v-model="content" placeholder="What's on your mind?" />
+                <InputGroup>
+                    <InputGroupTextarea v-model="content" placeholder="What's on your mind?" />
+                    <InputGroupAddon align="block-end">
+                        <InputGroupButton variant="outline" class="ml-auto rounded-md" size="icon-xs">
+                            <Eye />
+                        </InputGroupButton>
+                    </InputGroupAddon>
+                </InputGroup>
             </div>
             <div class="grid gap-2">
                 <TagsInput v-model="selectedTags" :remote-tags="availableTags" />
