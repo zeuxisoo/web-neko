@@ -27,6 +27,7 @@ class IndexController extends ApiController
                 'per_page_comment' => ['key' => 'pagination.per_page_comment', 'default' => 8],
                 'per_page_link' => ['key' => 'pagination.per_page_link', 'default' => 8],
                 'per_page_memo' => ['key' => 'pagination.per_page_memo', 'default' => 8],
+                'per_page_drift' => ['key' => 'pagination.per_page_drift', 'default' => 8],
             ],
             'attachment' => [
                 'max_size_kb' => ['key' => 'attachment.max_size_kb', 'default' => 8192],

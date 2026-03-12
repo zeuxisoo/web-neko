@@ -12,12 +12,17 @@ use App\Api\Version1\Resources\Drift\DriftResource;
 use App\Api\Version1\Resources\Drift\DriftResourceCollection;
 use App\Enums\TagKind;
 use App\Models\Drift;
+use App\Services\SettingsService;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DriftController extends ApiController
 {
+    public function __construct(
+        private readonly SettingsService $settingsService,
+    ) {}
+
     public function store(StoreRequest $request): JsonResource {
         $input = $request->validated();
 
@@ -48,7 +53,7 @@ class DriftController extends ApiController
                 'tags' => fn(MorphToMany $tags) => $tags->orderBy('name', 'asc'),
             ])
             ->latest()
-            ->simplePaginate(8);
+            ->simplePaginate($this->settingsService->get('pagination.per_page_drift', 8));
 
         return new DriftResourceCollection($drifts);
     }

@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'pagination.per_page_comment', 'value' => '8', 'type' => 'integer'],
             ['key' => 'pagination.per_page_link', 'value' => '8', 'type' => 'integer'],
             ['key' => 'pagination.per_page_memo', 'value' => '8', 'type' => 'integer'],
+            ['key' => 'pagination.per_page_drift', 'value' => '8', 'type' => 'integer'],
         ];
 
         foreach ($defaults as $setting) {

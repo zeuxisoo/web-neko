@@ -28,6 +28,7 @@ class PaginationController extends ApiController
             'per_page_comment' => $this->settingsService->get('pagination.per_page_comment', 8),
             'per_page_link' => $this->settingsService->get('pagination.per_page_link', 8),
             'per_page_memo' => $this->settingsService->get('pagination.per_page_memo', 8),
+            'per_page_drift' => $this->settingsService->get('pagination.per_page_drift', 8),
         ];
 
         return new PaginationResource($settings);
@@ -45,6 +46,7 @@ class PaginationController extends ApiController
             'pagination.per_page_comment' => $request->input('per_page_comment'),
             'pagination.per_page_link' => $request->input('per_page_link'),
             'pagination.per_page_memo' => $request->input('per_page_memo'),
+            'pagination.per_page_drift' => $request->input('per_page_drift'),
         ];
 
         $this->settingsService->setMultiple($settings);

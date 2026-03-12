@@ -25,6 +25,7 @@ class UpdateRequest extends ApiFormRequest
             'per_page_comment' => ['required', 'integer', 'min:1', 'max:100'],
             'per_page_link' => ['required', 'integer', 'min:1', 'max:100'],
             'per_page_memo' => ['required', 'integer', 'min:1', 'max:100'],
+            'per_page_drift' => ['required', 'integer', 'min:1', 'max:100'],
         ];
     }
 }
