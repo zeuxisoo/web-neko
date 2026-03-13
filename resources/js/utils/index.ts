@@ -32,6 +32,8 @@ const fillAttachments = (attachments: Attachment[], attachment: PulseAttachmentU
         mime_type: attachment.mime_type || 'application/octet-stream',
         size: attachment.size,
         sort_order: attachment.sort_order,
+        year: attachment.year,
+        month: attachment.month,
         created_at: attachment.created_at,
         links: attachment.links,
     });
@@ -39,7 +41,8 @@ const fillAttachments = (attachments: Attachment[], attachment: PulseAttachmentU
 
 const humanDateTime = (datetime: string, raw: boolean = false) => {
     if (raw) {
-        return format(datetime, 'yyyy/MM/dd HH:mm:ss a');
+        // return format(datetime, 'yyyy/MM/dd HH:mm:ss a'); // [hour: 0-23]
+        return format(datetime, 'yyyy/MM/dd hh:mm:ss a'); // [hour: 1-12]
     }
 
     const parsedDate = parseISO(datetime);
