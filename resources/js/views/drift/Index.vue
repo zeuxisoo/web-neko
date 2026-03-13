@@ -4,10 +4,11 @@ import { DriftForm, DriftList } from '@/components/drift';
 import { useDriftsStore } from '@/stores';
 import { WhoopsHandler } from '@/utils';
 import validator from '@/validators';
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { toast } from 'vue-sonner';
 
 const isSubmitting = ref(false);
+const driftFormRef = useTemplateRef('driftFormRef');
 
 const driftStore = useDriftsStore();
 
@@ -33,6 +34,10 @@ const handleSubmit = async (submitData: DriftFromSubmitData) => {
 
             driftStore.prepend(drift);
 
+            if (driftFormRef.value) {
+                driftFormRef.value.clearFormData();
+            }
+
             toast.info('Drift created');
         } else {
             throw error.value;
@@ -47,7 +52,7 @@ const handleSubmit = async (submitData: DriftFromSubmitData) => {
 
 <template>
     <div class="drift grid gap-3">
-        <DriftForm :is-loading="isSubmitting" @submit="handleSubmit" />
+        <DriftForm ref="driftFormRef" :is-loading="isSubmitting" @submit="handleSubmit" />
         <DriftList />
     </div>
 </template>
