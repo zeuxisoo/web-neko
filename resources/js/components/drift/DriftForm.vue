@@ -8,6 +8,7 @@ import { useTagsStore } from '@/stores';
 import { Eye, Loader, X } from 'lucide-vue-next';
 import { computed, onMounted, ref, watch } from 'vue';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from '../base/input-group';
+import MarkdownView from './MarkdownView.vue';
 
 const props = withDefaults(
     defineProps<{
@@ -29,6 +30,7 @@ const emit = defineEmits<{
 const subject = ref('');
 const content = ref('');
 const selectedTags = ref<string[]>([]);
+const isMarkdownPreview = ref(false);
 
 const tagsStore = useTagsStore();
 
@@ -54,6 +56,10 @@ watch(
     },
     { immediate: true },
 );
+
+const handleMarkdownPreview = () => {
+    isMarkdownPreview.value = !isMarkdownPreview.value;
+};
 
 const handleSubmit = () => {
     emit('submit', {
@@ -81,10 +87,11 @@ defineExpose({
                 <Input v-model="subject" placeholder="Subject" />
             </div>
             <div class="grid gap-2">
-                <InputGroup>
+                <MarkdownView v-if="isMarkdownPreview" :content="content" @close="handleMarkdownPreview" />
+                <InputGroup v-else>
                     <InputGroupTextarea v-model="content" placeholder="What's on your mind?" />
                     <InputGroupAddon align="block-end">
-                        <InputGroupButton variant="outline" class="ml-auto rounded-md" size="icon-xs">
+                        <InputGroupButton variant="outline" class="ml-auto rounded-md" size="icon-xs" @click="handleMarkdownPreview">
                             <Eye />
                         </InputGroupButton>
                     </InputGroupAddon>
