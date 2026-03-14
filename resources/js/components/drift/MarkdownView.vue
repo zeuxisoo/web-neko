@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils';
 import { CustomAttrs, VueMarkdown } from '@crazydos/vue-markdown';
-import { useDark } from '@vueuse/core';
-import { Eye, FileBraces } from 'lucide-vue-next';
+import { useClipboard, useDark } from '@vueuse/core';
+import { Copy, Eye, FileBraces } from 'lucide-vue-next';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
 import { getSingletonHighlighter } from 'shiki';
 import { onMounted, ref } from 'vue';
+import { toast } from 'vue-sonner';
 import { Button } from '../base/button';
 
 const props = defineProps<{
@@ -21,6 +22,7 @@ const emit = defineEmits<{
 
 const html = ref('');
 const isDark = useDark();
+const clipboard = useClipboard({ source: html });
 
 const remarkPlugins = [remarkGfm, remarkBreaks];
 const rehypePlugins = [rehypeRaw, rehypeSanitize];
@@ -102,6 +104,12 @@ const customAttrs = ref<CustomAttrs>({
     },
 });
 
+const handleCopy = (language: string, content: string) => {
+    clipboard.copy(content);
+
+    toast.info(`Language "${language}" copied`);
+};
+
 onMounted(async () => {
     // createHighlighter({})
     const highlighter = await getSingletonHighlighter({
@@ -140,7 +148,18 @@ onMounted(async () => {
             </template>
             <template #block-code="{ children, ...props }">
                 <div class="block-code rounded-md border">
-                    <div class="flex items-center gap-1 bg-accent p-1.5 font-semibold capitalize"><FileBraces :size="14" />{{ props.language }}</div>
+                    <div class="flex justify-between bg-accent p-1.5">
+                        <div class="flex items-center gap-1 font-semibold capitalize"><FileBraces :size="14" />{{ props.language }}</div>
+                        <Button
+                            variant="outline"
+                            size="icon-sm"
+                            class="size-7"
+                            v-if="clipboard.isSupported"
+                            @click="handleCopy(props.language, props.content)"
+                        >
+                            <Copy :size="10" />
+                        </Button>
+                    </div>
                     <div class="text-sm [&>pre]:rounded-md [&>pre]:p-1.5" v-html="html"></div>
                 </div>
             </template>
