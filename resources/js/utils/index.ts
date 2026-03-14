@@ -39,10 +39,9 @@ const fillAttachments = (attachments: Attachment[], attachment: PulseAttachmentU
     });
 };
 
-const humanDateTime = (datetime: string, raw: boolean = false) => {
+const humanDateTime = (datetime: string, raw: boolean = false, tense: '12hr' | '24hr' = '12hr') => {
     if (raw) {
-        // return format(datetime, 'yyyy/MM/dd HH:mm:ss a'); // [hour: 0-23]
-        return format(datetime, 'yyyy/MM/dd hh:mm:ss a'); // [hour: 1-12]
+        return format(datetime, tense === '12hr' ? 'yyyy/MM/dd hh:mm a' : 'yyyy/MM/dd HH:mm');
     }
 
     const parsedDate = parseISO(datetime);
