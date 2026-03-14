@@ -55,9 +55,6 @@ const customAttrs = ref<CustomAttrs>({
     hr: {
         class: ['my-2 h-0 border-1 border-b border-dashed'],
     },
-    img: {
-        class: ['max-w-full h-auto rounded-md'],
-    },
     list: (node, combinedAttrs) => {
         const ordered = combinedAttrs.ordered as boolean;
         const classNames = (node.properties.className ?? []) as string[];
@@ -147,7 +144,11 @@ onMounted(async () => {
                     <div class="text-sm [&>pre]:rounded-md [&>pre]:p-1.5" v-html="html"></div>
                 </div>
             </template>
-            <template #footnotes> </template>
+            <template #img="{ children, ...props }">
+                <div class="flex justify-center">
+                    <img class="h-auto max-w-full rounded-md" v-bind="props" />
+                </div>
+            </template>
         </VueMarkdown>
         <div class="flex justify-end">
             <Button variant="outline" class="rounded-md" size="icon-sm" @click="emit('close')">
