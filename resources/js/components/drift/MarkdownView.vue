@@ -2,7 +2,7 @@
 import { cn } from '@/lib/utils';
 import { CustomAttrs, VueMarkdown } from '@crazydos/vue-markdown';
 import { useClipboard, useDark } from '@vueuse/core';
-import { Copy, Eye, FileBraces } from 'lucide-vue-next';
+import { ChevronsUpDown, Copy, Eye, FileBraces } from 'lucide-vue-next';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import remarkBreaks from 'remark-breaks';
@@ -11,6 +11,7 @@ import { getSingletonHighlighter } from 'shiki';
 import { onMounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import { Button } from '../base/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../base/collapsible';
 
 const props = defineProps<{
     content: string;
@@ -149,19 +150,30 @@ onMounted(async () => {
             </template>
             <template #block-code="{ children, ...props }">
                 <div class="block-code rounded-md border">
-                    <div class="flex justify-between bg-accent p-1.5">
-                        <div class="flex items-center gap-1 font-semibold capitalize"><FileBraces :size="14" />{{ props.language }}</div>
-                        <Button
-                            variant="outline"
-                            size="icon-sm"
-                            class="size-7"
-                            v-if="clipboard.isSupported"
-                            @click="handleCopy(props.language, props.content)"
-                        >
-                            <Copy :size="10" />
-                        </Button>
-                    </div>
-                    <div class="text-sm [&>pre]:rounded-md [&>pre]:p-1.5" v-html="html"></div>
+                    <Collapsible :default-open="true">
+                        <div class="flex justify-between bg-accent p-1.5">
+                            <div class="flex items-center gap-1 font-semibold capitalize"><FileBraces :size="14" />{{ props.language }}</div>
+                            <div class="gap-0.5">
+                                <Button
+                                    variant="ghost"
+                                    size="icon-sm"
+                                    class="size-7"
+                                    v-if="clipboard.isSupported"
+                                    @click="handleCopy(props.language, props.content)"
+                                >
+                                    <Copy :size="10" />
+                                </Button>
+                                <CollapsibleTrigger as-child>
+                                    <Button variant="ghost" size="icon-sm" class="size-7">
+                                        <ChevronsUpDown :size="10" />
+                                    </Button>
+                                </CollapsibleTrigger>
+                            </div>
+                        </div>
+                        <CollapsibleContent>
+                            <div class="text-sm [&>pre]:rounded-md [&>pre]:p-1.5" v-html="html"></div>
+                        </CollapsibleContent>
+                    </Collapsible>
                 </div>
             </template>
             <template #img="{ children, ...props }">
