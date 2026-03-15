@@ -14,6 +14,7 @@ import { Button } from '../base/button';
 
 const props = defineProps<{
     content: string;
+    disableEyeButton?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -40,7 +41,7 @@ const customAttrs = ref<CustomAttrs>({
         };
 
         return {
-            class: cn('mt-3 mb-2 leading-tight', levelClasses[level]),
+            class: cn('mt-2 mb-2 leading-tight', levelClasses[level]),
         };
     },
     a: {
@@ -169,7 +170,7 @@ onMounted(async () => {
                 </div>
             </template>
         </VueMarkdown>
-        <div class="flex justify-end">
+        <div class="flex justify-end" v-if="!props.disableEyeButton">
             <Button variant="outline" class="rounded-md" size="icon-sm" @click="emit('close')">
                 <Eye />
             </Button>

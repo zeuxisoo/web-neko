@@ -9,9 +9,10 @@ import { useDriftsStore } from '@/stores';
 import { humanDateTime, WhoopsHandler } from '@/utils';
 import validator from '@/validators';
 import { EllipsisVertical, Loader } from 'lucide-vue-next';
-import { ref, useTemplateRef } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import { toast } from 'vue-sonner';
 import DriftForm from './DriftForm.vue';
+import MarkdownView from './MarkdownView.vue';
 
 const props = defineProps<{
     drift: DriftIndexResponse['data'][number];
@@ -25,6 +26,10 @@ const driftFormRef = useTemplateRef('driftFormRef');
 
 const alertDialog = useAlertDialog();
 const driftStore = useDriftsStore();
+
+const isMarkdown = computed(() => {
+    return props.drift.tags.some((tag) => tag.name === 'markdown');
+});
 
 const handleEditable = (enable: boolean) => {
     isEditing.value = enable;
@@ -146,8 +151,13 @@ const handleDelete = async (id: number) => {
         </CardHeader>
         <CardContent class="grid gap-2">
             <p class="rounded-md border bg-accent/35 p-2 font-semibold">{{ props.drift.subject }}</p>
-            <p class="rounded-md border p-2 hover:bg-accent/80">{{ props.drift.content }}</p>
-            <div class="mt-3 flex flex-wrap gap-3">
+
+            <MarkdownView :content="props.drift.content" :disable-eye-button="true" v-if="isMarkdown" />
+            <div class="whitespace-pre-line" v-else>
+                <p class="rounded-md border p-2 hover:bg-accent/80">{{ props.drift.content }}</p>
+            </div>
+
+            <div class="mt-3 flex flex-wrap gap-2">
                 <Badge v-for="tag in props.drift.tags" :key="tag.id" variant="secondary"> #{{ tag.name }} </Badge>
             </div>
         </CardContent>
