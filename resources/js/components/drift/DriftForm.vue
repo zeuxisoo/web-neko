@@ -5,6 +5,7 @@ import { Input } from '@/components/base/input';
 import { TagsInput } from '@/components/tags-input';
 import { cn } from '@/lib/utils';
 import { useTagsStore } from '@/stores';
+import { onKeyStroke } from '@vueuse/core';
 import { Eye, Loader, X } from 'lucide-vue-next';
 import { computed, onMounted, ref, watch } from 'vue';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from '../base/input-group';
@@ -44,6 +45,13 @@ const availableTags = computed(() => {
 onMounted(() => {
     tagsStore.fetchDrift();
 });
+
+onKeyStroke(
+    (e: KeyboardEvent) => e.metaKey && e.shiftKey && e.key === 'e',
+    (_: KeyboardEvent) => {
+        handleMarkdownPreview();
+    },
+);
 
 watch(
     () => props.drift,
