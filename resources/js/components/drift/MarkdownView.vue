@@ -7,7 +7,8 @@ import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
-import { getSingletonHighlighter } from 'shiki';
+import { getSingletonHighlighterCore } from 'shiki/core';
+import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
 import { onMounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import { Button } from '../base/button';
@@ -129,9 +130,18 @@ const handleCopy = (language: string, content: string) => {
 
 onMounted(async () => {
     // createHighlighter({})
-    const highlighter = await getSingletonHighlighter({
-        themes: ['github-light', 'github-dark'],
-        langs: ['bash', 'php', 'python', 'javascript', 'typescript', 'go', 'v', 'bash'],
+    const highlighter = await getSingletonHighlighterCore({
+        themes: [import('@shikijs/themes/github-light'), import('@shikijs/themes/github-dark')],
+        langs: [
+            import('@shikijs/langs/bash'),
+            import('@shikijs/langs/php'),
+            import('@shikijs/langs/python'),
+            import('@shikijs/langs/javascript'),
+            import('@shikijs/langs/typescript'),
+            import('@shikijs/langs/go'),
+            import('@shikijs/langs/v'),
+        ],
+        engine: createJavaScriptRegexEngine(),
     });
 
     customAttrs.value['block-code'] = (node, combinedAttrs) => {

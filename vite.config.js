@@ -47,6 +47,7 @@ export default defineConfig({
                         '@vueuse/core',
                         'class-variance-authority',
                         'textarea-caret',
+                        'shiki',
                     ],
                 },
             },
