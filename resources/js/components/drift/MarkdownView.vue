@@ -2,7 +2,7 @@
 import { cn } from '@/lib/utils';
 import { CustomAttrs, VueMarkdown } from '@crazydos/vue-markdown';
 import { useClipboard, useDark } from '@vueuse/core';
-import { ChevronsUpDown, Copy, Eye, FileBraces } from 'lucide-vue-next';
+import { ChevronsUpDown, Copy, Download, Eye, FileBraces } from 'lucide-vue-next';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import remarkBreaks from 'remark-breaks';
@@ -106,6 +106,21 @@ const customAttrs = ref<CustomAttrs>({
     },
 });
 
+const handleDownload = (language: string, content: string) => {
+    const blob = new Blob([content], { type: 'text/plain' });
+
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.rel = 'noopener';
+    link.download = `code.${language}.txt`;
+
+    try {
+        link.dispatchEvent(new MouseEvent('click'));
+    } catch (e: unknown) {
+        toast.error(`Cannot create download file: ${link.download}`);
+    }
+};
+
 const handleCopy = (language: string, content: string) => {
     clipboard.copy(content);
 
@@ -154,6 +169,9 @@ onMounted(async () => {
                         <div class="flex justify-between bg-accent p-1.5">
                             <div class="flex items-center gap-1 font-semibold capitalize"><FileBraces :size="14" />{{ props.language }}</div>
                             <div class="gap-0.5">
+                                <Button variant="ghost" size="icon-sm" class="size-7" @click="handleDownload(props.language, props.content)">
+                                    <Download :size="10" />
+                                </Button>
                                 <Button
                                     variant="ghost"
                                     size="icon-sm"
