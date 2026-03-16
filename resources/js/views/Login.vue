@@ -67,11 +67,17 @@ const handleLogin = async () => {
                         <div class="grid gap-2">
                             <div class="flex items-center">
                                 <Label for="password">Password</Label>
-                                <a href="javascript:alert('Don\'t touch me 😡')" class="ml-auto inline-block text-sm">
+                                <a href="javascript:alert('Don\'t touch me 😡')" class="ml-auto inline-block text-sm" tabindex="-1">
                                     <Lock :size="14" />
                                 </a>
                             </div>
-                            <PasswordInput v-model="password" :enable-password-toggle="true" id="password" type="password" />
+                            <PasswordInput
+                                v-model="password"
+                                :enable-password-toggle="true"
+                                id="password"
+                                type="password"
+                                @keyup.enter="handleLogin"
+                            />
                         </div>
                         <Button type="button" class="w-full" @click="handleLogin" :disabled="isLoading">
                             <Loader class="animate-spin" v-if="isLoading" />
