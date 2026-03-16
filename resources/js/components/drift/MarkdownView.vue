@@ -43,7 +43,7 @@ const customAttrs = ref<CustomAttrs>({
         };
 
         return {
-            class: cn('mt-2 mb-2 leading-tight', levelClasses[level]),
+            class: cn('mt-1.5 mb-2 leading-tight', levelClasses[level]),
         };
     },
     a: {
@@ -164,7 +164,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="rounded-md border px-4 py-2">
+    <div class="rounded-md border p-4">
         <VueMarkdown :markdown="props.content" :remarkPlugins="remarkPlugins" :rehypePlugins="rehypePlugins" :customAttrs="customAttrs">
             <template #table="{ children, ...props }">
                 <div class="my-3 w-full overflow-x-auto rounded-md border bg-muted/20">
@@ -177,7 +177,7 @@ onMounted(async () => {
                 <div class="block-code rounded-md border">
                     <Collapsible :default-open="true">
                         <div class="flex justify-between bg-accent p-1.5">
-                            <div class="flex items-center gap-1 font-semibold capitalize"><FileBraces :size="14" />{{ props.language }}</div>
+                            <div class="flex items-center gap-1 font-semibold uppercase"><FileBraces :size="14" />{{ props.language }}</div>
                             <div class="gap-0.5">
                                 <Button variant="ghost" size="icon-sm" class="size-7" @click="handleDownload(props.language, props.content)">
                                     <Download :size="10" />
