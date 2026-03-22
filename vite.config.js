@@ -31,23 +31,30 @@ export default defineConfig({
         },
     },
     build: {
-        rollupOptions: {
+        rolldownOptions: {
             output: {
-                manualChunks: {
-                    framework: ['vue', 'vue-router', 'pinia'],
-                    'ui-components': ['lucide-vue-next', 'reka-ui', 'vue-sonner', 'vue-it-bigger'],
-                    utils: [
-                        'es-toolkit',
-                        'date-fns',
-                        'clsx',
-                        'tailwind-merge',
-                        'fuse.js',
-                        'sprintf-js',
-                        'chevrotain',
-                        '@vueuse/core',
-                        'class-variance-authority',
-                        'textarea-caret',
-                        'shiki',
+                advancedChunks: {
+                    groups: [
+                        {
+                            name: 'framework',
+                            test: /node_modules\/(vue|vue-router|pinia)/,
+                            priority: 10,
+                        },
+                        {
+                            name: 'ui-components',
+                            test: /node_modules\/(lucide-vue-next|reka-ui|vue-sonner|vue-it-bigger)/,
+                            priority: 9,
+                        },
+                        {
+                            name: 'utils',
+                            test: /node_modules\/(es-toolkit|date-fns|clsx|tailwind-merge|fuse\.js|sprintf-js|chevrotain|@vueuse\/core|class-variance-authority|textarea-caret)/,
+                            priority: 8,
+                        },
+                        {
+                            name: 'code-mark',
+                            test: /node_modules\/(shiki|rehype-(raw|sanitize)|remark-(breaks|gfm))/,
+                            priority: 8,
+                        },
                     ],
                 },
             },
