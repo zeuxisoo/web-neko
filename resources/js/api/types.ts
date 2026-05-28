@@ -99,8 +99,10 @@ interface PulseMemoStoreResponse extends ApiResponse {
             mime_type: string;
             size: number;
             sort_order: number;
-            links: Record<'cover' | 'thumb', string>;
+            year: number;
+            month: number;
             created_at: string;
+            links: Record<'cover' | 'thumb', string>;
         }[];
         links: {
             id: number;

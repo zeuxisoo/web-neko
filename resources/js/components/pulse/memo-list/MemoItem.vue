@@ -114,7 +114,7 @@ watch(
         class="border-2 border-accent-foreground/30"
         :isLoading="isLoading"
         :enableCancel="true"
-        :tags="tagsStore.tags"
+        :tags="tagsStore.memoTags"
         :attachments="attachmentsStore.attachments"
         :links="linkStore.links"
         :memo="props.memo"
