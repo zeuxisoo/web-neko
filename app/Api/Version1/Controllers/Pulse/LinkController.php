@@ -11,10 +11,9 @@ use App\Api\Version1\Resources\Pulse\LinkResource;
 use App\Api\Version1\Resources\Pulse\LinkResourceCollection;
 use App\Models\MemoLink;
 use App\Services\SettingsService;
+use Embed\Embed;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
-use shweshi\OpenGraph\Exceptions\FetchException;
-use shweshi\OpenGraph\OpenGraph;
 
 class LinkController extends ApiController
 {
@@ -80,27 +79,18 @@ class LinkController extends ApiController
         $input = $request->validated();
 
         try {
-            $graph = new OpenGraph();
-            $meta = $graph->fetch($input['url']);
+            $embed = new Embed();
+            $info = $embed->get($input['url']);
 
             $data = [
-                'title' => $meta['title'] ?? '',
-                'description' => $meta['description'] ?? '',
-                'url' => $meta['url'] ?? $input['url'],
-                'image' => $meta['image:secure_url'] ?? $meta['image'] ?? '',
-                'extra' => [
-                    'site_name' => $meta['site_name'] ?? '',
-                    'image_attribute' => [
-                        'width' => $meta['image:width'] ?? 0,
-                        'height' => $meta['image:height'] ?? 0,
-                        'alt' => $meta['image:alt'] ?? '',
-                        'type' => $meta['image:type'] ?? 'application/octet-stream',
-                    ],
-                ],
+                'title' => $info->title ?? '',
+                'description' => $info->description ?? '',
+                'url' => $info->url ?? $input['url'],
+                'image' => $info->image ?? '',
             ];
 
             return $this->respondJsonData($data);
-        } catch (FetchException) {
+        } catch (\Exception $e) {
             return $this->respondJsonMessage('Cannot fetch remote url', 422);
         }
     }
