@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
+import { cn } from '@/lib/utils';
 import { LinkIcon } from 'lucide-vue-next';
 
 const props = defineProps<{
@@ -13,7 +14,7 @@ const props = defineProps<{
             <LinkIcon :size="12" />
             <span class="text-xs">Links ({{ props.links.length }})</span>
         </div>
-        <div class="flex flex-col gap-2 p-1">
+        <div :class="cn('grid grid-cols-1 gap-2 p-1', props.links.length > 1 ? 'lg:grid-cols-2' : '')">
             <a
                 v-for="(link, i) in props.links"
                 :key="i"
