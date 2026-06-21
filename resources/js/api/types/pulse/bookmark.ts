@@ -1,5 +1,5 @@
-import type { PulseMemoStoreResponse } from './memo';
 import type { ApiResponse } from '../base';
+import type { PulseMemoStoreResponse } from './memo';
 
 export type PulseBookmarkIndexPayload = {
     page: number;

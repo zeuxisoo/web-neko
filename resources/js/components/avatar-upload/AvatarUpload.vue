@@ -18,6 +18,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
     (e: 'change', value: File): void;
+    (e: 'preview'): void;
 }>();
 
 const previewUrl = ref<string>(props.url);
@@ -51,7 +52,7 @@ const removeFile = () => {
 <template>
     <div class="flex flex-col items-center gap-2">
         <div class="inline-flex items-center gap-2 align-top">
-            <Avatar class="size-9 rounded-md border border-input">
+            <Avatar class="size-9 cursor-pointer rounded-md border border-input" @click="emit('preview')">
                 <AvatarImage v-if="previewUrl" :src="previewUrl" class="size-full object-cover" />
                 <AvatarFallback class="size-full">
                     <CircleUserRoundIcon class="opacity-60" :size="16" />

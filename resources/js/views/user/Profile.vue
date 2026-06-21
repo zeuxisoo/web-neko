@@ -10,12 +10,30 @@ import { useAuthStore, useUserStore } from '@/stores';
 import { WhoopsHandler } from '@/utils';
 import validator from '@/validators';
 import { Loader } from 'lucide-vue-next';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import LightBox, { LightBoxComponent } from 'vue-it-bigger';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
 const user = ref<MeResponse['data']>({} as MeResponse['data']);
 const isLoading = ref(false);
+const showLightBox = ref(false);
+const lightBoxRef = ref<LightBoxComponent>();
+
+const lightboxMedia = computed(() => [
+    {
+        type: 'image',
+        src: user.value.link_thumb,
+        thumb: user.value.link_cover,
+        caption: user.value.username,
+    },
+]);
+
+const handleShowLightBox = (index: number) => {
+    if (lightBoxRef.value) {
+        lightBoxRef.value.showImage(index);
+    }
+};
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -122,7 +140,13 @@ const handleAccountProfileSave = async () => {
                 <div class="grid gap-3">
                     <Label for="tabs-avatar">Avatar</Label>
                     <Loader class="animate-spin" v-if="isLoading" />
-                    <AvatarUpload :url="user.link_cover" :name="user.username" @change="handleAccountAvatarSave" v-else />
+                    <AvatarUpload
+                        :url="user.link_cover"
+                        :name="user.username"
+                        @change="handleAccountAvatarSave"
+                        @preview="handleShowLightBox(0)"
+                        v-else
+                    />
                 </div>
             </CardContent>
         </Card>
@@ -145,4 +169,5 @@ const handleAccountProfileSave = async () => {
             </CardFooter>
         </Card>
     </div>
+    <LightBox ref="lightBoxRef" :media="lightboxMedia" :showLightBox="showLightBox" :interfaceHideTime="86400" :showCaption="true" />
 </template>
