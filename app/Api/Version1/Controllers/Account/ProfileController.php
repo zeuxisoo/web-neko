@@ -6,6 +6,7 @@ use App\Api\Version1\Bases\ApiController;
 use App\Api\Version1\Requests\Account\Profile\UpdateRequest;
 use App\Api\Version1\Requests\Account\Profile\UploadAvatarRequest;
 use App\Api\Version1\Resources\Auth\UserResource;
+use App\Models\UserAccessToken;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
+use Laravel\Sanctum\TransientToken;
 
 class ProfileController extends ApiController
 {
@@ -25,7 +27,15 @@ class ProfileController extends ApiController
             'email' => $input['email'],
         ]);
 
-        $user->currentAccessToken()->delete();
+        $currentToken = $user->currentAccessToken();
+
+        if (method_exists($currentToken, 'delete')) {
+            $currentToken->delete();
+        } elseif (!($currentToken instanceof TransientToken)) {
+            UserAccessToken::find($currentToken->id)->delete();
+        } else {
+            UserAccessToken::findToken(request()->bearerToken())->delete();
+        }
 
         return $this->respondJsonMessage('Successfully updated profile, Please Login again.');
     }
