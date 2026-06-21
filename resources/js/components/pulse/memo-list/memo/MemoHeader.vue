@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { humanDateTime } from '@/utils';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import LightBox, { LightBoxComponent } from 'vue-it-bigger';
 
 const props = defineProps<{
     item: {
@@ -11,11 +12,28 @@ const props = defineProps<{
 }>();
 
 const showRawDateTime = ref(false);
+const showLightBox = ref(false);
+const lightBoxRef = ref<LightBoxComponent>();
+
+const lightboxMedia = computed(() => [
+    {
+        type: 'image',
+        src: props.item.user.link,
+        thumb: props.item.user.link,
+        caption: props.item.user.username,
+    },
+]);
+
+const handleShowLightBox = (index: number) => {
+    if (lightBoxRef.value) {
+        lightBoxRef.value.showImage(index);
+    }
+};
 </script>
 
 <template>
     <div class="flex items-center gap-2 text-left text-sm">
-        <Avatar class="h-12 w-12 rounded-lg">
+        <Avatar class="h-12 w-12 cursor-pointer rounded-lg" @click="handleShowLightBox(0)">
             <AvatarImage :src="props.item.user.link" :alt="props.item.user.username" />
             <AvatarFallback class="rounded-lg">{{ props.item.user.username.slice(0, 2).toUpperCase() }}</AvatarFallback>
         </Avatar>
@@ -26,4 +44,5 @@ const showRawDateTime = ref(false);
             </span>
         </div>
     </div>
+    <LightBox ref="lightBoxRef" :media="lightboxMedia" :showLightBox="showLightBox" :interfaceHideTime="86400" :showCaption="true" />
 </template>
