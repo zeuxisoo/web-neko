@@ -1,3 +1,4 @@
+import type { LoginPayload, LoginResponse, LogoutResponse, MeResponse } from './types/auth';
 import useAgent from './useAgent';
 
 export default {

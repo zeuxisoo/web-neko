@@ -1,6 +1,8 @@
 import api from '@/api';
+import type { PulseMemoIndexResponse } from '@/api/types';
 import { WhoopsHandler } from '@/utils';
 import { defineStore } from 'pinia';
+import { Memo } from './types';
 
 const useMemosStore = defineStore('memos', {
     state: () => ({

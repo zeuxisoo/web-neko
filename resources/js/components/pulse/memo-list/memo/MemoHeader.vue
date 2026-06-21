@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { MeResponse } from '@/api/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { humanDateTime } from '@/utils';
 import { computed, ref } from 'vue';
@@ -18,8 +19,8 @@ const lightBoxRef = ref<LightBoxComponent>();
 const lightboxMedia = computed(() => [
     {
         type: 'image',
-        src: props.item.user.link,
-        thumb: props.item.user.link,
+        src: props.item.user.link_thumb,
+        thumb: props.item.user.link_thumb,
         caption: props.item.user.username,
     },
 ]);
@@ -34,7 +35,7 @@ const handleShowLightBox = (index: number) => {
 <template>
     <div class="flex items-center gap-2 text-left text-sm">
         <Avatar class="h-12 w-12 cursor-pointer rounded-lg" @click="handleShowLightBox(0)">
-            <AvatarImage :src="props.item.user.link" :alt="props.item.user.username" />
+            <AvatarImage :src="props.item.user.link_cover" :alt="props.item.user.username" />
             <AvatarFallback class="rounded-lg">{{ props.item.user.username.slice(0, 2).toUpperCase() }}</AvatarFallback>
         </Avatar>
         <div class="grid flex-1 text-left text-sm leading-6">

@@ -1,8 +1,10 @@
 import api from '@/api';
+import type { PulseAttachmentDestroyResponse, PulseAttachmentUploadResponse } from '@/api/types';
 import { fillAttachments, humanSize, WhoopsHandler } from '@/utils';
 import { defineStore } from 'pinia';
 import { onScopeDispose } from 'vue';
 import { toast } from 'vue-sonner';
+import { Attachment } from './types';
 
 export interface UploadOptions {
     maxFileSize?: number;

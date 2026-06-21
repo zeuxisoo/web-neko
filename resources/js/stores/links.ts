@@ -1,8 +1,10 @@
 import api from '@/api';
+import type { PulseLinkDestroyResponse, PulseLinkUnsavedResponse } from '@/api/types';
 import { WhoopsHandler } from '@/utils';
 import { defineStore } from 'pinia';
 import { onScopeDispose } from 'vue';
 import { toast } from 'vue-sonner';
+import { Link } from './types';
 
 const useLinksStore = (id: string = 'default') => {
     const store = defineStore(`links-${id}`, {

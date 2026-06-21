@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { User } from '@/api/types';
 import {
     Sidebar,
     SidebarContent,

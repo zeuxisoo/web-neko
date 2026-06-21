@@ -44,34 +44,49 @@ class ProfileController extends ApiController
         $file = $request->file('file');
         $disk = Storage::disk('avatar');
 
-        // generate filename and store path
+        // generate base filename
         $filename = strtolower((string) Str::ulid()).'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
 
-        // create thumb image object
+        $uncookedPath = "uncooked/{$filename}";
+        $coverPath = "cover/{$filename}";
+        $thumbPath = "thumb/{$filename}";
+
         $manager = new ImageManager(new Driver());
-        $image = $manager->read($file)->scaleDown(96, 96);
 
         try {
-            return DB::transaction(function() use ($disk, $filename, $image) {
-                // save to store path
-                $disk->put($filename, (string) $image->encode());
+            // 1. save original (uncooked) first — original is persisted before any processing
+            $disk->put($uncookedPath, (string) $manager->read($file)->encode());
 
-                // get user and current avatar
+            // 2. generate image variants from the saved original
+            $saveVariant = function(string $source, string $dest, callable $process) use ($disk, $manager): void {
+                $disk->put($dest, (string) $process($manager->read($source))->encode());
+            };
+
+            $saveVariant($disk->path($uncookedPath), $coverPath, fn($img) => $img->scaleDown(96, 96));
+            $saveVariant($disk->path($uncookedPath), $thumbPath, fn($img) => $img->scaleDown(512, 512));
+
+            return DB::transaction(function() use ($disk, $filename) {
                 $user = $this->user();
                 $oldAvatar = $user->avatar;
 
-                // update avatar
                 $user->avatar = $filename;
                 $user->save();
 
-                // remove old avatar (ensure changed before remove)
-                $disk->delete($oldAvatar);
+                // remove old avatar versions (handles both old flat and new directory format)
+                if ($oldAvatar) {
+                    $disk->delete($oldAvatar);
+                    $disk->delete("uncooked/{$oldAvatar}");
+                    $disk->delete("cover/{$oldAvatar}");
+                    $disk->delete("thumb/{$oldAvatar}");
+                }
 
                 return new UserResource($user);
             });
         } catch (\Exception $e) {
             // remove uploaded avatar on exception
-            $disk->delete($filename);
+            $disk->delete($uncookedPath);
+            $disk->delete($coverPath);
+            $disk->delete($thumbPath);
             throw $e;
         }
     }

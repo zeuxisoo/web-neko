@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PulseMemoIndexResponse } from '@/api/types';
 import { PaperclipIcon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import LightBox, { LightBoxComponent } from 'vue-it-bigger';

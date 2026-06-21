@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import api from '@/api';
+import { PulseCommentStorePayload, PulseCommentStoreResponse } from '@/api/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
@@ -66,7 +67,7 @@ const handlePost = async () => {
             <div class="flex flex-col gap-2">
                 <div class="grid grid-cols-1 gap-2 md:grid-cols-[auto_1fr]">
                     <Avatar class="hidden h-10 w-10 rounded-lg md:flex">
-                        <AvatarImage v-if="userStore.link" :src="userStore.link" :alt="userStore.username" />
+                        <AvatarImage v-if="userStore.link_cover" :src="userStore.link_cover" :alt="userStore.username" />
                         <AvatarFallback class="rounded-lg">{{ userStore.username.slice(0, 2).toUpperCase() }}</AvatarFallback>
                     </Avatar>
                     <textarea

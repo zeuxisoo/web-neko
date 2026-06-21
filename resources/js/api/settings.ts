@@ -1,3 +1,12 @@
+import type {
+    SettingsAttachmentIndexResponse,
+    SettingsAttachmentUpdatePayload,
+    SettingsAttachmentUpdateResponse,
+    SettingsIndexResponse,
+    SettingsPaginationIndexResponse,
+    SettingsPaginationUpdatePayload,
+    SettingsPaginationUpdateResponse,
+} from './types/settings';
 import useAgent from './useAgent';
 
 class Settings {

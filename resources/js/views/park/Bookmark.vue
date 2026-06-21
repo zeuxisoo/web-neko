@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import api from '@/api';
+import { PulseBookmarkIndexResponse, PulseBookmarkRemoveResponse } from '@/api/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
@@ -126,7 +127,7 @@ watch(
                                 <p class="line-clamp-3 text-sm">{{ memo.content }}</p>
                                 <div class="mt-2 flex items-center gap-2">
                                     <Avatar class="h-5 w-5 rounded-md bg-accent">
-                                        <AvatarImage :src="memo.user.link" :alt="memo.user.username" />
+                                        <AvatarImage :src="memo.user.link_cover" :alt="memo.user.username" />
                                         <AvatarFallback class="rounded-md text-sm">{{ memo.user.username.slice(0, 2).toUpperCase() }}</AvatarFallback>
                                     </Avatar>
                                     <p class="text-sm text-muted-foreground">{{ memo.user.username }}</p>

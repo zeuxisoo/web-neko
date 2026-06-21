@@ -1,13 +1,17 @@
 import api from '@/api';
+import { MeResponse } from '@/api/types';
 import { defineStore } from 'pinia';
 
+type UserState = Omit<MeResponse['data'], 'isAdmin'> & { is_admin: boolean };
+
 const useUserStore = defineStore('user', {
-    state: () => ({
+    state: (): UserState => ({
         id: 0,
         username: '',
         email: '',
         avatar: '',
-        link: '',
+        link_cover: '',
+        link_thumb: '',
         is_admin: false,
     }),
     getters: {
@@ -15,30 +19,27 @@ const useUserStore = defineStore('user', {
     },
     actions: {
         async fetch() {
-            try {
-                const { data, error } = await api.auth.me().json<MeResponse>();
+            const { data, error } = await api.auth.me().json<MeResponse>();
 
-                if (error.value) {
-                    throw error.value;
-                }
+            if (error.value) {
+                throw error.value;
+            }
 
-                if (data && data.value) {
-                    const result = data.value;
-                    const me = result.data;
+            if (data && data.value) {
+                const result = data.value;
+                const me = result.data;
 
-                    this.$patch(me);
+                this.$patch(me);
 
-                    return me;
-                } else {
-                    throw error.value;
-                }
-            } catch (e: unknown) {
-                throw e;
+                return me;
+            } else {
+                throw error.value;
             }
         },
-        setAvatar(filename: string, link: string) {
+        setAvatar(filename: string, linkCover: string, linkThumb: string) {
             this.avatar = filename;
-            this.link = link;
+            this.link_cover = linkCover;
+            this.link_thumb = linkThumb;
         },
     },
 });

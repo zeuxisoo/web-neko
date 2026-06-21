@@ -1,4 +1,5 @@
 import api from '@/api';
+import type { SettingsAttachmentIndexResponse, SettingsIndexResponse, SettingsPaginationIndexResponse } from '@/api/types';
 import { WhoopsHandler } from '@/utils';
 import { defineStore } from 'pinia';
 

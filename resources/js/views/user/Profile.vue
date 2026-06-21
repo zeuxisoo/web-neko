@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import api from '@/api';
+import { AccountProfileResponse, AccountProfileUpdatePayload, MeResponse } from '@/api/types';
 import AvatarUpload from '@/components/avatar-upload/AvatarUpload.vue';
 import { Button } from '@/components/base/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/base/card';
@@ -13,7 +14,7 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
-const user = ref<User>({} as User);
+const user = ref<MeResponse['data']>({} as MeResponse['data']);
 const isLoading = ref(false);
 
 const router = useRouter();
@@ -28,7 +29,8 @@ onMounted(async () => {
         user.value.username = me.username;
         user.value.email = me.email;
         user.value.avatar = me.avatar;
-        user.value.link = me.link;
+        user.value.link_cover = me.link_cover;
+        user.value.link_thumb = me.link_thumb;
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error when fetch me action in account profile');
     } finally {
@@ -52,11 +54,13 @@ const handleAccountAvatarSave = async (file: File) => {
         if (data && data.value) {
             const result = data.value.data;
             const avatar = result.avatar;
-            const link = result.link;
+            const linkCover = result.link_cover;
+            const linkThumb = result.link_thumb;
 
-            userStore.setAvatar(avatar, link);
+            userStore.setAvatar(avatar, linkCover, linkThumb);
             user.value.avatar = userStore.avatar;
-            user.value.link = userStore.link;
+            user.value.link_cover = userStore.link_cover;
+            user.value.link_thumb = userStore.link_thumb;
 
             toast.info('Avatar updated');
         } else {
@@ -108,7 +112,7 @@ const handleAccountProfileSave = async () => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-2" v-if="user.link">
+    <div class="flex flex-col gap-2" v-if="user.link_cover">
         <Card>
             <CardHeader>
                 <CardTitle>Profile</CardTitle>
@@ -118,7 +122,7 @@ const handleAccountProfileSave = async () => {
                 <div class="grid gap-3">
                     <Label for="tabs-avatar">Avatar</Label>
                     <Loader class="animate-spin" v-if="isLoading" />
-                    <AvatarUpload :url="user.link" :name="user.username" @change="handleAccountAvatarSave" v-else />
+                    <AvatarUpload :url="user.link_cover" :name="user.username" @change="handleAccountAvatarSave" v-else />
                 </div>
             </CardContent>
         </Card>

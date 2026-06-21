@@ -1,5 +1,6 @@
 export { default as extractHashTags } from './hashtags';
 export { default as WhoopsHandler } from './whoops';
+import type { PulseAttachmentUploadResponse } from '@/api/types';
 import { Attachment } from '@/components/pulse/editor/types';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 
@@ -15,7 +16,7 @@ const humanSize = (bytes: number) => {
 };
 
 const fileSubType = (mimeType: string, upperCase: boolean = true) => {
-    const [kind, subType] = mimeType.split('/', 2);
+    const [_kind, subType] = mimeType.split('/', 2);
 
     if (upperCase) {
         return subType.toUpperCase();

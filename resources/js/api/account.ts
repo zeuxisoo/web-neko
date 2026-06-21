@@ -1,3 +1,11 @@
+import type {
+    AccountProfileResponse,
+    AccountProfileUpdateAvatarPayload,
+    AccountProfileUpdatePayload,
+    AccountSecurityResponse,
+    AccountSecurityUpdatePasswordPayload,
+} from './types/account';
+import type { MeResponse } from './types/auth';
 import useAgent from './useAgent';
 
 class Profile {

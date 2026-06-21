@@ -1,6 +1,8 @@
 import api from '@/api';
+import type { PulseTagIndexResponse } from '@/api/types';
 import { WhoopsHandler } from '@/utils';
 import { defineStore } from 'pinia';
+import { TagOrderedList } from './types';
 
 const useTagsStore = defineStore('tags', {
     state: () => ({

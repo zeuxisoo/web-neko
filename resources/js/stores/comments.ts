@@ -1,6 +1,8 @@
 import api from '@/api';
+import type { PulseCommentIndexResponse } from '@/api/types';
 import { WhoopsHandler } from '@/utils';
 import { defineStore } from 'pinia';
+import { Comment } from './types';
 
 const useCommentsStore = defineStore('comments', {
     state: () => ({
@@ -33,7 +35,7 @@ const useCommentsStore = defineStore('comments', {
                 WhoopsHandler.handleError(e, 'Unknown error when fetch comments list action in comments store');
             }
         },
-        append(comment: Comment_) {
+        append(comment: Comment) {
             if (this.comments) {
                 this.comments.data = [...this.comments.data, comment];
             }

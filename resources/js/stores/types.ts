@@ -1,13 +1,21 @@
-type AuthStorageValue = {
+import {
+    DriftIndexResponse,
+    PulseAttachmentUploadResponse,
+    PulseCommentIndexResponse,
+    PulseLinkStoreResponse,
+    PulseMemoIndexResponse,
+} from '@/api/types';
+
+export type AuthStorageValue = {
     access_token: string;
     token_type: string;
     expires_in: number;
 };
 
-type Memo = PulseMemoIndexResponse['data'][number];
-type Attachment = PulseAttachmentUploadResponse['data'][number];
-type Link = PulseLinkStoreResponse['data'];
-type Comment_ = PulseCommentIndexResponse['data'][number];
-type Drift = DriftIndexResponse['data'][number];
+export type Memo = PulseMemoIndexResponse['data'][number];
+export type Attachment = PulseAttachmentUploadResponse['data'][number];
+export type Link = PulseLinkStoreResponse['data'];
+export type Comment = PulseCommentIndexResponse['data'][number];
+export type Drift = DriftIndexResponse['data'][number];
 
-type TagOrderedList = Record<string, number>;
+export type TagOrderedList = Record<string, number>;

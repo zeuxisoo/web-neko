@@ -2,7 +2,7 @@ import { LucideProps } from 'lucide-vue-next';
 import { FunctionalComponent } from 'vue';
 import { RouterLinkProps } from 'vue-router';
 
-type NavItemTo = RouterLinkProps['to'];
+export type NavItemTo = RouterLinkProps['to'];
 
 export type NavItem = {
     kind: 'group' | 'single';

@@ -1,3 +1,13 @@
+import type {
+    DriftDestroyResponse,
+    DriftIndexPayload,
+    DriftIndexResponse,
+    DriftShowResponse,
+    DriftStorePayload,
+    DriftStoreResponse,
+    DriftUpdatePayload,
+} from './types/drift';
+import type { PulseTagIndexResponse } from './types/pulse';
 import useAgent from './useAgent';
 
 class Main {

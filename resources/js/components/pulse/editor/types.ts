@@ -1,3 +1,4 @@
+import type { PulseAttachmentUploadResponse, PulseLinkStoreResponse } from '@/api/types';
 import { Ref } from 'vue';
 
 export type Attachment = PulseAttachmentUploadResponse['data'][number];

@@ -59,5 +59,14 @@ export interface PulseLinkFetchResponse extends ApiResponse {
         description: string;
         url: string;
         image: string;
+        extra: {
+            site_name: string;
+            image_attribute: {
+                width: number;
+                height: number;
+                alt: string;
+                type: string;
+            };
+        };
     };
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import api from '@/api';
+import { DriftDestroyResponse, DriftIndexResponse, DriftStoreResponse, DriftUpdatePayload } from '@/api/types';
 import { useAlertDialog } from '@/components/alert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/base/avatar';
 import { Badge } from '@/components/base/badge';
@@ -125,7 +126,7 @@ const handleDelete = async (id: number) => {
             <div class="flex items-start justify-between">
                 <div class="flex items-center gap-2">
                     <Avatar class="h-10 w-10 rounded-lg">
-                        <AvatarImage :src="props.drift.user.link" :alt="props.drift.user.username" />
+                        <AvatarImage :src="props.drift.user.link_cover" :alt="props.drift.user.username" />
                         <AvatarFallback class="rounded-lg text-sm">{{ props.drift.user.username.slice(0, 2).toUpperCase() }}</AvatarFallback>
                     </Avatar>
                     <div class="grid flex-1 text-left text-sm leading-6">
