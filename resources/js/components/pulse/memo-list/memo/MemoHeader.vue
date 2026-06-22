@@ -26,6 +26,10 @@ const lightboxMedia = computed(() => [
 ]);
 
 const handleShowLightBox = (index: number) => {
+    if (!props.item.user.avatar) {
+        return;
+    }
+
     if (lightBoxRef.value) {
         lightBoxRef.value.showImage(index);
     }
