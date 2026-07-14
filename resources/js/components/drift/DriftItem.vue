@@ -151,7 +151,7 @@ const handleDelete = async (id: number) => {
             </div>
         </CardHeader>
         <CardContent class="grid gap-2">
-            <p class="rounded-md border bg-accent/35 p-2 font-semibold">{{ props.drift.subject }}</p>
+            <p class="rounded-md border-b-2 pb-2 text-2xl font-semibold text-accent-foreground/70">{{ props.drift.subject }}</p>
 
             <MarkdownView :content="props.drift.content" :disable-eye-button="true" v-if="isMarkdown" />
             <div class="whitespace-pre-line" v-else>

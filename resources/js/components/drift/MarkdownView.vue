@@ -164,7 +164,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="rounded-md border p-4">
+    <div class="rounded-md border-none p-0">
         <VueMarkdown :markdown="props.content" :remarkPlugins="remarkPlugins" :rehypePlugins="rehypePlugins" :customAttrs="customAttrs">
             <template #table="{ children, ...props }">
                 <div class="my-3 w-full overflow-x-auto rounded-md border bg-muted/20">
