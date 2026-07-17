@@ -7,7 +7,7 @@ import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
-import { getSingletonHighlighterCore } from 'shiki/core';
+import { getSingletonHighlighterCore, type HighlighterCore } from 'shiki/core';
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
 import { onMounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
@@ -23,9 +23,9 @@ const emit = defineEmits<{
     close: [];
 }>();
 
-const html = ref('');
 const isDark = useDark();
-const clipboard = useClipboard({ source: html });
+const highlighterInstance = ref<HighlighterCore | null>(null);
+const clipboard = useClipboard({ source: ref('') });
 
 const remarkPlugins = [remarkGfm, remarkBreaks];
 const rehypePlugins = [rehypeRaw, rehypeSanitize];
@@ -101,10 +101,6 @@ const customAttrs = ref<CustomAttrs>({
         // `code` tag
         class: 'font-mono text-sm bg-muted px-1 py-0.5 rounded-md hover:bg-muted-foreground/20',
     },
-    'block-code': (node, combinedAttrs) => {
-        // this will be updated in onMounted
-        return combinedAttrs;
-    },
 });
 
 const handleDownload = (language: string, content: string) => {
@@ -144,23 +140,19 @@ onMounted(async () => {
         engine: createJavaScriptRegexEngine(),
     });
 
-    customAttrs.value['block-code'] = (node, combinedAttrs) => {
-        const { content, language } = combinedAttrs;
-
-        html.value = highlighter.codeToHtml(content, {
-            theme: isDark.value ? 'github-dark' : 'github-light',
-            lang: language,
-        });
-
-        // if (node.children[0]) {
-        //     if (node.children[0].type === 'text') {
-        //         content = node.children[0].value;
-        //     }
-        // }
-
-        return combinedAttrs;
-    };
+    highlighterInstance.value = highlighter;
 });
+
+const highlightCode = (content: string, language: string): string => {
+    if (!highlighterInstance.value) {
+        return content;
+    }
+
+    return highlighterInstance.value.codeToHtml(content, {
+        theme: isDark.value ? 'github-dark' : 'github-light',
+        lang: language,
+    });
+};
 </script>
 
 <template>
@@ -199,7 +191,7 @@ onMounted(async () => {
                             </div>
                         </div>
                         <CollapsibleContent>
-                            <div class="text-sm [&>pre]:rounded-md [&>pre]:p-1.5" v-html="html"></div>
+                            <div class="text-sm [&>pre]:rounded-md [&>pre]:p-1.5" v-html="highlightCode(props.content, props.language)"></div>
                         </CollapsibleContent>
                     </Collapsible>
                 </div>
