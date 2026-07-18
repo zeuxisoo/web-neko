@@ -136,6 +136,10 @@ onMounted(async () => {
             import('@shikijs/langs/typescript'),
             import('@shikijs/langs/go'),
             import('@shikijs/langs/v'),
+            import('@shikijs/langs/ini'),
+            import('@shikijs/langs/toml'),
+            import('@shikijs/langs/yaml'),
+            import('@shikijs/langs/json'),
         ],
         engine: createJavaScriptRegexEngine(),
     });
