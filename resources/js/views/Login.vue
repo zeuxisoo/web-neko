@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import api from '@/api';
+import { LoginPayload, LoginResponse } from '@/api/types';
 import { Button } from '@/components/base/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/base/card';
 import { Input } from '@/components/base/input';
@@ -59,31 +60,33 @@ const handleLogin = async () => {
                     <CardDescription> Enter your account below to login </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div class="grid gap-4">
-                        <div class="grid gap-2">
-                            <Label for="account">Account</Label>
-                            <Input v-model="account" id="account" type="text" placeholder="username / email" required />
-                        </div>
-                        <div class="grid gap-2">
-                            <div class="flex items-center">
-                                <Label for="password">Password</Label>
-                                <a href="javascript:alert('Don\'t touch me 😡')" class="ml-auto inline-block text-sm" tabindex="-1">
-                                    <Lock :size="14" />
-                                </a>
+                    <form>
+                        <div class="grid gap-4">
+                            <div class="grid gap-2">
+                                <Label for="account">Account</Label>
+                                <Input v-model="account" id="account" type="text" placeholder="username / email" required />
                             </div>
-                            <PasswordInput
-                                v-model="password"
-                                :enable-password-toggle="true"
-                                id="password"
-                                type="password"
-                                @keyup.enter="handleLogin"
-                            />
+                            <div class="grid gap-2">
+                                <div class="flex items-center">
+                                    <Label for="password">Password</Label>
+                                    <a href="javascript:alert('Don\'t touch me 😡')" class="ml-auto inline-block text-sm" tabindex="-1">
+                                        <Lock :size="14" />
+                                    </a>
+                                </div>
+                                <PasswordInput
+                                    v-model="password"
+                                    :enable-password-toggle="true"
+                                    id="password"
+                                    type="password"
+                                    @keyup.enter="handleLogin"
+                                />
+                            </div>
+                            <Button type="button" class="w-full" @click="handleLogin" :disabled="isLoading">
+                                <Loader class="animate-spin" v-if="isLoading" />
+                                <template v-else>Login</template>
+                            </Button>
                         </div>
-                        <Button type="button" class="w-full" @click="handleLogin" :disabled="isLoading">
-                            <Loader class="animate-spin" v-if="isLoading" />
-                            <template v-else>Login</template>
-                        </Button>
-                    </div>
+                    </form>
                 </CardContent>
             </Card>
         </div>

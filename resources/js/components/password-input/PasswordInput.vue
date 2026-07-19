@@ -61,6 +61,7 @@ const handleToggleButton = () => {
                     props.class,
                 )
             "
+            autocomplete="off"
         />
         <button type="button" class="absolute inset-y-0 right-3 flex items-center text-muted-foreground" @click="handleToggleButton">
             <component :is="toggleButtonIcon" :size="18" />

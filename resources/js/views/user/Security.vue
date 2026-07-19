@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import api from '@/api';
+import { AccountSecurityResponse, AccountSecurityUpdatePasswordPayload } from '@/api/types';
 import { Button } from '@/components/base/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/base/card';
 import { Label } from '@/components/base/label';
@@ -67,18 +68,20 @@ const handleAccountSecuritySave = async () => {
             <CardDescription>Change your security here. After saving, you'll be logged out.</CardDescription>
         </CardHeader>
         <CardContent class="grid gap-6">
-            <div class="grid gap-3">
-                <Label for="old-password">Current password</Label>
-                <PasswordInput v-model="old_password" id="old-password" type="password" :enable-password-toggle="true" />
-            </div>
-            <div class="grid gap-3">
-                <Label for="new-password">New password</Label>
-                <PasswordInput v-model="new_password" id="new-password" type="password" :enable-password-toggle="true" />
-            </div>
-            <div class="grid gap-3">
-                <Label for="confirm-password">Confirm password</Label>
-                <PasswordInput v-model="new_password_confirmation" id="confirm-password" type="password" :enable-password-toggle="true" />
-            </div>
+            <form>
+                <div class="grid gap-3">
+                    <Label for="old-password">Current password</Label>
+                    <PasswordInput v-model="old_password" id="old-password" type="password" :enable-password-toggle="true" />
+                </div>
+                <div class="grid gap-3">
+                    <Label for="new-password">New password</Label>
+                    <PasswordInput v-model="new_password" id="new-password" type="password" :enable-password-toggle="true" />
+                </div>
+                <div class="grid gap-3">
+                    <Label for="confirm-password">Confirm password</Label>
+                    <PasswordInput v-model="new_password_confirmation" id="confirm-password" type="password" :enable-password-toggle="true" />
+                </div>
+            </form>
         </CardContent>
         <CardFooter>
             <Button @click="handleAccountSecuritySave">
