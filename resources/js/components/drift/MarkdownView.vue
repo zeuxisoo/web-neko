@@ -195,7 +195,10 @@ const highlightCode = (content: string, language: string): string => {
                             </div>
                         </div>
                         <CollapsibleContent>
-                            <div class="text-sm [&>pre]:rounded-md [&>pre]:p-1.5" v-html="highlightCode(props.content, props.language)"></div>
+                            <div
+                                class="fira-code-400 text-sm [&>pre]:rounded-md [&>pre]:p-1.5"
+                                v-html="highlightCode(props.content, props.language)"
+                            ></div>
                         </CollapsibleContent>
                     </Collapsible>
                 </div>
@@ -213,3 +216,12 @@ const highlightCode = (content: string, language: string): string => {
         </div>
     </div>
 </template>
+
+<style lang="css" scoped>
+.fira-code-400 {
+    font-family: 'Fira Code', monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+</style>
