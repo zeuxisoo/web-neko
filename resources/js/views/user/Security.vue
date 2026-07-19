@@ -67,19 +67,21 @@ const handleAccountSecuritySave = async () => {
             <CardTitle>Security</CardTitle>
             <CardDescription>Change your security here. After saving, you'll be logged out.</CardDescription>
         </CardHeader>
-        <CardContent class="grid gap-6">
+        <CardContent>
             <form>
-                <div class="grid gap-3">
-                    <Label for="old-password">Current password</Label>
-                    <PasswordInput v-model="old_password" id="old-password" type="password" :enable-password-toggle="true" />
-                </div>
-                <div class="grid gap-3">
-                    <Label for="new-password">New password</Label>
-                    <PasswordInput v-model="new_password" id="new-password" type="password" :enable-password-toggle="true" />
-                </div>
-                <div class="grid gap-3">
-                    <Label for="confirm-password">Confirm password</Label>
-                    <PasswordInput v-model="new_password_confirmation" id="confirm-password" type="password" :enable-password-toggle="true" />
+                <div class="grid gap-6">
+                    <div class="grid gap-3">
+                        <Label for="old-password">Current password</Label>
+                        <PasswordInput v-model="old_password" id="old-password" type="password" :enable-password-toggle="true" />
+                    </div>
+                    <div class="grid gap-3">
+                        <Label for="new-password">New password</Label>
+                        <PasswordInput v-model="new_password" id="new-password" type="password" :enable-password-toggle="true" />
+                    </div>
+                    <div class="grid gap-3">
+                        <Label for="confirm-password">Confirm password</Label>
+                        <PasswordInput v-model="new_password_confirmation" id="confirm-password" type="password" :enable-password-toggle="true" />
+                    </div>
                 </div>
             </form>
         </CardContent>

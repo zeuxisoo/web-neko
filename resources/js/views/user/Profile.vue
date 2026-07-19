@@ -140,17 +140,19 @@ const handleAccountProfileSave = async () => {
                 <CardTitle>Profile</CardTitle>
                 <CardDescription>Make changes to your profile here. After saving, you'll be logged out.</CardDescription>
             </CardHeader>
-            <CardContent class="grid gap-6">
-                <div class="grid gap-3">
-                    <Label for="tabs-avatar">Avatar</Label>
-                    <Loader class="animate-spin" v-if="isLoading" />
-                    <AvatarUpload
-                        :url="user.link_cover"
-                        :name="user.username"
-                        @change="handleAccountAvatarSave"
-                        @preview="handleShowLightBox(0)"
-                        v-else
-                    />
+            <CardContent>
+                <div class="grid gap-6">
+                    <div class="grid gap-3">
+                        <Label for="tabs-avatar">Avatar</Label>
+                        <Loader class="animate-spin" v-if="isLoading" />
+                        <AvatarUpload
+                            :url="user.link_cover"
+                            :name="user.username"
+                            @change="handleAccountAvatarSave"
+                            @preview="handleShowLightBox(0)"
+                            v-else
+                        />
+                    </div>
                 </div>
             </CardContent>
         </Card>
