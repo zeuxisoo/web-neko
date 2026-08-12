@@ -3,6 +3,7 @@
 namespace App\Api\Version1\Controllers\Account;
 
 use App\Api\Version1\Bases\ApiController;
+use App\Api\Version1\Requests\Account\Profile\UpdateDetailRequest;
 use App\Api\Version1\Requests\Account\Profile\UpdateRequest;
 use App\Api\Version1\Requests\Account\Profile\UploadAvatarRequest;
 use App\Api\Version1\Resources\Auth\UserResource;
@@ -39,6 +40,17 @@ class ProfileController extends ApiController
         }
 
         return $this->respondJsonMessage('Successfully updated profile, Please Login again.');
+    }
+
+    public function updateDetail(UpdateDetailRequest $request): JsonResponse {
+        $input = $request->validated();
+
+        $user = $request->user();
+        $user->update([
+            'description' => $input['description'],
+        ]);
+
+        return $this->respondJsonMessage('Successfully updated profile detail.');
     }
 
     public function uploadAvatar(UploadAvatarRequest $request): JsonResource {

@@ -103,7 +103,6 @@ const handleAccountProfileSave = async () => {
         const formData = validator.form('account.profile.update').validate({
             username: user.value?.username,
             email: user.value?.email,
-            description: user.value?.description,
         });
 
         const { data, error } = await api.account.profile.update(formData as AccountProfileUpdatePayload).json<AccountProfileResponse>();
@@ -129,6 +128,34 @@ const handleAccountProfileSave = async () => {
         }
     } catch (e: unknown) {
         WhoopsHandler.handleError(e, 'Unknown error on handle account profile save action');
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+const handleAccountProfileDetailSave = async () => {
+    isLoading.value = true;
+
+    try {
+        const formData = validator.form('account.profile.update_detail').validate({
+            description: user.value?.description,
+        });
+
+        const { data, error } = await api.account.profile.updateDetail(formData as AccountProfileUpdateDetailPayload).json<AccountProfileResponse>();
+
+        if (error.value) {
+            throw error.value;
+        }
+
+        if (data.value && data.value.ok) {
+            const result = data.value;
+
+            toast.success(result.message);
+        } else {
+            throw error.value;
+        }
+    } catch (e: unknown) {
+        WhoopsHandler.handleError(e, 'Unknown error on handle account profile detail save action');
     } finally {
         isLoading.value = false;
     }
@@ -168,13 +195,23 @@ const handleAccountProfileSave = async () => {
                     <Label for="tabs-username">Email</Label>
                     <Input id="tabs-username" placeholder="meow@home.local" v-model="user.email" />
                 </div>
+            </CardContent>
+            <CardFooter>
+                <Button @click="handleAccountProfileSave">
+                    <Loader class="animate-spin" v-if="isLoading" />
+                    <template v-else>Save</template>
+                </Button>
+            </CardFooter>
+        </Card>
+        <Card>
+            <CardContent class="grid gap-6">
                 <div class="grid gap-3">
                     <Label for="tabs-description">Description</Label>
                     <Input id="tabs-description" placeholder="meow meow ~ meow ~~" v-model="user.description" />
                 </div>
             </CardContent>
             <CardFooter>
-                <Button @click="handleAccountProfileSave">
+                <Button @click="handleAccountProfileDetailSave">
                     <Loader class="animate-spin" v-if="isLoading" />
                     <template v-else>Save</template>
                 </Button>

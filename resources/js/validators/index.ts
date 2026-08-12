@@ -1,4 +1,4 @@
-import { AccountProfileUpdate, AccountSecurityUpdate } from './account';
+import { AccountProfileUpdate, AccountProfileUpdateDetail, AccountSecurityUpdate } from './account';
 import AuthLogin from './auth/login';
 import { DriftStore } from './drift';
 import DriftUpdate from './drift/update';
@@ -28,6 +28,7 @@ import Validator from './validator';
 const validators: Record<string, typeof Validator> = {
     'auth.login': AuthLogin,
     'account.profile.update': AccountProfileUpdate,
+    'account.profile.update_detail': AccountProfileUpdateDetail,
     'account.security.update': AccountSecurityUpdate,
     'pulse.memo.store': PulseMemoStore,
     'pulse.memo.update': PulseMemoUpdate,

@@ -8,3 +8,5 @@ variables:
     name: password
   - secret: true
     name: newPassword
+  - secret: true
+    name: accessToken

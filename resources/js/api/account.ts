@@ -1,6 +1,7 @@
 import type {
     AccountProfileResponse,
     AccountProfileUpdateAvatarPayload,
+    AccountProfileUpdateDetailPayload,
     AccountProfileUpdatePayload,
     AccountSecurityResponse,
     AccountSecurityUpdatePasswordPayload,
@@ -15,6 +16,10 @@ class Profile {
 
     updateAvatar(payload: AccountProfileUpdateAvatarPayload) {
         return useAgent<MeResponse>('account/profile/upload/avatar').post(payload);
+    }
+
+    updateDetail(payload: AccountProfileUpdateDetailPayload) {
+        return useAgent<MeResponse>('account/profile/update-detail').post(payload);
     }
 }
 

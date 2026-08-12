@@ -3,7 +3,6 @@ import type { ApiResponse } from './base';
 export type AccountProfileUpdatePayload = {
     username: string;
     email: string;
-    description: string;
 };
 
 export interface AccountProfileResponse extends ApiResponse {
@@ -16,6 +15,10 @@ export type AccountSecurityUpdatePasswordPayload = {
     old_password: string;
     new_password: string;
     new_password_confirmation: string;
+};
+
+export type AccountProfileUpdateDetailPayload = {
+    description: string;
 };
 
 export interface AccountSecurityResponse extends ApiResponse {
