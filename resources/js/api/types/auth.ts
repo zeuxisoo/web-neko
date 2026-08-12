@@ -19,6 +19,7 @@ export interface MeResponse extends ApiResponse {
         id: number;
         username: string;
         email: string;
+        description: string;
         avatar: string;
         link_cover: string;
         link_thumb: string;

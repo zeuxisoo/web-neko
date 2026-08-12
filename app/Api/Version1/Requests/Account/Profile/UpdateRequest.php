@@ -36,6 +36,9 @@ class UpdateRequest extends ApiFormRequest
                 'email',
                 Rule::unique('users')->ignore($userId),
             ],
+            'description' => [
+                'present',
+            ],
         ];
     }
 }

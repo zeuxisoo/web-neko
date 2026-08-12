@@ -15,6 +15,7 @@ class UserResource extends ApiResource
             'id' => $this->id,
             'username' => $this->username,
             'email' => $this->email,
+            'description' => $this->description,
             'avatar' => $this->avatar,
             'link_cover' => $disk->url("cover/{$this->avatar}"),
             'link_thumb' => $disk->url("thumb/{$this->avatar}"),

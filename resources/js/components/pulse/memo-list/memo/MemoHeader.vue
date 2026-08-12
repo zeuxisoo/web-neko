@@ -21,7 +21,7 @@ const lightboxMedia = computed(() => [
         type: 'image',
         src: props.item.user.link_thumb,
         thumb: props.item.user.link_thumb,
-        caption: props.item.user.username,
+        caption: props.item.user.description,
     },
 ]);
 

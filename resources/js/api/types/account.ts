@@ -3,6 +3,7 @@ import type { ApiResponse } from './base';
 export type AccountProfileUpdatePayload = {
     username: string;
     email: string;
+    description: string;
 };
 
 export interface AccountProfileResponse extends ApiResponse {

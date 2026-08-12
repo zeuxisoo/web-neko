@@ -25,7 +25,7 @@ const lightboxMedia = computed(() => [
         type: 'image',
         src: user.value.link_thumb,
         thumb: user.value.link_cover,
-        caption: user.value.username,
+        caption: user.value.description,
     },
 ]);
 
@@ -50,6 +50,7 @@ onMounted(async () => {
 
         user.value.username = me.username;
         user.value.email = me.email;
+        user.value.description = me.description;
         user.value.avatar = me.avatar;
         user.value.link_cover = me.link_cover;
         user.value.link_thumb = me.link_thumb;
@@ -102,6 +103,7 @@ const handleAccountProfileSave = async () => {
         const formData = validator.form('account.profile.update').validate({
             username: user.value?.username,
             email: user.value?.email,
+            description: user.value?.description,
         });
 
         const { data, error } = await api.account.profile.update(formData as AccountProfileUpdatePayload).json<AccountProfileResponse>();
@@ -165,6 +167,10 @@ const handleAccountProfileSave = async () => {
                 <div class="grid gap-3">
                     <Label for="tabs-username">Email</Label>
                     <Input id="tabs-username" placeholder="meow@home.local" v-model="user.email" />
+                </div>
+                <div class="grid gap-3">
+                    <Label for="tabs-description">Description</Label>
+                    <Input id="tabs-description" placeholder="meow meow ~ meow ~~" v-model="user.description" />
                 </div>
             </CardContent>
             <CardFooter>

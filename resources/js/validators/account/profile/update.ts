@@ -5,6 +5,7 @@ class AccountProfileUpdate extends Validator {
         return {
             username: ['required', 'min:4'],
             email: ['required', 'email'],
+            description: ['present'],
         };
     }
 
@@ -14,6 +15,7 @@ class AccountProfileUpdate extends Validator {
             'username.min': 'Username letters must be more than %(args[0])s',
             'email.required': 'Please enter email',
             'email.email': 'Invalid email format',
+            'description.present': 'Description must present in submit data',
         };
     }
 }

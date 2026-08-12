@@ -25,6 +25,7 @@ class ProfileController extends ApiController
         $user->update([
             'username' => $input['username'],
             'email' => $input['email'],
+            'description' => $input['description'],
         ]);
 
         $currentToken = $user->currentAccessToken();

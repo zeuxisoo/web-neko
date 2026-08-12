@@ -1,6 +1,7 @@
 import { useAuthStorage } from '@/composables';
 import { isEmpty } from 'es-toolkit/compat';
 import { defineStore } from 'pinia';
+import { AuthStorageValue } from './types';
 
 // create empty auth state if not init
 const authDefaultValue = {} as AuthStorageValue;
