@@ -12,6 +12,7 @@ use App\Api\Version1\Resources\Pulse\LinkResourceCollection;
 use App\Models\MemoLink;
 use App\Services\SettingsService;
 use Embed\Embed;
+use Embed\Http\UrlPolicy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -80,6 +81,12 @@ class LinkController extends ApiController
 
         try {
             $embed = new Embed();
+            $crawler = $embed->getCrawler();
+            $crawler->setUrlPolicy(UrlPolicy::default()->allowPrivateNetworks());
+            $crawler->addDefaultHeaders([
+                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36',
+            ]);
+
             $info = $embed->get($input['url']);
 
             $data = [
