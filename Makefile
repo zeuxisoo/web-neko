@@ -23,7 +23,7 @@ dev:
 	@$(COMPOSER) run dev
 
 web:
-	@$(COMPOSER) artisan serve
+	@php artisan serve
 
 assets:
 	@npm run dev
